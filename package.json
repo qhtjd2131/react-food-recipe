@@ -2,7 +2,7 @@
   "name": "react-food",
   "version": "1.0.0",
   "description": "food information",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack serve"
@@ -10,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
     "babel-loader": "^8.2.4",
     "css-loader": "^6.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^6.2.2",
     "style-loader": "^3.3.1",
     "styled-components": "^5.3.5",
     "typescript-plugin-styled-components": "^2.0.0",

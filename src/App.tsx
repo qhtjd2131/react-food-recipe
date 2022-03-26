@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Home from "./Home";
+import Home from "./pages/Home";
+import { Routes, Route } from "react-router-dom";
+import Search from "./pages/Search";
 
 const GlobalWrapper = styled.div`
     width : 100%;
@@ -14,7 +16,10 @@ const GlobalWrapper = styled.div`
 
 const App = () => {
   return <GlobalWrapper>
-    <Home />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/Search" element={<Search />} />
+    </Routes>
   </GlobalWrapper>;
 };
 
