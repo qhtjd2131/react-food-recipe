@@ -12,6 +12,7 @@ module.exports = {
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
+    publicPath: '/'
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -44,11 +45,21 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "babel-loader",
             options: {
-              presets: ["@babel/preset-env", "@babel/preset-react"],
+              presets: [
+                [
+                  "@babel/preset-env",
+                  {
+                    useBuiltIns: "usage",
+                    corejs: { version: "3.21", proposals: true },
+                  },
+                ],
+                "@babel/preset-react",
+              ],
             },
           },
           {
@@ -68,9 +79,9 @@ module.exports = {
     host: "localhost",
     port: 8080, //포트
     open: true, //개발 서버 실행 시 브라우저 오픈
+    historyApiFallback :true,
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
-
 };
