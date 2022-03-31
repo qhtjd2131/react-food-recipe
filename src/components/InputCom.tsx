@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const ButtonBox = styled.div`
   width: 20%;
   height: 100%;
 `;
-const SearchButton = styled.button`
+const SearchButton = styled.button<{ on: string }>`
   width: 100%;
   height: 100%;
   border: none;
@@ -35,7 +35,7 @@ const SearchButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: orange;
+  background-color: ${(props) => (props.on === "true" ? "orange" : "#d88d01")};
   color: white;
 
   &:hover {
@@ -43,14 +43,30 @@ const SearchButton = styled.button`
   }
 `;
 const InputCom = () => {
+  // input으로 받은 state 처리 필요
+
+  const [searchText, setSearchText] = useState<String>("");
+
+  const linkRender = () => {
+    if (searchText.replace(/\s/gi, "").length > 0) {
+      return (
+        <Link to={`/search?q=${searchText}`}>
+          <SearchButton on="true">SEARCH</SearchButton>
+        </Link>
+      );
+    } else {
+      return <SearchButton on="false">SEARCH</SearchButton>;
+    }
+  };
   return (
     <InputBox>
-      <Input placeholder="Please write English." />
-      <ButtonBox>
-        <Link to="/search">
-          <SearchButton>SEARCH</SearchButton>
-        </Link>
-      </ButtonBox>
+      <Input
+        placeholder="Please write english."
+        onChange={(e) => {
+          setSearchText(e.target.value);
+        }}
+      />
+      <ButtonBox>{linkRender()}</ButtonBox>
     </InputBox>
   );
 };

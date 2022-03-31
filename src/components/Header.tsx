@@ -14,6 +14,7 @@ const HeaderBox = styled.section`
   justify-content : center;
   /* align-items:center; */
   box-shadow : 0 0 4px orange;
+  background-color : white;
 `;
 
 const ContentWrapper = styled.div`
