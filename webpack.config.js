@@ -1,4 +1,5 @@
 const path = require("path");
+const { SourceMapDevToolPlugin } = require("webpack");
 
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -12,9 +13,13 @@ module.exports = {
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: '/'
+    publicPath: "/",
+    sourceMapFilename: "main.js.map",
   },
   plugins: [
+    new SourceMapDevToolPlugin({
+      filename: "[file].map",
+    }),
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "public/index.html"),
@@ -25,11 +30,20 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
+      },
+      {
+        test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
-        options: {
-          presets: ["@babel/preset-env", "@babel/preset-react"],
-        },
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-react"],
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -47,6 +61,7 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
+          "source-map-loader",
           {
             loader: "babel-loader",
             options: {
@@ -79,7 +94,7 @@ module.exports = {
     host: "localhost",
     port: 8080, //포트
     open: true, //개발 서버 실행 시 브라우저 오픈
-    historyApiFallback :true,
+    historyApiFallback: true,
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
