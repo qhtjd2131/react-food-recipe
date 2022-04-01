@@ -1,6 +1,8 @@
 const path = require("path");
+const webpack = require('webpack')
+const dotenv = require('dotenv');
+dotenv.config();
 const { SourceMapDevToolPlugin } = require("webpack");
-
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const createStyledComponentsTransformer =
@@ -25,6 +27,10 @@ module.exports = {
       template: path.resolve(__dirname, "public/index.html"),
       filename: "index.html",
     }),
+    new webpack.DefinePlugin({
+      'process.env.REACT_APP_API_KEY': JSON.stringify(process.env.REACT_APP_API_KEY),
+      'process.env.REACT_APP_APP_ID': JSON.stringify(process.env.REACT_APP_APP_ID),
+    })
   ],
   module: {
     rules: [
