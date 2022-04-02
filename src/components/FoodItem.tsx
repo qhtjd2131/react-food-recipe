@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { Hit } from "./type2";
 import { GoPrimitiveDot } from "react-icons/go";
+import MoreInfoButton from "./MoreInfoButton";
+import { IoMdPerson } from "react-icons/io";
 
 const ItemBox = styled.div`
   display: flex;
   box-sizing: border-box;
   padding: 1rem 0;
   gap: 1rem;
+  padding: 1rem;
 `;
 
 const Image = styled.img``;
@@ -16,7 +19,16 @@ const DescriptionBox = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  justify-content: space-between;
+
+  padding: 0.4rem;
   border: 1px solid black;
+`;
+
+const NameBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap : 0.6rem;
 `;
 const Name = styled.p`
   font-size: 1.6rem;
@@ -26,42 +38,94 @@ const NutrientsBox = styled.div`
   width: 600px;
   display: flex;
   flex-direction: column;
-  box-sizing : border-box;
-  padding : 0 1rem;
+  box-sizing: border-box;
+  padding: 0 1rem;
+
+  justify-content: center;
+  align-items: center;
 `;
 const MainNutrients = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap : 0.4rem;
+  gap: 0.4rem;
 `;
 const SubNutrients = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
-const KcalBox = styled.label``;
+const KcalBox = styled.label`
+  font-size: 1.4rem;
+  font-weight: 700;
+`;
 
 const NutrientsItem = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const IconWithText = styled.div`
-    display :flex;
-    justify-content:center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const NIcon = styled.div`
-    color : ${(props) => props.color && props.color};
+  color: ${(props) => props.color && props.color};
 `;
-const NutrientsLabel = styled.label``;
+const BlackLabel = styled.label`
+  font-weight: 600;
+`;
 
-const NetrientsIcon = ({ color = "black" } : {color:string} ) => {
-    
+const GrayLabel = styled.label`
+  color: gray;
+`;
+
+const NeedsBox = styled.div`
+  width: 100%;
+  display: flex;
+  /* white-space : nowrap; */
+  flex-wrap: wrap;
+  gap: 0.3rem;
+`;
+
+const NeedsTag = styled.div`
+  /* height : 10px; */
+  border-radius: 12px;
+  border: none;
+  background-color: white;
+  /* border-bottom : 1px solid black; */
+  color: gray;
+  box-sizing: border-box;
+  padding: 0.4rem;
+  font-weight: 500;
+  &::before {
+    content: "| ";
+  }
+`;
+
+const PersonIconBox = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+`;
+export const NetrientsIcon = ({ color = "black" }: { color: string }) => {
   return (
     <NIcon color={color}>
       <GoPrimitiveDot />
     </NIcon>
+  );
+};
+
+export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
+  const arr_temp = new Array(personCount).fill(0);
+
+  return (
+    <PersonIconBox>
+      {arr_temp.map((_, idx) => (
+        <IoMdPerson key={idx}></IoMdPerson>
+      ))}{" "}
+      {"  " + personCount + "인"}{" "}
+    </PersonIconBox>
   );
 };
 const FoodItem = ({ foodinfo }: any) => {
@@ -102,11 +166,15 @@ const FoodItem = ({ foodinfo }: any) => {
   //관련 국가 정보 arr
   const country = foodInfo.recipe.cuisineType;
 
-
   //재료정보 가공하기
-  const needs = null;
-
-  
+  const needs = foodInfo.recipe.ingredients.map((ingred) => {
+    return {
+      food: ingred.food,
+      quantity: ingred.quantity,
+      measure: ingred.measure,
+      weight: ingred.weight,
+    };
+  });
 
   function roundToTwo(num: number) {
     return +(Math.round(Number(num + "e+2")) + "e-2");
@@ -115,49 +183,54 @@ const FoodItem = ({ foodinfo }: any) => {
     <ItemBox>
       <Image src={foodImage_m} alt={foodName} />
       <DescriptionBox>
-        <Name>{foodName}</Name>
-        <Text>{serving + "인분"}</Text>
+        <NameBox>
+          <Name>{foodName}</Name>
+          <PersonIcon personCount={serving}></PersonIcon>
+        </NameBox>
+        <NeedsBox>
+          {needs.map((ingredient) => (
+            <NeedsTag>{ingredient.food}</NeedsTag>
+          ))}
+        </NeedsBox>
       </DescriptionBox>
       <NutrientsBox>
         <MainNutrients>
-          <KcalBox>{"총 " + roundToTwo(foodTotalCalories) + " kcal"}</KcalBox>
-          <NutrientsLabel>
-            {"(1인) " + foodCaloriesForServing + " kcal"}
-          </NutrientsLabel>
+          <KcalBox>{roundToTwo(foodTotalCalories) + " kcal"}</KcalBox>
+          <GrayLabel>{"(1인) " + foodCaloriesForServing + " kcal"}</GrayLabel>
 
           <NutrientsItem>
             <IconWithText>
               <NetrientsIcon color="red" />
-              <NutrientsLabel>탄수화물</NutrientsLabel>
+              <BlackLabel>탄수화물</BlackLabel>
             </IconWithText>
-            <NutrientsLabel>
-              <NutrientsLabel>{nutrientsInfo.Carbs}</NutrientsLabel>
-            </NutrientsLabel>
+            <BlackLabel>{nutrientsInfo.Carbs}</BlackLabel>
           </NutrientsItem>
 
           <NutrientsItem>
-          <IconWithText>
-              <NetrientsIcon color="green"/>
-              <NutrientsLabel>단백질</NutrientsLabel>
+            <IconWithText>
+              <NetrientsIcon color="green" />
+              <BlackLabel>단백질</BlackLabel>
             </IconWithText>
-            <NutrientsLabel>
-              <NutrientsLabel>
-                {nutrientsInfo.Protein}
-              </NutrientsLabel>
-            </NutrientsLabel>
+            <BlackLabel>{nutrientsInfo.Protein}</BlackLabel>
           </NutrientsItem>
 
           <NutrientsItem>
-          <IconWithText>
+            <IconWithText>
               <NetrientsIcon color="orange" />
-              <NutrientsLabel>지방</NutrientsLabel>
+              <BlackLabel>지방</BlackLabel>
             </IconWithText>
-            <NutrientsLabel>
-              <NutrientsLabel>{nutrientsInfo.Fat}</NutrientsLabel>
-            </NutrientsLabel>
+            <BlackLabel>{nutrientsInfo.Fat}</BlackLabel>
+          </NutrientsItem>
+
+          <NutrientsItem>
+            <IconWithText>
+              <NetrientsIcon color="gray" />
+              <BlackLabel>당</BlackLabel>
+            </IconWithText>
+            <BlackLabel>{nutrientsInfo.Sugars}</BlackLabel>
           </NutrientsItem>
         </MainNutrients>
-
+        <MoreInfoButton onClick={() => {}} />
         <SubNutrients></SubNutrients>
       </NutrientsBox>
     </ItemBox>
