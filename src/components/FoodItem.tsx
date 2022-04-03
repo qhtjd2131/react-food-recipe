@@ -13,14 +13,16 @@ const ItemBox = styled.div`
   padding: 1rem;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 200px;
+  height: 200px;
+`;
 
 const DescriptionBox = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  justify-content: space-between;
-
+  justify-content: flex-start;
   padding: 0.4rem;
   border: 1px solid black;
 `;
@@ -28,12 +30,11 @@ const DescriptionBox = styled.div`
 const NameBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap : 0.6rem;
+  gap: 0.6rem;
 `;
 const Name = styled.p`
   font-size: 1.6rem;
 `;
-const Text = styled.p``;
 const NutrientsBox = styled.div`
   width: 600px;
   display: flex;
@@ -84,8 +85,9 @@ const NeedsBox = styled.div`
   width: 100%;
   display: flex;
   /* white-space : nowrap; */
+  padding-top: 0.8rem;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  gap: 0.2rem;
 `;
 
 const NeedsTag = styled.div`
@@ -108,6 +110,18 @@ const PersonIconBox = styled.div`
   justify-content: flex-start;
   width: 100%;
 `;
+
+const HeadContentsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const CuisineTypeBox = styled.div`
+  display: flex;
+`;
+const CuisineType = styled.p`
+    font-weight: 600;
+`;
+
 export const NetrientsIcon = ({ color = "black" }: { color: string }) => {
   return (
     <NIcon color={color}>
@@ -123,8 +137,8 @@ export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
     <PersonIconBox>
       {arr_temp.map((_, idx) => (
         <IoMdPerson key={idx}></IoMdPerson>
-      ))}{" "}
-      {"  " + personCount + "인"}{" "}
+      ))}
+      <p style={{ marginLeft: "0.3rem" }}> {personCount + "인"}</p>
     </PersonIconBox>
   );
 };
@@ -164,7 +178,7 @@ const FoodItem = ({ foodinfo }: any) => {
   //Phosphorus : 인
 
   //관련 국가 정보 arr
-  const country = foodInfo.recipe.cuisineType;
+  const cuisineType = foodInfo.recipe.cuisineType;
 
   //재료정보 가공하기
   const needs = foodInfo.recipe.ingredients.map((ingred) => {
@@ -183,13 +197,20 @@ const FoodItem = ({ foodinfo }: any) => {
     <ItemBox>
       <Image src={foodImage_m} alt={foodName} />
       <DescriptionBox>
-        <NameBox>
-          <Name>{foodName}</Name>
-          <PersonIcon personCount={serving}></PersonIcon>
-        </NameBox>
+        <HeadContentsWrapper>
+          <NameBox>
+            <Name>{foodName}</Name>
+            <PersonIcon personCount={serving}></PersonIcon>
+          </NameBox>
+          <CuisineTypeBox>
+            {cuisineType.map((type, key) => {
+              return <CuisineType key={key}>{type.toUpperCase()}</CuisineType>;
+            })}
+          </CuisineTypeBox>
+        </HeadContentsWrapper>
         <NeedsBox>
-          {needs.map((ingredient) => (
-            <NeedsTag>{ingredient.food}</NeedsTag>
+          {needs.map((ingredient, key) => (
+            <NeedsTag key={key}>{ingredient.food}</NeedsTag>
           ))}
         </NeedsBox>
       </DescriptionBox>

@@ -6,11 +6,10 @@ import FoodItem from "./FoodItem";
 import { FoodInfos } from "./type2";
 
 const FoodListBox = styled.div`
-    width : 100%;
+    width : 1200px;
     height : 100%;
     border : 1px solid black;
 `;
-
 
 interface IFoodListProps {
     searchText : string;

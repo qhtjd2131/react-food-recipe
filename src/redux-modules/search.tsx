@@ -1,9 +1,11 @@
 const SET_SEARCH_TEXT = "search/SET_SEARCH_TEXT" as const;
 const CLEAR_SEARCH_TEXT = "search/CLEAR_SEARCH_TEXT" as const;
+const SET_CURRENT_PAGE = "search/SET_CURRENT_PAGE" as const;
 
 // 인터페이스
 interface IState {
   searchText: string;
+  currentPageNumber : number;
 }
 
 //액션 생성 함수
@@ -15,13 +17,20 @@ export const clearSearchText = () => ({
   type: CLEAR_SEARCH_TEXT,
 });
 
+export const setCurrentPageNumber = ( currentPageNumber : number) => ({
+  type : SET_CURRENT_PAGE,
+  playload : { currentPageNumber : currentPageNumber }
+})
+
 type Action =
   | ReturnType<typeof setSearchText>
-  | ReturnType<typeof clearSearchText>;
+  | ReturnType<typeof clearSearchText>
+  | ReturnType<typeof setCurrentPageNumber>;
 
 // 초기값 선언
 const initialState: IState = {
   searchText: "",
+  currentPageNumber : 1,
 };
 
 //리듀서 선언
@@ -37,6 +46,11 @@ export default function searchReducer(state = initialState, action: Action) {
         ...state,
         searchText: "",
       };
+    case SET_CURRENT_PAGE:
+      return{
+        ...state,
+        currentPageNumber : action.playload.currentPageNumber,
+      }
     default:
       return state;
   }
