@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { DefaultRootState, useDispatch, useSelector } from "react-redux";
-import { setCurrentPageNumber, setSearchText } from "../redux-modules/search";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentPageNumber } from "../redux-modules/search";
 import { RootState } from "../redux-modules/index";
 
 const PaginationBox = styled.div`

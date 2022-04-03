@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
-import QueryString, { ParsedQs } from "qs";
+import QueryString from "qs";
 import { store } from "..";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchText } from "../redux-modules/search";
@@ -11,16 +11,16 @@ import Pagination from "../components/Pagination";
 
 const SearchBox = styled.section`
   width: 100%;
-  background-color : white;
-  display : flex;
-  flex-direction : column;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
   /* background: linear-gradient(to bottom, white, orange); */
 
-  padding : 2rem 4rem;
-  box-sizing : border-box;
-  min-width : 750px;
-  justify-content : center;
-  align-items:center;
+  padding: 2rem 4rem;
+  box-sizing: border-box;
+  min-width: 750px;
+  justify-content: center;
+  align-items: center;
 `;
 const SearchTitle = styled.p`
   font-size: 1.4rem;
@@ -28,11 +28,10 @@ const SearchTitle = styled.p`
 
 const ResultBox = styled.div`
   margin-top: 100px;
-  display : flex;
-  flex-direction : column;
-  justify-content : center;
-  align-items : center;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const Search = () => {
   const params = useParams();
@@ -48,18 +47,15 @@ const Search = () => {
   useEffect(() => {
     if (typeof queryString === "string") {
       onSetSearchText(queryString);
-  console.log(store.getState())
-
     }
   }, []);
-
 
   return (
     <SearchBox>
       <Header />
       <ResultBox>
-        <SearchTitle>{'\''+queryString+'\' 검색 결과'}</SearchTitle>
-        <FoodList searchText={queryString}/>
+        <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
+        <FoodList searchText={queryString} />
       </ResultBox>
       <Pagination />
     </SearchBox>
