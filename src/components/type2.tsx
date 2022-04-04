@@ -20,6 +20,7 @@ export interface Hit {
     _links: HitLinks;
 }
 
+
 export interface HitLinks {
     self: Next;
 }

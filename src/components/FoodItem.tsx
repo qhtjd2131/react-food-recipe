@@ -142,7 +142,13 @@ export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
     </PersonIconBox>
   );
 };
-const FoodItem = ({ foodinfo }: any) => {
+
+interface FoodItemProps {
+  foodinfo : Hit;
+  increaseChildLoadCount : () => void;
+  key : number;
+}
+const FoodItem = ({ foodinfo, increaseChildLoadCount, key }: FoodItemProps) => {
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
   //이미지
@@ -195,7 +201,7 @@ const FoodItem = ({ foodinfo }: any) => {
   }
   return (
     <ItemBox>
-      <Image src={foodImage_m} alt={foodName} />
+      <Image src={foodImage_m} alt={foodName} onLoad={increaseChildLoadCount} />
       <DescriptionBox>
         <HeadContentsWrapper>
           <NameBox>
