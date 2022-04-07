@@ -11,6 +11,10 @@ import Pagination from "../components/Pagination";
 import { getRecipe } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
+import { data } from "../components/data";
+
+const ITEM_LENGTH = 4;
+
 const SearchBox = styled.section`
   width: 100%;
   background-color: white;
@@ -53,25 +57,27 @@ const Search = () => {
     parameterLimit: 1,
   }).q;
 
-  const getData = async () => {
+  const getData = async (): Promise<Hit[]> => {
     const result = await getRecipe("chicken"); // "chicken => queryString"
+    console.log("result : ", result);
+    // const result = data;
+    // return new Promise((resolve)=>{resolve(result)});
     return result;
   };
 
   useEffect(() => {
     if (queryString.length > 0) {
-      getData().then((res: Array<Hit[]>) => {
+      getData().then((res: Hit[]) => {
+        console.log("213123:", res);
+
         setFoodItems(() => {
-          const half_hits: Array<Hit[]> = [];
-          res.forEach((hits: Hit[]) => {
-            
-            const temp_a = hits.splice(10);
-            const temp_b = hits;
-           
-            half_hits.push(temp_b);
-            half_hits.push(temp_a);
-          });
-          return half_hits;
+          const temp = [];
+          while (res.length > 0) {
+            const temp_a = res.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+            temp.push(temp_a);
+          }
+          console.log("temp:",temp);
+          return temp;
         });
       });
     }
@@ -89,7 +95,7 @@ const Search = () => {
       <ResultBox>
         <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
 
-        <FoodList items={foodItems ? foodItems[item_index] : undefined } />
+        <FoodList items={foodItems ? foodItems[item_index] : undefined} />
       </ResultBox>
       <Pagination />
     </SearchBox>

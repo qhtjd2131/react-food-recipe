@@ -1,5 +1,5 @@
 import { is } from "immer/dist/internal";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect,useLayoutEffect, useState } from "react";
 import { useStore } from "react-redux";
 import styled from "styled-components";
 import { getRecipe } from "../functions/apiCall";
@@ -31,7 +31,8 @@ const FoodList = ({ items }: IFoodListProps) => {
   let childLoadCount = 0;
   const childsLength = items === undefined ? 0 : items.length;
 
-  useEffect(() => {
+  console.log("in FoodList :", items)
+  useLayoutEffect(() => {
     setIsLoading(true);
   }, [items]);
 
