@@ -3,7 +3,6 @@ import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
 import QueryString from "qs";
-import { store } from "..";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchText } from "../redux-modules/search";
 import FoodList from "../components/FoodList";
@@ -58,25 +57,23 @@ const Search = () => {
   }).q;
 
   const getData = async (): Promise<Hit[]> => {
-    const result = await getRecipe("chicken"); // "chicken => queryString"
-    console.log("result : ", result);
-    // const result = data;
-    // return new Promise((resolve)=>{resolve(result)});
-    return result;
+    // const result = await getRecipe("chicken"); // "chicken => queryString"
+    const result = data;
+    return new Promise((resolve)=>{resolve(result)});
+    // return result;
   };
 
   useEffect(() => {
     if (queryString.length > 0) {
       getData().then((res: Hit[]) => {
-        console.log("213123:", res);
+        const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
 
         setFoodItems(() => {
           const temp = [];
-          while (res.length > 0) {
-            const temp_a = res.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+          while (res_copy.length > 0) {
+            const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
             temp.push(temp_a);
           }
-          console.log("temp:",temp);
           return temp;
         });
       });

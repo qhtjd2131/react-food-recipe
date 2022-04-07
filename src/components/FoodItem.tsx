@@ -1,30 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 import { Hit } from "./type2";
-import { GoPrimitiveDot } from "react-icons/go";
 import MoreInfoButton from "./MoreInfoButton";
 import { IoMdPerson } from "react-icons/io";
+import FoodItemNutrients from "./FoodItem_Nutrients";
+import FoodItemCalories from "./FoodItem_Calories";
 
 const ItemBox = styled.div`
   display: flex;
   box-sizing: border-box;
-  padding: 1rem 0;
   gap: 1rem;
   padding: 1rem;
+  height : 250px;
+  align-items : center;
 `;
 
 const Image = styled.img`
   width: 200px;
   height: 200px;
+  display : flex;
+  justify-content : center;
+  align-items : center;
 `;
 
 const DescriptionBox = styled.div`
   display: flex;
   width: 100%;
+  height :100%;
   flex-direction: column;
   justify-content: flex-start;
   padding: 0.4rem;
   border: 1px solid black;
+  box-sizing : border-box;
 `;
 
 const NameBox = styled.div`
@@ -32,9 +39,11 @@ const NameBox = styled.div`
   flex-direction: column;
   gap: 0.6rem;
 `;
+
 const Name = styled.p`
   font-size: 1.6rem;
 `;
+
 const NutrientsBox = styled.div`
   width: 600px;
   display: flex;
@@ -51,34 +60,18 @@ const MainNutrients = styled.div`
   width: 100%;
   gap: 0.4rem;
 `;
-const SubNutrients = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-const KcalBox = styled.label`
-  font-size: 1.4rem;
-  font-weight: 700;
-`;
 
-const NutrientsItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const IconWithText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const NIcon = styled.div`
-  color: ${(props) => props.color && props.color};
-`;
-const BlackLabel = styled.label`
+
+export const BlackLabel = styled.label`
   font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
-const GrayLabel = styled.label`
+export const GrayLabel = styled.label`
   color: gray;
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 const NeedsBox = styled.div`
@@ -119,16 +112,12 @@ const CuisineTypeBox = styled.div`
   display: flex;
 `;
 const CuisineType = styled.p`
-    font-weight: 600;
+  font-weight: 600;
 `;
 
-export const NetrientsIcon = ({ color = "black" }: { color: string }) => {
-  return (
-    <NIcon color={color}>
-      <GoPrimitiveDot />
-    </NIcon>
-  );
-};
+export function roundToTwo(num: number) {
+  return +(Math.round(Number(num + "e+2")) + "e-2");
+}
 
 export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
   const arr_temp = new Array(personCount).fill(0);
@@ -144,8 +133,8 @@ export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
 };
 
 interface FoodItemProps {
-  foodinfo : Hit;
-  increaseChildLoadCount : () => void;
+  foodinfo: Hit;
+  increaseChildLoadCount: () => void;
 }
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const foodInfo: Hit = foodinfo;
@@ -195,9 +184,6 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
     };
   });
 
-  function roundToTwo(num: number) {
-    return +(Math.round(Number(num + "e+2")) + "e-2");
-  }
   return (
     <ItemBox>
       <Image src={foodImage_m} alt={foodName} onLoad={increaseChildLoadCount} />
@@ -219,45 +205,19 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
           ))}
         </NeedsBox>
       </DescriptionBox>
+
       <NutrientsBox>
+        <FoodItemCalories
+          foodTotalCalories={foodTotalCalories}
+          foodCaloriesForServing={foodCaloriesForServing}
+        />
         <MainNutrients>
-          <KcalBox>{roundToTwo(foodTotalCalories) + " kcal"}</KcalBox>
-          <GrayLabel>{"(1인) " + foodCaloriesForServing + " kcal"}</GrayLabel>
-
-          <NutrientsItem>
-            <IconWithText>
-              <NetrientsIcon color="red" />
-              <BlackLabel>탄수화물</BlackLabel>
-            </IconWithText>
-            <BlackLabel>{nutrientsInfo.Carbs}</BlackLabel>
-          </NutrientsItem>
-
-          <NutrientsItem>
-            <IconWithText>
-              <NetrientsIcon color="green" />
-              <BlackLabel>단백질</BlackLabel>
-            </IconWithText>
-            <BlackLabel>{nutrientsInfo.Protein}</BlackLabel>
-          </NutrientsItem>
-
-          <NutrientsItem>
-            <IconWithText>
-              <NetrientsIcon color="orange" />
-              <BlackLabel>지방</BlackLabel>
-            </IconWithText>
-            <BlackLabel>{nutrientsInfo.Fat}</BlackLabel>
-          </NutrientsItem>
-
-          <NutrientsItem>
-            <IconWithText>
-              <NetrientsIcon color="gray" />
-              <BlackLabel>당</BlackLabel>
-            </IconWithText>
-            <BlackLabel>{nutrientsInfo.Sugars}</BlackLabel>
-          </NutrientsItem>
+          <FoodItemNutrients nutText="탄수화물" value={nutrientsInfo.Carbs} />
+          <FoodItemNutrients nutText="단백질" value={nutrientsInfo.Protein} />
+          <FoodItemNutrients nutText="지방" value={nutrientsInfo.Fat} />
+          <FoodItemNutrients nutText="당" value={nutrientsInfo.Sugars} />
         </MainNutrients>
         <MoreInfoButton onClick={() => {}} />
-        <SubNutrients></SubNutrients>
       </NutrientsBox>
     </ItemBox>
   );
