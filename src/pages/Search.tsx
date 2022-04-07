@@ -61,7 +61,6 @@ const Search = () => {
   useEffect(() => {
     if (queryString.length > 0) {
       getData().then((res: Array<Hit[]>) => {
-        console.log(res);
         setFoodItems(() => {
           const half_hits: Array<Hit[]> = [];
           res.forEach((hits: Hit[]) => {
@@ -77,11 +76,6 @@ const Search = () => {
       });
     }
   }, [queryString]);
-
-  useEffect(() => {
-    //test effect
-    console.log(foodItems);
-  }, [foodItems]);
 
   useEffect(() => {
     if (typeof queryString === "string") {

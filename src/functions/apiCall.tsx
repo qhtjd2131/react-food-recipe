@@ -22,7 +22,6 @@ export const getRecipe = async (searchText: string) : Promise<Array<Hit[]>> => {
   return new Promise((resolve, reject)=>{
     const merged_result = [result.data.hits, result2.data.hits, result3.data.hits, result4.data.hits, result5.data.hits]
     resolve(merged_result);
-    console.log("merged:", merged_result)
     reject("error")
   })
 };

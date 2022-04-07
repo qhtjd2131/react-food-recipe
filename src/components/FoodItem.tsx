@@ -146,9 +146,8 @@ export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
 interface FoodItemProps {
   foodinfo : Hit;
   increaseChildLoadCount : () => void;
-  key : number;
 }
-const FoodItem = ({ foodinfo, increaseChildLoadCount, key }: FoodItemProps) => {
+const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
   //이미지
