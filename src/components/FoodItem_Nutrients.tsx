@@ -25,12 +25,11 @@ export const NetrientsIcon = ({ color = "black" }: { color: string }) => {
 };
 
 interface FINutrinetsProps {
-  nutText: string;
-  value: string;
+  value: { krText: string; value: string };
 }
-const FoodItemNutrients = ({ nutText, value }: FINutrinetsProps) => {
+const FoodItemNutrients = ({ value }: FINutrinetsProps) => {
   let color;
-  switch (nutText) {
+  switch (value.krText) {
     case "탄수화물":
       color = "red";
       break;
@@ -51,9 +50,9 @@ const FoodItemNutrients = ({ nutText, value }: FINutrinetsProps) => {
     <NutrientsItem>
       <IconWithText>
         <NetrientsIcon color={color} />
-        <BlackLabel>{nutText}</BlackLabel>
+        <BlackLabel>{value.krText}</BlackLabel>
       </IconWithText>
-      <BlackLabel>{value}</BlackLabel>
+      <BlackLabel>{value.value}</BlackLabel>
     </NutrientsItem>
   );
 };

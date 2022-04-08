@@ -1,37 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Hit } from "./type2";
 import MoreInfoButton from "./MoreInfoButton";
 import { IoMdPerson } from "react-icons/io";
 import FoodItemNutrients from "./FoodItem_Nutrients";
 import FoodItemCalories from "./FoodItem_Calories";
+import Overlay from "./Overlay";
+import MoreNutrients from "./MoreNutrients";
 
 const ItemBox = styled.div`
   display: flex;
   box-sizing: border-box;
   gap: 1rem;
   padding: 1rem;
-  height : 250px;
-  align-items : center;
+  height: 250px;
+  align-items: center;
 `;
 
 const Image = styled.img`
   width: 200px;
   height: 200px;
-  display : flex;
-  justify-content : center;
-  align-items : center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DescriptionBox = styled.div`
   display: flex;
   width: 100%;
-  height :100%;
+  height: 100%;
   flex-direction: column;
   justify-content: flex-start;
   padding: 0.4rem;
   border: 1px solid black;
-  box-sizing : border-box;
+  box-sizing: border-box;
 `;
 
 const NameBox = styled.div`
@@ -61,11 +63,13 @@ const MainNutrients = styled.div`
   gap: 0.4rem;
 `;
 
-
 export const BlackLabel = styled.label`
   font-weight: 600;
   font-size: 1rem;
   font-weight: 500;
+  display:flex;
+  justify-content : center;
+  align-items:center;
 `;
 
 export const GrayLabel = styled.label`
@@ -136,7 +140,11 @@ interface FoodItemProps {
   foodinfo: Hit;
   increaseChildLoadCount: () => void;
 }
+export interface NutrientsInfoInterface {
+  [key: string]: { krText: string; value: string };
+}
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
   //이미지
@@ -151,12 +159,127 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const foodCaloriesForServing = roundToTwo(foodTotalCalories / serving);
   //총 영양정보
   const totalNutrients = foodInfo.recipe.totalNutrients;
-  const nutrientsInfo: { [key: string]: string } = {};
+  const nutrientsInfo: NutrientsInfoInterface = {};
   Object.keys(totalNutrients).forEach((nut) => {
     const label = totalNutrients[nut].label;
     const quantity = roundToTwo(totalNutrients[nut].quantity);
     const unit = totalNutrients[nut].unit;
-    nutrientsInfo[label] = quantity + unit;
+    let kr_label = "";
+    switch (label) {
+      case "Carbs":
+        kr_label = "탄수화물";
+        break;
+      case "Fat":
+        kr_label = "지방";
+        break;
+      case "Trans":
+        kr_label = "트랜스지방";
+        break;
+      case "Sugars":
+        kr_label = "당";
+        break;
+      case "Protein":
+        kr_label = "단백질";
+        break;
+      case "Cholesterol":
+        kr_label = "콜레스테롤";
+        break;
+      case "Calcium":
+        kr_label = "칼슘";
+        break;
+      case "Magnesium":
+        kr_label = "마그네슘";
+        break;
+      case "Potassium":
+        kr_label = "칼륨";
+        break;
+      case "Iron":
+        kr_label = "철분";
+        break;
+      case "Zinc":
+        kr_label = "아연";
+        break;
+      case "Phosphorus":
+        kr_label = "인";
+        break;
+      case "Saturated":
+        kr_label = "포화지방";
+        break;
+      case "Sodium":
+        kr_label = "나트륨";
+        break;
+      case "Vitamin A":
+        kr_label = "비타민A";
+        break;
+      case "Vitamin C":
+        kr_label = "비타민C";
+        break;
+      case "Thiamin (B1)":
+        kr_label = "비타민B1";
+        break;
+      case "Riboflavin (B2)":
+        kr_label = "비타민B2";
+        break;
+      case "Niacin (B3)":
+        kr_label = "비타민B3";
+        break;
+      case "Vitamin B6":
+        kr_label = "비타민B6";
+        break;
+      case "Folate equivalent (total)":
+        kr_label = "엽산(총)";
+        break;
+      case "Folate (food)":
+        kr_label = "천연엽산";
+        break;
+      case "Folic acid":
+        kr_label = "합성엽산";
+        break;
+      case "Vitamin B12":
+        kr_label = "비타민B12";
+        break;
+      case "Vitamin D":
+        kr_label = "비타민D";
+        break;
+      case "Vitamin E":
+        kr_label = "비타민E";
+        break;
+      case "Vitamin K":
+        kr_label = "비타민K";
+        break;
+      case "Sugar alcohol":
+        kr_label = "당알코올";
+        break;
+      case "Water":
+        kr_label = "물";
+        break;
+      case "Sugars, added":
+        kr_label = "첨가당";
+        break;
+      case "Fiber":
+        kr_label = "섬유질";
+        break;
+      case "Carbohydrates (net)":
+        kr_label = "순탄수";
+        break;
+      case "Polyunsaturated":
+        kr_label = "고도불포화지방";
+        break;
+      case "Monounsaturated":
+        kr_label = "단일불포화지방";
+        break;
+      case "ENERC_KCAL":
+        kr_label = "칼로리";
+        break;
+      default:
+        kr_label = label;
+        break;
+    }
+
+    nutrientsInfo[label] = {
+      krText: kr_label,
+      value: quantity + unit,
+    };
   });
   //Carbs: 탄수화물
   //Fat : 지방
@@ -212,12 +335,25 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
           foodCaloriesForServing={foodCaloriesForServing}
         />
         <MainNutrients>
-          <FoodItemNutrients nutText="탄수화물" value={nutrientsInfo.Carbs} />
-          <FoodItemNutrients nutText="단백질" value={nutrientsInfo.Protein} />
-          <FoodItemNutrients nutText="지방" value={nutrientsInfo.Fat} />
-          <FoodItemNutrients nutText="당" value={nutrientsInfo.Sugars} />
+          <FoodItemNutrients value={nutrientsInfo.Carbs} />
+          <FoodItemNutrients value={nutrientsInfo.Protein} />
+          <FoodItemNutrients value={nutrientsInfo.Fat} />
+          <FoodItemNutrients value={nutrientsInfo.Sugars} />
         </MainNutrients>
-        <MoreInfoButton onClick={() => {}} />
+        <MoreInfoButton
+          onClick={() => {
+            setIsOverlayOpen((b) => !b);
+          }}
+        />
+        {isOverlayOpen && (
+          <Overlay setIsOverlayOpen={setIsOverlayOpen}>
+            <MoreNutrients
+              nutrientsInfo={nutrientsInfo}
+              setIsOverlayOpen={setIsOverlayOpen}
+              serving={serving}
+            />
+          </Overlay>
+        )}
       </NutrientsBox>
     </ItemBox>
   );
