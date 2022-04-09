@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Hit } from "./type2";
 import MoreInfoButton from "./MoreInfoButton";
@@ -7,7 +7,6 @@ import FoodItemNutrients from "./FoodItem_Nutrients";
 import FoodItemCalories from "./FoodItem_Calories";
 import Overlay from "./Overlay";
 import MoreNutrients from "./MoreNutrients";
-import {useOutsideClick} from "../hooks/useOutsidClick";
 
 const ItemBox = styled.div`
   display: flex;
@@ -16,6 +15,14 @@ const ItemBox = styled.div`
   padding: 1rem;
   height: 250px;
   align-items: center;
+
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+
+  transition:  0.2s ease-in-out;
+  &:hover {
+    background-color : #e5e5e5;
+  }
 `;
 
 const Image = styled.img`
@@ -33,7 +40,6 @@ const DescriptionBox = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   padding: 0.4rem;
-  border: 1px solid black;
   box-sizing: border-box;
 `;
 
@@ -92,7 +98,7 @@ const NeedsTag = styled.div`
   /* height : 10px; */
   border-radius: 12px;
   border: none;
-  background-color: white;
+  background-color: inherit;
   /* border-bottom : 1px solid black; */
   color: gray;
   box-sizing: border-box;
@@ -146,17 +152,6 @@ export interface NutrientsInfoInterface {
 }
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-
-  // const moreNutrientsRef = useRef(null);
-  // useOutsideClick(moreNutrientsRef, ()=>{
-  //   setIsOverlayOpen(false);
-  // })
-  // useOutsideClick({
-  //   ref : moreNutrientsRef,
-  //   callback : ()=>{
-  //     setIsOverlayOpen(false);
-  //   }
-  // });
 
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
@@ -297,19 +292,6 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
     };
   });
 
-  //Carbs: 탄수화물
-  //Fat : 지방
-  //Trans : 트랜스지방
-  //Sugars : 당
-  //Protein : 단백질
-  //Cholesterol : 콜레스트롤
-  //Calcium : 칼슘
-  //Magnesium : 마그네슘
-  //Potassium : 칼륨
-  //Iron : 철분
-  //Zinc : 아연
-  //Phosphorus : 인
-
   //관련 국가 정보 arr
   const cuisineType = foodInfo.recipe.cuisineType;
 
@@ -324,7 +306,7 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   });
 
   return (
-    <ItemBox>
+    <ItemBox onClick={()=>{alert("click")}}>
       <Image src={foodImage_m} alt={foodName} onLoad={increaseChildLoadCount} />
       <DescriptionBox>
         <HeadContentsWrapper>
@@ -362,7 +344,7 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
           }}
         />
         {isOverlayOpen && (
-          <Overlay setIsOverlayOpen={setIsOverlayOpen}>
+          <Overlay>
             <MoreNutrients
               nutrientsInfo={nutrientsInfo}
               setIsOverlayOpen={setIsOverlayOpen}

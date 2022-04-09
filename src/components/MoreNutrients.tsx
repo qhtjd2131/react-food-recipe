@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsidClick";
 import { NutrientsInfoInterface } from "./FoodItem";
+import { GrClose } from "react-icons/gr";
 import FoodItemNutrients from "./FoodItem_Nutrients";
 import Graph from "./Graph";
 
@@ -14,8 +15,9 @@ const GrayLine = styled.div`
 `;
 
 const MoreNutrientsBox = styled.div`
+  position: relative;
   width: 1000px;
-  min-width : 1000px;
+  min-width: 1000px;
   height: 700px;
   box-sizing: border-box;
   padding: 2rem;
@@ -25,7 +27,7 @@ const MoreNutrientsBox = styled.div`
   display: flex;
   flex-direction: column;
 
-  overflow-y : scroll;
+  overflow-y: scroll;
 `;
 
 const HeadLabel = styled.p`
@@ -37,18 +39,37 @@ const AllNutrientsBox = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   column-gap: 1rem;
-  gap : 1rem;
+  gap: 1rem;
   padding: 1rem 0;
 `;
 
-const DailyNutrientsBox = styled.div`
+const DailyNutrientsBox = styled.div``;
+
+const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 1rem;
+  margin: 1rem;
+  border: none;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s ease-in-out;
+  &:hover {
+    background-color: #e5e5e5;
+    transform: scale(1.4);
+  }
 `;
 
 interface MoreNutrientsProps {
   nutrientsInfo: NutrientsInfoInterface;
   setIsOverlayOpen: (value: React.SetStateAction<boolean>) => void;
   serving: number;
-  ref? : React.MutableRefObject<null>;
 }
 
 const MoreNutrients = ({
@@ -56,21 +77,26 @@ const MoreNutrients = ({
   setIsOverlayOpen,
   serving,
 }: MoreNutrientsProps) => {
-  console.log(nutrientsInfo);
 
-    const moreNutRef = useRef(null);
-    useOutsideClick(moreNutRef, ()=>{
-        setIsOverlayOpen(false);
-    });
+  const moreNutRef = useRef(null);
 
+  const onOverlayClose = () => {
+    setIsOverlayOpen(false);
+  };
+  useOutsideClick(moreNutRef, () => {
+    onOverlayClose();
+  });
 
   return (
     <MoreNutrientsBox ref={moreNutRef}>
+      <CloseButtonWrapper onClick={onOverlayClose}>
+        <GrClose />
+      </CloseButtonWrapper>
       {/* 영양소 포함 정보 */}
       <HeadLabel>Nutrients Information</HeadLabel>
       <GrayLine />
       <AllNutrientsBox>
-        {Object.keys(nutrientsInfo).map((key: string, index : number) => (
+        {Object.keys(nutrientsInfo).map((key: string, index: number) => (
           <FoodItemNutrients value={nutrientsInfo[key]} key={index} />
         ))}
       </AllNutrientsBox>
@@ -80,7 +106,7 @@ const MoreNutrients = ({
       <GrayLine />
 
       <DailyNutrientsBox>
-          <Graph nutrientsInfo={nutrientsInfo} serving={serving} />
+        <Graph nutrientsInfo={nutrientsInfo} serving={serving} />
       </DailyNutrientsBox>
     </MoreNutrientsBox>
   );
