@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import { useOutsideClick } from "../hooks/useOutsidClick";
 import { NutrientsInfoInterface } from "./FoodItem";
 import FoodItemNutrients from "./FoodItem_Nutrients";
 import Graph from "./Graph";
@@ -14,15 +15,17 @@ const GrayLine = styled.div`
 
 const MoreNutrientsBox = styled.div`
   width: 1000px;
+  min-width : 1000px;
   height: 700px;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 2rem;
   background-color: white;
   border-radius: 15px;
   border: 1px solid #e5e5e5;
-
   display: flex;
   flex-direction: column;
+
+  overflow-y : scroll;
 `;
 
 const HeadLabel = styled.p`
@@ -34,6 +37,7 @@ const AllNutrientsBox = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   column-gap: 1rem;
+  gap : 1rem;
   padding: 1rem 0;
 `;
 
@@ -44,6 +48,7 @@ interface MoreNutrientsProps {
   nutrientsInfo: NutrientsInfoInterface;
   setIsOverlayOpen: (value: React.SetStateAction<boolean>) => void;
   serving: number;
+  ref? : React.MutableRefObject<null>;
 }
 
 const MoreNutrients = ({
@@ -52,14 +57,21 @@ const MoreNutrients = ({
   serving,
 }: MoreNutrientsProps) => {
   console.log(nutrientsInfo);
+
+    const moreNutRef = useRef(null);
+    useOutsideClick(moreNutRef, ()=>{
+        setIsOverlayOpen(false);
+    });
+
+
   return (
-    <MoreNutrientsBox>
+    <MoreNutrientsBox ref={moreNutRef}>
       {/* 영양소 포함 정보 */}
       <HeadLabel>Nutrients Information</HeadLabel>
       <GrayLine />
       <AllNutrientsBox>
-        {Object.keys(nutrientsInfo).map((key: string) => (
-          <FoodItemNutrients value={nutrientsInfo[key]} />
+        {Object.keys(nutrientsInfo).map((key: string, index : number) => (
+          <FoodItemNutrients value={nutrientsInfo[key]} key={index} />
         ))}
       </AllNutrientsBox>
 
@@ -68,7 +80,7 @@ const MoreNutrients = ({
       <GrayLine />
 
       <DailyNutrientsBox>
-          <Graph />
+          <Graph nutrientsInfo={nutrientsInfo} serving={serving} />
       </DailyNutrientsBox>
     </MoreNutrientsBox>
   );

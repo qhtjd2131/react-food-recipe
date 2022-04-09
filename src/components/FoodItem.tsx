@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { Hit } from "./type2";
 import MoreInfoButton from "./MoreInfoButton";
@@ -7,6 +7,7 @@ import FoodItemNutrients from "./FoodItem_Nutrients";
 import FoodItemCalories from "./FoodItem_Calories";
 import Overlay from "./Overlay";
 import MoreNutrients from "./MoreNutrients";
+import {useOutsideClick} from "../hooks/useOutsidClick";
 
 const ItemBox = styled.div`
   display: flex;
@@ -67,9 +68,9 @@ export const BlackLabel = styled.label`
   font-weight: 600;
   font-size: 1rem;
   font-weight: 500;
-  display:flex;
-  justify-content : center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const GrayLabel = styled.label`
@@ -141,10 +142,22 @@ interface FoodItemProps {
   increaseChildLoadCount: () => void;
 }
 export interface NutrientsInfoInterface {
-  [key: string]: { krText: string; value: string };
+  [key: string]: { krText: string; value: string; dailyPercent: number };
 }
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+  // const moreNutrientsRef = useRef(null);
+  // useOutsideClick(moreNutrientsRef, ()=>{
+  //   setIsOverlayOpen(false);
+  // })
+  // useOutsideClick({
+  //   ref : moreNutrientsRef,
+  //   callback : ()=>{
+  //     setIsOverlayOpen(false);
+  //   }
+  // });
+
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
   //이미지
@@ -157,13 +170,14 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const serving = foodInfo.recipe.yield;
   //1인당 칼로리
   const foodCaloriesForServing = roundToTwo(foodTotalCalories / serving);
-  //총 영양정보
+  //총 영양정보 + 하루권장량 퍼센테이지 정보
   const totalNutrients = foodInfo.recipe.totalNutrients;
   const nutrientsInfo: NutrientsInfoInterface = {};
   Object.keys(totalNutrients).forEach((nut) => {
     const label = totalNutrients[nut].label;
     const quantity = roundToTwo(totalNutrients[nut].quantity);
     const unit = totalNutrients[nut].unit;
+    const dailyPercent = roundToTwo(foodinfo.recipe.totalDaily[nut]?.quantity);
     let kr_label = "";
     switch (label) {
       case "Carbs":
@@ -279,8 +293,10 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
     nutrientsInfo[label] = {
       krText: kr_label,
       value: quantity + unit,
+      dailyPercent: dailyPercent,
     };
   });
+
   //Carbs: 탄수화물
   //Fat : 지방
   //Trans : 트랜스지방

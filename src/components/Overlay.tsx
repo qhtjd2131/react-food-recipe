@@ -19,11 +19,12 @@ const OverlayBox = styled.div`
 interface OverlayProps {
   setIsOverlayOpen: (value: React.SetStateAction<boolean>) => void;
   children?: React.ReactNode;
+  ref? : any;
 }
 
 const Overlay = ({ children, setIsOverlayOpen }: OverlayProps) => {
   const onSetIsOverlayOpen = () => {
-    setIsOverlayOpen(false);
+    // setIsOverlayOpen(false);
   };
   return <OverlayBox onClick={onSetIsOverlayOpen}>{children}</OverlayBox>;
 };
