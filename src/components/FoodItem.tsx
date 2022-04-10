@@ -7,6 +7,8 @@ import FoodItemNutrients from "./FoodItem_Nutrients";
 import FoodItemCalories from "./FoodItem_Calories";
 import Overlay from "./Overlay";
 import MoreNutrients from "./MoreNutrients";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux-modules";
 
 const ItemBox = styled.div`
   display: flex;
@@ -19,9 +21,9 @@ const ItemBox = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 
-  transition:  0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
   &:hover {
-    background-color : #e5e5e5;
+    background-color: #e5e5e5;
   }
 `;
 
@@ -95,11 +97,9 @@ const NeedsBox = styled.div`
 `;
 
 const NeedsTag = styled.div`
-  /* height : 10px; */
   border-radius: 12px;
   border: none;
   background-color: inherit;
-  /* border-bottom : 1px solid black; */
   color: gray;
   box-sizing: border-box;
   padding: 0.4rem;
@@ -151,8 +151,7 @@ export interface NutrientsInfoInterface {
   [key: string]: { krText: string; value: string; dailyPercent: number };
 }
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-
+  const [isOpenOverlay, setIsOpenOverlay] = useState(false);
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
   //이미지
@@ -306,7 +305,7 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   });
 
   return (
-    <ItemBox onClick={()=>{alert("click")}}>
+    <ItemBox>
       <Image src={foodImage_m} alt={foodName} onLoad={increaseChildLoadCount} />
       <DescriptionBox>
         <HeadContentsWrapper>
@@ -340,16 +339,12 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
         </MainNutrients>
         <MoreInfoButton
           onClick={() => {
-            setIsOverlayOpen((b) => !b);
+            setIsOpenOverlay(true);
           }}
         />
-        {isOverlayOpen && (
+        {isOpenOverlay && (
           <Overlay>
-            <MoreNutrients
-              nutrientsInfo={nutrientsInfo}
-              setIsOverlayOpen={setIsOverlayOpen}
-              serving={serving}
-            />
+            <MoreNutrients nutrientsInfo={nutrientsInfo} serving={serving} setIsOpenOverlay={setIsOpenOverlay} />
           </Overlay>
         )}
       </NutrientsBox>

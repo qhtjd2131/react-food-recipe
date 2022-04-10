@@ -19,8 +19,6 @@ const SearchBox = styled.section`
   background-color: white;
   display: flex;
   flex-direction: column;
-  /* background: linear-gradient(to bottom, white, orange); */
-
   padding: 2rem 4rem;
   box-sizing: border-box;
   min-width: 750px;
@@ -59,7 +57,10 @@ const Search = () => {
   const getData = async (): Promise<Hit[]> => {
     // const result = await getRecipe("chicken"); // "chicken => queryString"
     const result = data;
-    return new Promise((resolve)=>{resolve(result)});
+    console.log("getdata 실행");
+    return new Promise((resolve) => {
+      resolve(result);
+    });
     // return result;
   };
 
@@ -91,7 +92,6 @@ const Search = () => {
       <Header />
       <ResultBox>
         <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
-
         <FoodList items={foodItems ? foodItems[item_index] : undefined} />
       </ResultBox>
       <Pagination />

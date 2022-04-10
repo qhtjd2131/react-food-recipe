@@ -22,7 +22,7 @@ export const setCurrentPageNumber = ( currentPageNumber : number) => ({
   playload : { currentPageNumber : currentPageNumber }
 })
 
-type Action =
+type ActionSearchReducer =
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof clearSearchText>
   | ReturnType<typeof setCurrentPageNumber>;
@@ -34,7 +34,7 @@ const initialState: IState = {
 };
 
 //리듀서 선언
-export default function searchReducer(state = initialState, action: Action) {
+export default function searchReducer(state = initialState, action: ActionSearchReducer) {
   switch (action.type) {
     case SET_SEARCH_TEXT:
       return {

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsidClick";
 import { NutrientsInfoInterface } from "./FoodItem";
@@ -26,7 +26,6 @@ const MoreNutrientsBox = styled.div`
   border: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
-
   overflow-y: scroll;
 `;
 
@@ -60,6 +59,7 @@ const CloseButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   transition: 0.2s ease-in-out;
+  cursor: pointer;
   &:hover {
     background-color: #e5e5e5;
     transform: scale(1.4);
@@ -68,28 +68,30 @@ const CloseButtonWrapper = styled.div`
 
 interface MoreNutrientsProps {
   nutrientsInfo: NutrientsInfoInterface;
-  setIsOverlayOpen: (value: React.SetStateAction<boolean>) => void;
+  setIsOpenOverlay: (boolean: boolean) => void;
   serving: number;
 }
 
 const MoreNutrients = ({
   nutrientsInfo,
-  setIsOverlayOpen,
+  setIsOpenOverlay,
   serving,
 }: MoreNutrientsProps) => {
 
   const moreNutRef = useRef(null);
+  const onSetIsOverlayState = (bool: boolean) => setIsOpenOverlay(bool);
 
-  const onOverlayClose = () => {
-    setIsOverlayOpen(false);
-  };
   useOutsideClick(moreNutRef, () => {
-    onOverlayClose();
+    onSetIsOverlayState(false);
   });
 
   return (
     <MoreNutrientsBox ref={moreNutRef}>
-      <CloseButtonWrapper onClick={onOverlayClose}>
+      <CloseButtonWrapper
+        onClick={() => {
+          onSetIsOverlayState(false);
+        }}
+      >
         <GrClose />
       </CloseButtonWrapper>
       {/* 영양소 포함 정보 */}
