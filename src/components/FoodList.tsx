@@ -1,8 +1,4 @@
-import React, {
-  useCallback,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import FoodItem from "./FoodItem";
 import { Hit } from "./type2";
@@ -11,6 +7,14 @@ const FoodListBox = styled.div<{ isLoading: boolean }>`
   width: 1200px;
   height: 100%;
   display: ${(props) => (props.isLoading ? "none" : "block")};
+
+  @media ${({ theme }) => theme.size_13} {
+    width: 980px;
+  }
+  @media ${({ theme }) => theme.size_10} {
+    width: 650px;
+  }
+  
 `;
 
 const LoadingBox = styled.div`

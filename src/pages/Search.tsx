@@ -24,6 +24,12 @@ const SearchBox = styled.section`
   min-width: 750px;
   justify-content: center;
   align-items: center;
+  @media ${( { theme })=> theme.size_13}{ 
+  }
+  @media ${( { theme })=> theme.size_10}{ 
+  }
+  @media ${( { theme })=> theme.size_6}{ 
+  }
 `;
 const SearchTitle = styled.p`
   font-size: 1.4rem;

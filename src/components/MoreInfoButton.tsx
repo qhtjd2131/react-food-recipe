@@ -23,7 +23,6 @@ const MIButton = styled.button`
   transition: 0.4s;
 
   &:hover {
-    width: 100%;  
     background-color : #d88d01;
   }
 `;

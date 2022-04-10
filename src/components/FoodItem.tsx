@@ -7,11 +7,10 @@ import FoodItemNutrients from "./FoodItem_Nutrients";
 import FoodItemCalories from "./FoodItem_Calories";
 import Overlay from "./Overlay";
 import MoreNutrients from "./MoreNutrients";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux-modules";
 
 const ItemBox = styled.div`
-  display: flex;
+  width: 100%;
+  display:flex;
   box-sizing: border-box;
   gap: 1rem;
   padding: 1rem;
@@ -21,9 +20,24 @@ const ItemBox = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 
-  transition: 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
   &:hover {
     background-color: #e5e5e5;
+  }
+  @media ${({ theme }) => theme.size_10} {
+    height: 420px;
+    display : grid;
+    overflow: hidden;
+    grid-template-areas:
+      "imageBox nutrientsBox"
+      "description description";
+    align-items: center;
+    justify-items: center;
+  }
+  @media ${({ theme }) => theme.size_8} {
+    //800px 이하일때 반응형 필요
+    // 추가적으로 more info 버튼 클릭시 나타나는 컴포넌트 반응형 필요
+    // moreInfo 버튼이 필요한가에 대해서 생각해 볼 필요가 있음.
   }
 `;
 
@@ -33,6 +47,8 @@ const Image = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  grid-aria: imageBox;
 `;
 
 const DescriptionBox = styled.div`
@@ -40,9 +56,11 @@ const DescriptionBox = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 0.4rem;
   box-sizing: border-box;
+
+  grid-area: description;
 `;
 
 const NameBox = styled.div`
@@ -56,7 +74,7 @@ const Name = styled.p`
 `;
 
 const NutrientsBox = styled.div`
-  width: 600px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -64,6 +82,11 @@ const NutrientsBox = styled.div`
 
   justify-content: center;
   align-items: center;
+
+  grid-aria: nutrientsBox;
+  @media ${({ theme }) => theme.size_10} {
+    min-width : 320px;
+  }
 `;
 const MainNutrients = styled.div`
   display: flex;
@@ -344,7 +367,11 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
         />
         {isOpenOverlay && (
           <Overlay>
-            <MoreNutrients nutrientsInfo={nutrientsInfo} serving={serving} setIsOpenOverlay={setIsOpenOverlay} />
+            <MoreNutrients
+              nutrientsInfo={nutrientsInfo}
+              serving={serving}
+              setIsOpenOverlay={setIsOpenOverlay}
+            />
           </Overlay>
         )}
       </NutrientsBox>
