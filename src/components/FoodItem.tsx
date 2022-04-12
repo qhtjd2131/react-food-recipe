@@ -10,7 +10,7 @@ import MoreNutrients from "./MoreNutrients";
 
 const ItemBox = styled.div`
   width: 100%;
-  display:flex;
+  display: flex;
   box-sizing: border-box;
   gap: 1rem;
   padding: 1rem;
@@ -26,18 +26,13 @@ const ItemBox = styled.div`
   }
   @media ${({ theme }) => theme.size_10} {
     height: 420px;
-    display : grid;
+    display: grid;
     overflow: hidden;
     grid-template-areas:
       "imageBox nutrientsBox"
       "description description";
     align-items: center;
     justify-items: center;
-  }
-  @media ${({ theme }) => theme.size_8} {
-    //800px 이하일때 반응형 필요
-    // 추가적으로 more info 버튼 클릭시 나타나는 컴포넌트 반응형 필요
-    // moreInfo 버튼이 필요한가에 대해서 생각해 볼 필요가 있음.
   }
 `;
 
@@ -47,8 +42,11 @@ const Image = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  grid-aria: imageBox;
+  grid-area: imageBox;
+  @media ${({ theme }) => theme.size_5} {
+    width: 160px;
+    height: 160px;
+  }
 `;
 
 const DescriptionBox = styled.div`
@@ -56,11 +54,12 @@ const DescriptionBox = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0.4rem;
   box-sizing: border-box;
-
   grid-area: description;
+  @media ${({ theme }) => theme.size_7} {
+  }
 `;
 
 const NameBox = styled.div`
@@ -74,19 +73,16 @@ const Name = styled.p`
 `;
 
 const NutrientsBox = styled.div`
-  min-width: 320px;
+  max-width: 320px;
+  height : 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 0 1rem;
 
-  justify-content: center;
+  width: 100%;
+  justify-content: space-between;
   align-items: center;
-
-  grid-aria: nutrientsBox;
-  @media ${({ theme }) => theme.size_10} {
-    min-width : 320px;
-  }
+  grid-area: nutrientsBox;
 `;
 const MainNutrients = styled.div`
   display: flex;

@@ -1,13 +1,16 @@
 import styled from "styled-components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPageNumber } from "../redux-modules/search";
 import { RootState } from "../redux-modules/index";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const PaginationBox = styled.div`
   display: flex;
   padding: 1rem 2rem;
+  justify-content: center;
+  align-items: center;
 `;
 
 const IconWrapper = styled.div<{ isSelected?: boolean }>`
@@ -32,26 +35,36 @@ const SpaceBlock = styled.div`
 `;
 
 const Pagination = () => {
-  const RANGE = 10;
+  const { height, width } = useWindowDimensions();
+  const [pageUnit, setPageUnit] = useState(10);
+  useEffect(() => {
+    if (width <= 700) {
+      setPageUnit(5);
+    } else {
+      setPageUnit(10);
+    }
+  }, [width]);
+  console.log("dd");
+
   const dispatch = useDispatch();
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
   );
   const onSetCurrentPageNumber = (num: number) =>
     dispatch(setCurrentPageNumber(num));
-  const lineNum = Math.floor((currentPageNumber - 1) / 10) * 10;
+  const lineNum = Math.floor((currentPageNumber - 1) / pageUnit) * pageUnit;
   const isFirstPage = lineNum === 0 ? true : false;
   const pageNumArr = [];
-  for (let i = 1; i <= RANGE; i++) {
+  for (let i = 1; i <= pageUnit; i++) {
     pageNumArr.push(lineNum + i);
   }
 
   const rightClickHandler = () => {
-    const nextPageNumber = lineNum + 11;
+    const nextPageNumber = lineNum + pageUnit + 1;
     onSetCurrentPageNumber(nextPageNumber);
   };
   const leftClickHandler = () => {
-    const nextPageNumber = lineNum - 10 + 1;
+    const nextPageNumber = lineNum - pageUnit + 1;
     onSetCurrentPageNumber(nextPageNumber);
   };
   const numberClickHandler = (index: number) => {
@@ -67,12 +80,10 @@ const Pagination = () => {
   });
   return (
     <PaginationBox>
-      {!isFirstPage ? (
+      {!isFirstPage && (
         <IconWrapper onClick={leftClickHandler}>
           <AiOutlineLeft />
         </IconWrapper>
-      ) : (
-        <SpaceBlock />
       )}
       {pageNumArr.map((pageNum, index) => (
         <IconWrapper

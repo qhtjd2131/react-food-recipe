@@ -9,7 +9,7 @@ const KcalBox = styled.label`
   gap: 0.4rem;
   font-size: 1.6rem;
   font-weight: 700;
-  padding: 1rem 0;
+  margin-bottom : 0.4rem;
   
 `;
 

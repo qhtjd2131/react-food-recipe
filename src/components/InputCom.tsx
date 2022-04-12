@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux-modules";
 import { setSearchText, clearSearchText } from "../redux-modules/search";
 
-
 const InputBox = styled.div`
   display: flex;
   width: 33%;
@@ -14,7 +13,11 @@ const InputBox = styled.div`
   border: 1px solid orange;
   justify-content: center;
   align-items: center;
-  box-sizing : border-box;
+  box-sizing: border-box;
+  @media ${({ theme }) => theme.size_7} {
+    min-width: 300px;
+  }
+ 
 `;
 const Input = styled.input`
   box-sizing: border-box;
@@ -52,13 +55,10 @@ const InputCom = () => {
   const searchText: string = useSelector(
     (state: RootState) => state.searchReducer.searchText
   );
-  
-  
 
   const dispatch = useDispatch();
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
   const onClearSearchText = () => dispatch(clearSearchText());
-
 
   const linkRender = () => {
     if (searchText.replace(/\s/gi, "").length > 0) {

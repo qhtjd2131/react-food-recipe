@@ -49,3 +49,6 @@ table {
 a{
 	text-decoration: none;
 }
+/* html, body, #root, #root>div {
+	height: 100%;
+} */

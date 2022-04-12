@@ -15,32 +15,24 @@ import { data } from "../components/data";
 const ITEM_LENGTH = 4;
 
 const SearchBox = styled.section`
-  width: 100%;
+  display: table;
+  margin: 0 auto;
   background-color: white;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 4rem;
   box-sizing: border-box;
-  min-width: 750px;
-  justify-content: center;
-  align-items: center;
-  @media ${( { theme })=> theme.size_13}{ 
-  }
-  @media ${( { theme })=> theme.size_10}{ 
-  }
-  @media ${( { theme })=> theme.size_6}{ 
-  }
 `;
 const SearchTitle = styled.p`
+  width: 100%;
+  display: block;
   font-size: 1.4rem;
+  text-align : center;
+  padding : 1rem 0;
 `;
 
 const ResultBox = styled.div`
   margin-top: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @media ${({ theme }) => theme.size_5} {
+    margin-top: 160px;
+  }
 `;
 const Search = () => {
   const [foodItems, setFoodItems] = useState<Hit[][] | undefined>();

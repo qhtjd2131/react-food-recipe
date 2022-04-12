@@ -6,31 +6,40 @@ import InputCom from "./InputCom";
 
 const HeaderBox = styled.section`
   position: fixed;
-  top : 0;
-  left : 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100px;
-  display : flex;
-  justify-content : center;
+  display: flex;
+  justify-content: center;
   /* align-items:center; */
-  box-shadow : 0 0 4px orange;
-  background-color : white;
+  box-shadow: 0 0 4px orange;
+  background-color: white;
   /* z-index : 999; */
-
+  @media ${({ theme }) => theme.size_5} {
+    height: 160px;
+  }
 `;
 
 const ContentWrapper = styled.div`
   max-width: 2000px;
-  
+
   display: flex;
   justify-content: space-between;
-  align-items : center;
+  align-items: center;
+  @media ${({ theme }) => theme.size_5} {
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 const MiniLogoBox = styled.div`
-  height: 100%;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media ${({ theme }) => theme.size_5} {
+    height: 80px;
+  }
 `;
 
 const MiniLogo = styled.img`

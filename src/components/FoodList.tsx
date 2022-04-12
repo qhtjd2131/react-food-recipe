@@ -14,7 +14,12 @@ const FoodListBox = styled.div<{ isLoading: boolean }>`
   @media ${({ theme }) => theme.size_10} {
     width: 650px;
   }
-  
+  @media ${({ theme }) => theme.size_7} {
+    width: 480px;
+  }
+  @media ${({ theme }) => theme.size_5} {
+    width: 400px;
+  }
 `;
 
 const LoadingBox = styled.div`
