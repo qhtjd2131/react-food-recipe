@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const PageBox = styled.section`
@@ -13,24 +14,24 @@ const ResultBox = styled.div`
   @media ${({ theme }) => theme.size_5} {
     margin-top: 160px;
   }
+
+  margin-bottom: 2rem;
 `;
 
 interface DefaultPageProps {
-    children? : React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const DefaultPageLayout = ({ children } : DefaultPageProps) => {
-
-
-    return (
-        <PageBox>
-            <Header />
-            <ResultBox>
-                {children}
-            </ResultBox>
-        </PageBox>
-    )
-
-}
+const DefaultPageLayout = ({ children }: DefaultPageProps) => {
+  return (
+    <>
+      <PageBox>
+        <Header />
+        <ResultBox>{children}</ResultBox>
+      </PageBox>
+      <Footer />
+    </>
+  );
+};
 
 export default DefaultPageLayout;

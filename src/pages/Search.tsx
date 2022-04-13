@@ -10,7 +10,7 @@ import { getRecipe } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
 import { data } from "../components/data";
-import DefaultPageLayout from "./defaultPageLayout";
+import DefaultPageLayout from "./DefaultPageLayout";
 
 const ITEM_LENGTH = 4;
 
