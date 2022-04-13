@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Header from "../components/Header";
 import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchText } from "../redux-modules/search";
@@ -11,29 +10,18 @@ import { getRecipe } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
 import { data } from "../components/data";
+import DefaultPageLayout from "./defaultPageLayout";
 
 const ITEM_LENGTH = 4;
 
-const SearchBox = styled.section`
-  display: table;
-  margin: 0 auto;
-  background-color: white;
-  box-sizing: border-box;
-`;
 const SearchTitle = styled.p`
   width: 100%;
   display: block;
   font-size: 1.4rem;
-  text-align : center;
-  padding : 1rem 0;
+  text-align: center;
+  padding: 1rem 0;
 `;
 
-const ResultBox = styled.div`
-  margin-top: 100px;
-  @media ${({ theme }) => theme.size_5} {
-    margin-top: 160px;
-  }
-`;
 const Search = () => {
   const [foodItems, setFoodItems] = useState<Hit[][] | undefined>();
 
@@ -86,14 +74,12 @@ const Search = () => {
   }, []);
 
   return (
-    <SearchBox>
-      <Header />
-      <ResultBox>
-        <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
-        <FoodList items={foodItems ? foodItems[item_index] : undefined} />
-      </ResultBox>
+   
+    <DefaultPageLayout>
+      <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
+      <FoodList items={foodItems ? foodItems[item_index] : undefined} />
       <Pagination />
-    </SearchBox>
+    </DefaultPageLayout>
   );
 };
 

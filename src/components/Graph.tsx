@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { NutrientsInfoInterface, roundToTwo } from "./FoodItem";
+import { NutrientsInfoInterface } from "./FoodItem";
+import { roundToTwo } from "../functions/othersFunctions";
+
 
 const GRAPH_LABEL_TEXT = "1인분 섭취 / 일 섭취 권장량";
 

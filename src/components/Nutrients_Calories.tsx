@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { roundToTwo, GrayLabel } from "./FoodItem";
+import {  GrayLabel } from "./FoodItem";
+import { roundToTwo } from "../functions/othersFunctions";
+
 
 const KcalBox = styled.label`
   width: 100%;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsidClick";
 import { NutrientsInfoInterface } from "./FoodItem";
 import { GrClose } from "react-icons/gr";
-import FoodItemNutrients from "./FoodItem_Nutrients";
+import FoodItemNutrients from "./Nutrients_Nutrients";
 import Graph from "./Graph";
 
 const GrayLine = styled.div`

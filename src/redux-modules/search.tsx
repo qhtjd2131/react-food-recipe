@@ -33,6 +33,8 @@ const initialState: IState = {
   currentPageNumber : 1,
 };
 
+//current routes를 추가해야할까?
+
 //리듀서 선언
 export default function searchReducer(state = initialState, action: ActionSearchReducer) {
   switch (action.type) {

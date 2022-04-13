@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { Hit } from "./type2";
 import MoreInfoButton from "./MoreInfoButton";
 import { IoMdPerson } from "react-icons/io";
-import FoodItemNutrients from "./FoodItem_Nutrients";
-import FoodItemCalories from "./FoodItem_Calories";
+import FoodItemNutrients from "./Nutrients_Nutrients";
+import FoodItemCalories from "./Nutrients_Calories";
 import Overlay from "./Overlay";
 import MoreNutrients from "./MoreNutrients";
+import { Link } from "react-router-dom";
+import { roundToTwo } from "../functions/othersFunctions";
 
 const ItemBox = styled.div`
   width: 100%;
@@ -14,9 +16,7 @@ const ItemBox = styled.div`
   box-sizing: border-box;
   gap: 1rem;
   padding: 1rem;
-  height: 250px;
-  align-items: center;
-
+  align-items: flex-start;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 
@@ -25,11 +25,12 @@ const ItemBox = styled.div`
     background-color: #e5e5e5;
   }
   @media ${({ theme }) => theme.size_10} {
-    height: 420px;
     display: grid;
     overflow: hidden;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
     grid-template-areas:
-      "imageBox nutrientsBox"
+      "image nutrients"
       "description description";
     align-items: center;
     justify-items: center;
@@ -42,7 +43,7 @@ const Image = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: imageBox;
+  grid-area: image;
   @media ${({ theme }) => theme.size_5} {
     width: 160px;
     height: 160px;
@@ -52,13 +53,18 @@ const Image = styled.img`
 const DescriptionBox = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 200px;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 0.4rem;
-  box-sizing: border-box;
   grid-area: description;
-  @media ${({ theme }) => theme.size_7} {
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid gray;
+  }
+
+  @media ${({ theme }) => theme.size_10} {
+    height : auto;
   }
 `;
 
@@ -74,15 +80,15 @@ const Name = styled.p`
 
 const NutrientsBox = styled.div`
   max-width: 320px;
-  height : 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-
+  padding: 0.4rem;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  grid-area: nutrientsBox;
+  grid-area: nutrients;
 `;
 const MainNutrients = styled.div`
   display: flex;
@@ -145,9 +151,7 @@ const CuisineType = styled.p`
   font-weight: 600;
 `;
 
-export function roundToTwo(num: number) {
-  return +(Math.round(Number(num + "e+2")) + "e-2");
-}
+
 
 export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
   const arr_temp = new Array(personCount).fill(0);
@@ -169,10 +173,18 @@ interface FoodItemProps {
 export interface NutrientsInfoInterface {
   [key: string]: { krText: string; value: string; dailyPercent: number };
 }
+const getFoodId = (uri: string): string => {
+  const split_temp = uri.split("#");
+  return split_temp[split_temp.length - 1];
+};
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const [isOpenOverlay, setIsOpenOverlay] = useState(false);
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
+
+  //아이디
+  const foodId = getFoodId(foodInfo.recipe.uri);
+
   //이미지
   const foodImage_s = foodInfo.recipe.images.THUMBNAIL.url;
   const foodImage_m = foodInfo.recipe.images.SMALL.url;
@@ -323,26 +335,41 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
     };
   });
 
+  const recipeInfo = foodinfo.recipe.ingredientLines;
+
   return (
     <ItemBox>
       <Image src={foodImage_m} alt={foodName} onLoad={increaseChildLoadCount} />
+
       <DescriptionBox>
-        <HeadContentsWrapper>
-          <NameBox>
-            <Name>{foodName}</Name>
-            <PersonIcon personCount={serving}></PersonIcon>
-          </NameBox>
-          <CuisineTypeBox>
-            {cuisineType.map((type, key) => {
-              return <CuisineType key={key}>{type.toUpperCase()}</CuisineType>;
-            })}
-          </CuisineTypeBox>
-        </HeadContentsWrapper>
-        <NeedsBox>
-          {needs.map((ingredient, key) => (
-            <NeedsTag key={key}>{ingredient.food}</NeedsTag>
-          ))}
-        </NeedsBox>
+        <Link
+          to={`/recipe?id=${foodId}`}
+          style={{
+            height: "100%",
+            padding: "0.4rem",
+            boxSizing: "content-box",
+          }}
+          state={{ recipeInfo: recipeInfo, id: foodId, name:foodName , ingredients : needs, image : foodImage_l}}
+        >
+          <HeadContentsWrapper>
+            <NameBox>
+              <Name>{foodName}</Name>
+              <PersonIcon personCount={serving}></PersonIcon>
+            </NameBox>
+            <CuisineTypeBox>
+              {cuisineType.map((type, key) => {
+                return (
+                  <CuisineType key={key}>{type.toUpperCase()}</CuisineType>
+                );
+              })}
+            </CuisineTypeBox>
+          </HeadContentsWrapper>
+          <NeedsBox>
+            {needs.map((ingredient, key) => (
+              <NeedsTag key={key}>{ingredient.food}</NeedsTag>
+            ))}
+          </NeedsBox>
+        </Link>
       </DescriptionBox>
 
       <NutrientsBox>

@@ -874,7 +874,7 @@ export const data : Hit[]= [
         "640 grams chicken - drumsticks and thighs ( 3 whole chicken legs cut apart)",
         "1/2 teaspoon salt",
         "1/4 teaspoon black pepper",
-        "1 tablespoon butter – cultured unsalted (or olive oil)",
+        "1 tablespoon butter - cultured unsalted (or olive oil)",
         "240 grams onion sliced thin (1 large onion)",
         "70 grams Anaheim pepper chopped (1 large pepper)",
         "25 grams paprika (about 1/4 cup)",
