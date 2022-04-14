@@ -41,13 +41,13 @@ const Search = () => {
   }).q;
 
   const getData = async (): Promise<Hit[]> => {
-    // const result = await getRecipe("chicken"); // "chicken => queryString"
-    const result = data;
+    const result = await getRecipe(queryString); // "chicken => queryString"
+    // const result = data;
     console.log("getdata 실행");
-    return new Promise((resolve) => {
-      resolve(result);
-    });
-    // return result;
+    // return new Promise((resolve) => {
+    //   resolve(result);
+    // });
+    return result;
   };
 
   useEffect(() => {

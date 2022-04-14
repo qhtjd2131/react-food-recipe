@@ -8,9 +8,10 @@ import NotFound404 from "./pages/NotFound404";
 
 const GlobalWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height :100%;
   margin: 0 auto;
   box-sizing: border-box;
+
 `;
 
 const App = () => {

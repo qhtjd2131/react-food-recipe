@@ -22,10 +22,10 @@ const FoodListBox = styled.div<{ isLoading: boolean }>`
   }
 `;
 
-const LoadingBox = styled.div`
+export const LoadingBox = styled.div`
   font-size: 4rem;
   width: 100%;
-  height: 500px;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;

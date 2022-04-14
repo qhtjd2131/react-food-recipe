@@ -23,7 +23,6 @@ const HeaderBox = styled.section`
 
 const ContentWrapper = styled.div`
   max-width: 2000px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;

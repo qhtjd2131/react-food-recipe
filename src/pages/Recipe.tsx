@@ -1,19 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { LoadingBox } from "../components/FoodList";
 import { roundToTwo } from "../functions/othersFunctions";
 import DefaultPageLayout from "./DefaultPageLayout";
+import QueryString from "qs";
+import { getRecipeFromId } from "../functions/apiCall";
+import { getIngredients } from "../components/FoodItem";
 
 //styled-components//
 
+const RecipeBox = styled.div`
+box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;\
+display :inline-block;
+box-sizing : border-box;
+padding : 1.4rem 4.4rem;
+padding-top : 0;
+margin-top : 1rem;
+`;
 const HeadLabel = styled.p`
+  padding-top: 2.4rem;
+  padding-bottom: 1rem;
   font-size: 1.4rem;
   font-weight: 600;
 `;
-const NameLabel = styled.p``;
+const NameLabel = styled.p`
+  font-weight: 500;
+  font-size: 1.2rem;
+
+  color: gray;
+  padding: 1rem 0;
+`;
 const FoodImage = styled.img`
-  width: 600px;
-  height: 600px;
   border: 1px solid black;
 `;
 const IngredientsBox = styled.div``;
@@ -21,10 +39,6 @@ const IngredientsBox = styled.div``;
 const IngredientsItem = styled.div`
   padding: 0.4rem 0;
 `;
-
-// const IngredientsName = styled.p``;
-// const IngredientsWeight = styled.p``;
-// const IngredientsQuantity = styled.p``;
 
 const RecipeLabel = styled.p`
   padding: 0.4rem 0;
@@ -47,21 +61,76 @@ interface ingredientProps {
 const Recipe = () => {
   const location = useLocation();
   const state = location.state as StateInterface;
-  console.log(state);
+  console.log(location);
 
+  const [isLoading, setIsLoading] = useState(() => {
+    return state === null ? true : false;
+  });
+
+  const [data, setData] = useState<StateInterface>(() => {
+    if (state != null) {
+      return {
+        recipeInfo: state.recipeInfo,
+        image: state.image,
+        name: state.name,
+        id: state.id,
+        ingredients: state.ingredients,
+      };
+    } else {
+      return {
+        recipeInfo: [],
+        image: "",
+        name: "",
+        id: "",
+        ingredients: [
+          {
+            food: "",
+            quantity: 0,
+            measure: "",
+            weight: 0,
+          },
+        ],
+      };
+    }
+  });
+
+  const getData = async (id: string) => {
+    await getRecipeFromId(id).then((res) => {
+      console.log(res);
+      setData({
+        recipeInfo: res.recipe.ingredientLines,
+        image: res.recipe.image,
+        name: res.recipe.label,
+        id: id,
+        ingredients: getIngredients(res.recipe.ingredients),
+      });
+    });
+  };
   useEffect(() => {
     if (state === null || state.recipeInfo === undefined) {
       //api call
-      console.log("state null");
+      const queryString: any = QueryString.parse(location.search, {
+        ignoreQueryPrefix: true,
+        parameterLimit: 1,
+      }).id;
+      console.log(queryString);
+      getData(queryString);
+      console.log("get data from id !!!!!!!!!!!!!!!!!!!!");
     }
   }, []);
+
+  useEffect(() => {
+    if (data.id.length > 4) {
+      setIsLoading(false);
+    }
+  }, [data]);
 
   console.log(location);
 
   const renderIngredients = () => {
     return (
       <IngredientsBox>
-        {state.ingredients.map((ingredient: ingredientProps, index: number) => {
+        {data.ingredients.map((ingredient: ingredientProps, index: number) => {
           const measuer =
             ingredient.measure === "<unit>" || !ingredient.measure
               ? "pieces"
@@ -89,21 +158,28 @@ const Recipe = () => {
   };
 
   const renderRecipe = () => {
-    return state.recipeInfo.map((recipe_str: string, index: number) => (
+    return data.recipeInfo.map((recipe_str: string, index: number) => (
       <RecipeLabel key={index}>{recipe_str}</RecipeLabel>
     ));
   };
-  return (
+
+  return isLoading ? (
     <DefaultPageLayout>
-      <HeadLabel>Food Infos</HeadLabel>
-      <NameLabel>{state.name}</NameLabel>
-      <FoodImage src={state.image} alt="" />
+      <LoadingBox>LOADING ...</LoadingBox>
+    </DefaultPageLayout>
+  ) : (
+    <DefaultPageLayout>
+      <RecipeBox>
+        <HeadLabel>Food Infos</HeadLabel>
+        <NameLabel>{data.name}</NameLabel>
+        <FoodImage src={data.image} alt="" />
 
-      <HeadLabel>Ingredients</HeadLabel>
-      {renderIngredients()}
+        <HeadLabel>Ingredients</HeadLabel>
+        {renderIngredients()}
 
-      <HeadLabel>Recipe</HeadLabel>
-      {renderRecipe()}
+        <HeadLabel>Recipe</HeadLabel>
+        {renderRecipe()}
+      </RecipeBox>
     </DefaultPageLayout>
   );
 };

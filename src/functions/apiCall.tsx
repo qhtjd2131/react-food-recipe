@@ -26,6 +26,20 @@ export const getRecipe = async (searchText: string) : Promise<Hit[]> => {
     
     console.log(merged_result)
     resolve(merged_result);
-    reject("error")
+    reject("error : code 1")
   })
 };
+
+export const getRecipeFromId = async ( id : string) : Promise<Hit>=> {
+  const url = `https://api.edamam.com/api/recipes/v2/${id}?type=public&app_id=${APP_ID}&app_key=${API_KEY}`;
+  const result = await axios.get(url);
+
+  return new Promise((resolve, reject)=>{ 
+    resolve(result.data);
+    reject("error : code 2");
+  })
+
+}
+
+
+            

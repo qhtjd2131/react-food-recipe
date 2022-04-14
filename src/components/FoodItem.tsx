@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Hit } from "./type2";
+import { Hit, Ingredient } from "./type2";
 import MoreInfoButton from "./MoreInfoButton";
 import { IoMdPerson } from "react-icons/io";
 import FoodItemNutrients from "./Nutrients_Nutrients";
@@ -58,13 +58,14 @@ const DescriptionBox = styled.div`
   grid-area: description;
   cursor: pointer;
   border: 1px solid transparent;
+  overflow: hidden;
 
   &:hover {
     border: 1px solid gray;
   }
 
   @media ${({ theme }) => theme.size_10} {
-    height : auto;
+    height: auto;
   }
 `;
 
@@ -151,8 +152,6 @@ const CuisineType = styled.p`
   font-weight: 600;
 `;
 
-
-
 export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
   const arr_temp = new Array(personCount).fill(0);
 
@@ -173,9 +172,26 @@ interface FoodItemProps {
 export interface NutrientsInfoInterface {
   [key: string]: { krText: string; value: string; dailyPercent: number };
 }
-const getFoodId = (uri: string): string => {
+export const getFoodId = (uri: string): string => {
   const split_temp = uri.split("#");
   return split_temp[split_temp.length - 1];
+};
+export const getIngredients = (ingredients: Ingredient[]) => {
+  return ingredients.map(
+    (ingred: {
+      quantity: number;
+      measure: null | string;
+      food: string;
+      weight: number;
+    }) => {
+      return {
+        food: ingred.food,
+        quantity: ingred.quantity,
+        measure: ingred.measure,
+        weight: ingred.weight,
+      };
+    }
+  );
 };
 const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const [isOpenOverlay, setIsOpenOverlay] = useState(false);
@@ -188,7 +204,7 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   //이미지
   const foodImage_s = foodInfo.recipe.images.THUMBNAIL.url;
   const foodImage_m = foodInfo.recipe.images.SMALL.url;
-  const foodImage_l = foodInfo.recipe.images.REGULAR.url;
+  const foodImage_l = foodInfo.recipe.image;
   //총칼로리
   const foodTotalCalories = foodInfo.recipe.calories;
   //n인분
@@ -326,15 +342,7 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
   const cuisineType = foodInfo.recipe.cuisineType;
 
   //재료정보 가공하기
-  const needs = foodInfo.recipe.ingredients.map((ingred) => {
-    return {
-      food: ingred.food,
-      quantity: ingred.quantity,
-      measure: ingred.measure,
-      weight: ingred.weight,
-    };
-  });
-
+  const needs = getIngredients(foodinfo.recipe.ingredients);
   const recipeInfo = foodinfo.recipe.ingredientLines;
 
   return (
@@ -349,7 +357,13 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
             padding: "0.4rem",
             boxSizing: "content-box",
           }}
-          state={{ recipeInfo: recipeInfo, id: foodId, name:foodName , ingredients : needs, image : foodImage_l}}
+          state={{
+            recipeInfo: recipeInfo,
+            id: foodId,
+            name: foodName,
+            ingredients: needs,
+            image: foodImage_l,
+          }}
         >
           <HeadContentsWrapper>
             <NameBox>
