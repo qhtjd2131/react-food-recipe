@@ -53,15 +53,20 @@ const Pagination = () => {
     (state: RootState) => state.searchReducer.dataCount
   );
   const pageCount = Math.floor(dataCount / 4) + 1; //4 : 한 페이지당 데이터 갯수
-  const onSetCurrentPageNumber = (num: number) =>
-    dispatch(setCurrentPageNumber(num));
+  const lineCount = Math.floor(pageCount / pageUnit) + 1;
   const lineNum = Math.floor((currentPageNumber - 1) / pageUnit) * pageUnit;
   const isFirstPage = lineNum === 0 ? true : false;
-  const isLastPage =
-    lineNum === Math.floor(pageCount / pageUnit) ? true : false;
+  const isLastPage = lineNum + 1 === lineCount ? true : false;
+
+  const onSetCurrentPageNumber = (num: number) =>
+    dispatch(setCurrentPageNumber(num));
+
   const pageNumArr = [];
+
   for (let i = 1; i <= pageUnit; i++) {
-    pageNumArr.push(lineNum + i);
+    if (lineNum + i <= pageCount) {
+      pageNumArr.push(lineNum + i);
+    }
   }
 
   const rightClickHandler = () => {
