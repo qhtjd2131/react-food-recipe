@@ -61,7 +61,7 @@ module.exports = {
       },
       {
         test: /\.svg/,
-        type: "asset/inline",
+        use : ["@svgr/webpack"],
       },
       {
         test: /\.tsx?$/,

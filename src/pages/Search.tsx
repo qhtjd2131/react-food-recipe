@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchText } from "../redux-modules/search";
+import { setDataCount, setSearchText } from "../redux-modules/search";
 import FoodList from "../components/FoodList";
 import Pagination from "../components/Pagination";
 import { getRecipe } from "../functions/apiCall";
@@ -23,7 +23,7 @@ const SearchTitle = styled.p`
 `;
 
 const Search = () => {
-  const [foodItems, setFoodItems] = useState<Hit[][] | undefined>();
+  const [foodItems, setFoodItems] = useState<Hit[][] | []>([]);
 
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
@@ -34,6 +34,7 @@ const Search = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
+  const onSetDataCount = (count: number) => dispatch(setDataCount(count));
 
   const queryString: any = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -47,7 +48,8 @@ const Search = () => {
     // return new Promise((resolve) => {
     //   resolve(result);
     // });
-    return result;
+    onSetDataCount(result.count);
+    return result.data;
   };
 
   useEffect(() => {
@@ -72,12 +74,14 @@ const Search = () => {
       onSetSearchText(queryString);
     }
   }, []);
+  useEffect(() => { //test
+    console.log("Search : ", foodItems);
+  });
 
   return (
-   
     <DefaultPageLayout>
       <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
-      <FoodList items={foodItems ? foodItems[item_index] : undefined} />
+      <FoodList items={foodItems[item_index]} />
       <Pagination />
     </DefaultPageLayout>
   );

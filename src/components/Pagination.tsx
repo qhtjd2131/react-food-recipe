@@ -44,16 +44,21 @@ const Pagination = () => {
       setPageUnit(10);
     }
   }, [width]);
-  console.log("dd");
 
   const dispatch = useDispatch();
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
   );
+  const dataCount = useSelector(
+    (state: RootState) => state.searchReducer.dataCount
+  );
+  const pageCount = Math.floor(dataCount / 4) + 1; //4 : 한 페이지당 데이터 갯수
   const onSetCurrentPageNumber = (num: number) =>
     dispatch(setCurrentPageNumber(num));
   const lineNum = Math.floor((currentPageNumber - 1) / pageUnit) * pageUnit;
   const isFirstPage = lineNum === 0 ? true : false;
+  const isLastPage =
+    lineNum === Math.floor(pageCount / pageUnit) ? true : false;
   const pageNumArr = [];
   for (let i = 1; i <= pageUnit; i++) {
     pageNumArr.push(lineNum + i);
@@ -76,8 +81,10 @@ const Pagination = () => {
   };
 
   useEffect(() => {
+    //test
     console.log(currentPageNumber);
   });
+
   return (
     <PaginationBox>
       {!isFirstPage && (
@@ -96,9 +103,11 @@ const Pagination = () => {
           {pageNum}
         </IconWrapper>
       ))}
-      <IconWrapper onClick={rightClickHandler}>
-        <AiOutlineRight />
-      </IconWrapper>
+      {!isLastPage && (
+        <IconWrapper onClick={rightClickHandler}>
+          <AiOutlineRight />
+        </IconWrapper>
+      )}
     </PaginationBox>
   );
 };

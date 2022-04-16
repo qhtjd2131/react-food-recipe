@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../mainlogo.png";
+import logo from "../images/mainlogo.png";
 import { Link } from "react-router-dom";
 import InputCom from "./InputCom";
 

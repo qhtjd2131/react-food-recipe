@@ -1,4 +1,9 @@
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 import FoodItem from "./FoodItem";
 import { Hit } from "./type2";
@@ -30,39 +35,61 @@ export const LoadingBox = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const ZeroDataBox = styled.div`
+  width: 100%;
+  height: 100vh;
+  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 interface IFoodListProps {
   items: Hit[] | undefined;
 }
 
 const FoodList = ({ items }: IFoodListProps) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isZeroData, setIsZeroData] = useState(false);
+
+  console.log("foodlist : ", items);
   let childLoadCount = 0;
   const childsLength = items === undefined ? 0 : items.length;
+  console.log("childsLength", childsLength);
+
   useLayoutEffect(() => {
-    setIsLoading(true);
+    if (childsLength === 0) {
+      setIsLoading(false);
+      setIsZeroData(true);
+    } else {
+      setIsZeroData(false);
+      setIsLoading(true);
+    }
   }, [items]);
 
   const increaseChildLoadCount = useCallback(() => {
     childLoadCount += 1;
-    if (childLoadCount === childsLength) {
+    if (childLoadCount >= childsLength) {
       setIsLoading(false);
       childLoadCount = 0;
     }
   }, [childLoadCount, childsLength]);
 
-  const data2 = items;
-
   return (
     <>
       {isLoading && <LoadingBox>Loading...</LoadingBox>}
       <FoodListBox isLoading={isLoading}>
-        {data2?.map((info, idx) => (
-          <FoodItem
-            foodinfo={info}
-            increaseChildLoadCount={increaseChildLoadCount}
-            key={idx}
-          />
-        ))}
+        {isZeroData ? (
+          <ZeroDataBox>zero data</ZeroDataBox>
+        ) : (
+          items?.map((info, idx) => (
+            <FoodItem
+              foodinfo={info}
+              increaseChildLoadCount={increaseChildLoadCount}
+              key={idx}
+            />
+          ))
+        )}
       </FoodListBox>
     </>
   );

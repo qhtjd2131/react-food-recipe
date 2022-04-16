@@ -185,3 +185,8 @@ const Recipe = () => {
 };
 
 export default Recipe;
+
+
+// MainPage Search button 로직 다시보기 : 새로고침안하면 아무검색어가 없어도 검색버튼 활성화됨
+// 리팩토링 필요한곳 리팩토링
+// footer 제작 edam 로고 부착 필수
