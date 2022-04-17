@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef, useState } from "react";
+import styled, { css } from "styled-components";
 import { Hit, Ingredient } from "./type2";
 import MoreInfoButton from "./MoreInfoButton";
 import { IoMdPerson } from "react-icons/io";
@@ -37,13 +37,31 @@ const ItemBox = styled.div`
   }
 `;
 
-const Image = styled.img`
+const Image = styled.img<{ isOnLoaded: boolean }>`
   width: 200px;
   height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
   grid-area: image;
+  /* background-color : gray; */
+
+  ${(props) =>
+    !props.isOnLoaded &&
+    css`
+      display: none;
+    `}
+
+  @media ${({ theme }) => theme.size_5} {
+    width: 160px;
+    height: 160px;
+  }
+`;
+
+const LoadingImage = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: #e5e5e5;
   @media ${({ theme }) => theme.size_5} {
     width: 160px;
     height: 160px;
@@ -139,6 +157,7 @@ const PersonIconBox = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  flex-wrap: wrap;
 `;
 
 const HeadContentsWrapper = styled.div`
@@ -168,7 +187,6 @@ export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
 
 interface FoodItemProps {
   foodinfo: Hit;
-  increaseChildLoadCount: () => void;
 }
 export interface NutrientsInfoInterface {
   [key: string]: { krText: string; value: string; dailyPercent: number };
@@ -194,8 +212,10 @@ export const getIngredients = (ingredients: Ingredient[]) => {
     }
   );
 };
-const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
+const FoodItem = ({ foodinfo }: FoodItemProps) => {
   const [isOpenOverlay, setIsOpenOverlay] = useState(false);
+  const [isOnLoaded, setIsOnLoaded] = useState(false);
+
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
 
@@ -348,7 +368,15 @@ const FoodItem = ({ foodinfo, increaseChildLoadCount }: FoodItemProps) => {
 
   return (
     <ItemBox>
-      <Image src={foodImage_m} alt={foodName} onLoad={increaseChildLoadCount} />
+      <Image
+        src={foodImage_m}
+        alt={foodName}
+        onLoad={() => setIsOnLoaded(true)}
+        isOnLoaded={isOnLoaded}
+      />
+      {
+        !isOnLoaded && <LoadingImage />
+      }
 
       <DescriptionBox>
         <Link

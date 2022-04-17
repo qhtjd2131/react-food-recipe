@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux-modules";
-import { setSearchText, clearSearchText } from "../redux-modules/search";
+import { setSearchText, clearSearchText, clearExistData, setDataCount, setCurrentPageNumber, setNextLink } from "../redux-modules/search";
 
 const InputBox = styled.div`
   display: flex;
@@ -58,7 +58,16 @@ const InputCom = () => {
 
   const dispatch = useDispatch();
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
+  const onSetDataCount = (count : number) => dispatch(setDataCount(count));
+  const onSetCurrentPage = (page : number) => dispatch(setCurrentPageNumber(page));
+  const onSetNextLink = (nextLink : string) => dispatch(setNextLink(nextLink));
   const onClearSearchText = () => dispatch(clearSearchText());
+  const onClearExistData = () => dispatch(clearExistData());
+
+  const searchButtonClickHandler = () => {
+    
+
+  }
 
   const linkRender = () => {
     if (searchText.replace(/\s/gi, "").length > 0) {
@@ -66,9 +75,7 @@ const InputCom = () => {
         <Link to={`/search?q=${searchText}`}>
           <SearchButton
             on="true"
-            onClick={() => {
-              console.log("검색어 :", searchText);
-            }}
+           onClick = {searchButtonClickHandler} 
           >
             SEARCH
           </SearchButton>

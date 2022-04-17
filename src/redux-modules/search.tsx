@@ -3,6 +3,8 @@ const CLEAR_SEARCH_TEXT = "search/CLEAR_SEARCH_TEXT" as const;
 const SET_CURRENT_PAGE = "search/SET_CURRENT_PAGE" as const;
 const SET_DATA_COUNT = "search/SET_DATA_COUNT" as const;
 const ADD_EXIST_DATA = "search/ADD_EXIST_DATA" as const;
+const SET_NEXT_LINK = "search/SET_NEXT_LINK" as const;
+const CLEAR_EXIST_DATA = "search/CLEAR_EXIST_DATA" as const;
 
 // 인터페이스
 interface IState {
@@ -10,6 +12,7 @@ interface IState {
   currentPageNumber: number;
   dataCount: number;
   existData: IExistData;
+  nextLink: string;
 }
 interface IExistData {
   [key: number]: { exist: boolean };
@@ -41,12 +44,23 @@ export const addExistData = (key: number, value: boolean) => ({
   },
 });
 
+export const clearExistData = () => ({
+  type: CLEAR_EXIST_DATA,
+});
+
+export const setNextLink = (nextLink: string) => ({
+  type: SET_NEXT_LINK,
+  payload: { nextLink: nextLink },
+});
+
 type ActionSearchReducer =
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof clearSearchText>
   | ReturnType<typeof setCurrentPageNumber>
   | ReturnType<typeof setDataCount>
-  | ReturnType<typeof addExistData>;
+  | ReturnType<typeof addExistData>
+  | ReturnType<typeof setNextLink>
+  | ReturnType<typeof clearExistData> ;
 
 // 초기값 선언
 const initialState: IState = {
@@ -58,6 +72,7 @@ const initialState: IState = {
       exist: false,
     },
   },
+  nextLink: "",
 };
 
 //current routes를 추가해야할까?
@@ -92,7 +107,17 @@ export default function searchReducer(
       const newExistData = action.payload.existData;
       return {
         ...state,
-        existData : {...state.existData, ...newExistData},
+        existData: { ...state.existData, ...newExistData },
+      };
+    case CLEAR_EXIST_DATA:
+      return {
+        ...state,
+        existData : { 0 : {exist : false} },
+      };
+    case SET_NEXT_LINK:
+      return {
+        ...state,
+        nextLink: action.payload.nextLink,
       };
     default:
       return state;

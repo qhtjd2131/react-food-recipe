@@ -2,10 +2,16 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { addExistData, setCurrentPageNumber } from "../redux-modules/search";
+import {
+  addExistData,
+  setCurrentPageNumber,
+  setNextLink,
+} from "../redux-modules/search";
 import { RootState } from "../redux-modules/index";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import { ITEM_LENGTH } from "../pages/Search";
+import { Hit } from "./type2";
+import { getRecipeFromNextLink } from "../functions/apiCall";
 
 const PaginationBox = styled.div`
   display: flex;
@@ -35,7 +41,10 @@ const SpaceBlock = styled.div`
   border-radius: 50%;
 `;
 
-const Pagination = () => {
+interface IPagination {
+  setFoodItems: React.Dispatch<React.SetStateAction<[] | Hit[][]>>;
+}
+const Pagination = ({ setFoodItems }: IPagination) => {
   const { height, width } = useWindowDimensions();
   const [pageUnit, setPageUnit] = useState(10);
   useEffect(() => {
@@ -56,6 +65,9 @@ const Pagination = () => {
   const exist = useSelector(
     (state: RootState) => state.searchReducer.existData
   );
+  const nextLink = useSelector(
+    (state: RootState) => state.searchReducer.nextLink
+  );
 
   const pageCount = Math.floor(dataCount / ITEM_LENGTH) + 1; //ITEM_LENGTH : 한 페이지당 데이터 갯수
   const lineCount = Math.floor(pageCount / pageUnit) + 1;
@@ -68,6 +80,7 @@ const Pagination = () => {
 
   const onSetCurrentPageNumber = (num: number) =>
     dispatch(setCurrentPageNumber(num));
+  const onSetNextLink = (nextLink: string) => dispatch(setNextLink(nextLink));
 
   const pageNumArr = [];
 
@@ -77,15 +90,42 @@ const Pagination = () => {
     }
   }
 
+  const getData = async (nextLink_: string) => {
+    const result = await getRecipeFromNextLink(nextLink_);
+    onSetNextLink(result.nextLink);
+
+    return result.data;
+  };
   const rightClickHandler = () => {
     const nextPageNumber = lineNum + pageUnit + 1;
     onSetCurrentPageNumber(nextPageNumber);
-    if (lineNum % 20 === 0) onAddExistData(lineNum, true); //20 은 한번의 apicall이 있을때 받아오는 data 갯수
+    if (lineNum % 10 === 0) {
+      if (!exist[lineNum]?.exist && nextLink.length > 0) {
+        onAddExistData(lineNum, true);
+        //data 추가로받아와서 set해주기
+        getData(nextLink)
+          .then((res: Hit[]) => {
+            const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
+
+            setFoodItems((items: Hit[][] | []) => {
+              const temp = [];
+              while (res_copy.length > 0) {
+                const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+                temp.push(temp_a);
+              }
+              return [...items, ...temp];
+            });
+          })
+          .catch((error) => {
+            console.log(error.code);
+          });
+      }
+    } //10 은 한번의 apicall이 있을때 받아오는 page 갯수
   };
   const leftClickHandler = () => {
     const nextPageNumber = lineNum - pageUnit + 1;
     onSetCurrentPageNumber(nextPageNumber);
-    if (lineNum % 20 === 0) onAddExistData(lineNum, true);
+    if (lineNum % 10 === 0) onAddExistData(lineNum, true);
   };
   const numberClickHandler = (index: number) => {
     onSetCurrentPageNumber(index);
@@ -97,7 +137,6 @@ const Pagination = () => {
 
   useEffect(() => {
     //test
-    console.log("thisisexist", exist);
   });
 
   return (

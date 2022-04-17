@@ -8,10 +8,9 @@ import styled from "styled-components";
 import FoodItem from "./FoodItem";
 import { Hit } from "./type2";
 
-const FoodListBox = styled.div<{ isLoading: boolean }>`
+const FoodListBox = styled.div`
   width: 1200px;
   height: 100%;
-  display: ${(props) => (props.isLoading ? "none" : "block")};
 
   @media ${({ theme }) => theme.size_13} {
     width: 980px;
@@ -49,49 +48,33 @@ interface IFoodListProps {
 }
 
 const FoodList = ({ items }: IFoodListProps) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isZeroData, setIsZeroData] = useState(false);
 
-  console.log("foodlist : ", items);
-  let childLoadCount = 0;
-  const childsLength = items === undefined ? 0 : items.length;
-  console.log("childsLength", childsLength);
+  useEffect(()=>{
+      if(items?.length === 0){
+          console.log(items?.length)
+          setIsZeroData(true);
+      } else {
+          setIsZeroData(false)
+      }
 
-  useLayoutEffect(() => {
-    if (items !=undefined && childsLength === 0) {
-      setIsLoading(false);
-      setIsZeroData(true);
-    } else {
-      setIsZeroData(false);
-      setIsLoading(true);
-    }
-  }, [items]);
-
-  const increaseChildLoadCount = useCallback(() => {
-    childLoadCount += 1;
-    if (childLoadCount >= childsLength) {
-      setIsLoading(false);
-      childLoadCount = 0;
-    }
-  }, [childLoadCount, childsLength]);
+  }, [items])
 
   return (
-    <>
-      {isLoading && <LoadingBox>Loading...</LoadingBox>}
-      <FoodListBox isLoading={isLoading}>
+    
+      <FoodListBox>
         {isZeroData ? (
           <ZeroDataBox>zero data</ZeroDataBox>
         ) : (
           items?.map((info, idx) => (
             <FoodItem
               foodinfo={info}
-              increaseChildLoadCount={increaseChildLoadCount}
-              key={idx}
+              key={info._links.self.href}
             />
           ))
         )}
       </FoodListBox>
-    </>
+    
   );
 };
 
