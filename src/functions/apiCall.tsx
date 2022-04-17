@@ -5,7 +5,7 @@ const APP_ID = process.env.REACT_APP_APP_ID;
 
 
 export const getRecipe = async (searchText: string): Promise<{data : Hit[], count : number}> => {
-  console.log("excute api call 5");
+  console.log("excute api call");
   const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${searchText}&app_id=${APP_ID}&app_key=${API_KEY}`;
   const result = await axios.get(url);
   
@@ -20,7 +20,6 @@ export const getRecipe = async (searchText: string): Promise<{data : Hit[], coun
     });
   }
   const result2 = await axios.get(next_links);
-
 
   return new Promise((resolve, reject) => {
     const merged_result = [...result.data.hits, ...result2.data.hits];

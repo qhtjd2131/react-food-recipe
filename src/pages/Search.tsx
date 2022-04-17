@@ -9,10 +9,9 @@ import Pagination from "../components/Pagination";
 import { getRecipe } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
-import { data } from "../components/data";
 import DefaultPageLayout from "./DefaultPageLayout";
 
-const ITEM_LENGTH = 4;
+export const ITEM_LENGTH = 4;
 
 const SearchTitle = styled.p`
   width: 100%;
@@ -30,7 +29,6 @@ const Search = () => {
   );
   const item_index = (currentPageNumber - 1) % 10;
 
-  const params = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
@@ -43,11 +41,8 @@ const Search = () => {
 
   const getData = async (): Promise<Hit[]> => {
     const result = await getRecipe(queryString); // "chicken => queryString"
-    // const result = data;
     console.log("getdata 실행");
-    // return new Promise((resolve) => {
-    //   resolve(result);
-    // });
+  
     onSetDataCount(result.count);
     return result.data;
   };
@@ -74,6 +69,7 @@ const Search = () => {
       onSetSearchText(queryString);
     }
   }, []);
+  
   useEffect(() => { //test
     console.log("Search : ", foodItems);
   });

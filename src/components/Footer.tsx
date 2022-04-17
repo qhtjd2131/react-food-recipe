@@ -6,10 +6,6 @@ const FooterBox = styled.div`
   height: 100px;
   border-top: 1px solid transparent;
   background-color: #fff1d6;
-
-  /* position: absolute;
-  left : 0;
-  bottom: 0; */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -22,7 +18,6 @@ const BadgeBox = styled.div`
 const Footer = () => {
   return (
     <FooterBox>
-      this is footer
       <BadgeBox>
         <Badge />
       </BadgeBox>

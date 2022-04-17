@@ -49,7 +49,7 @@ interface IFoodListProps {
 }
 
 const FoodList = ({ items }: IFoodListProps) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isZeroData, setIsZeroData] = useState(false);
 
   console.log("foodlist : ", items);
@@ -58,7 +58,7 @@ const FoodList = ({ items }: IFoodListProps) => {
   console.log("childsLength", childsLength);
 
   useLayoutEffect(() => {
-    if (childsLength === 0) {
+    if (items !=undefined && childsLength === 0) {
       setIsLoading(false);
       setIsZeroData(true);
     } else {

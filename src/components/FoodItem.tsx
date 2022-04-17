@@ -150,6 +150,7 @@ const CuisineTypeBox = styled.div`
 `;
 const CuisineType = styled.p`
   font-weight: 600;
+  padding-right: 0.4rem;
 `;
 
 export const PersonIcon = ({ personCount = 0 }: { personCount: number }) => {
