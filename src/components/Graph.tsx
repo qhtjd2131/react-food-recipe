@@ -229,6 +229,9 @@ const GraphItems = ({ nutrientsInfo, serving }: GraphItemsProps) => {
 // 7. 조리방법 페이지 구현 (구상 필요)
 // 8. 
 
+// 영양정보 close 버튼 오류 
+// 뒤로가기 시 데이터가 잇음에도 apicall 하는 현상 
+
 
 interface GraphProps {
   nutrientsInfo: NutrientsInfoInterface;

@@ -31,15 +31,17 @@ const SearchTitle = styled.p`
 const Search = () => {
   const [foodItems, setFoodItems] = useState<Hit[][] | []>([]);
 
-
+  const searchText = useSelector(
+    (state: RootState) => state.searchReducer.searchText
+  );
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
   );
- 
+
   const existData = useSelector(
     (state: RootState) => state.searchReducer.existData
   );
-  const item_index = (currentPageNumber - 1);
+  const item_index = currentPageNumber - 1;
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -47,7 +49,8 @@ const Search = () => {
   const onSetDataCount = (count: number) => dispatch(setDataCount(count));
   const onSetNextLink = (nextLink: string) => dispatch(setNextLink(nextLink));
 
-  const onSetCurrentPage = (page : number) => dispatch(setCurrentPageNumber(page));
+  const onSetCurrentPage = (page: number) =>
+    dispatch(setCurrentPageNumber(page));
   const onClearExistData = () => dispatch(clearExistData());
 
   const queryString: any = QueryString.parse(location.search, {
@@ -65,40 +68,44 @@ const Search = () => {
     return result.data;
   };
 
-  const clearReducer = (queryString : string) => {
+  const clearReducer = (queryString: string) => {
     onSetCurrentPage(1);
-    onSetSearchText(queryString)
+    onSetSearchText(queryString);
     onClearExistData();
     onSetDataCount(0);
     onSetNextLink("");
     setFoodItems([]);
-  }
+  };
 
   useEffect(() => {
-    if (queryString.length > 0) {
-      clearReducer(queryString);
-      getData().then((res: Hit[]) => {
-        const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
-
-        setFoodItems((items: Hit[][] | []) => {
-          const temp = [];
-          while (res_copy.length > 0) {
-            const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
-            temp.push(temp_a);
-          }
-          return temp;
-        });
-      }).catch( (error) => {
-        console.log(error)
-      });
-    }
+    if (queryString.length > 0) onSetSearchText(queryString);
   }, [queryString]);
+  useEffect(() => {
+    if (searchText.length > 0) {
+      clearReducer(searchText);
+      getData()
+        .then((res: Hit[]) => {
+          const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
 
-
+          setFoodItems((items: Hit[][] | []) => {
+            const temp = [];
+            while (res_copy.length > 0) {
+              const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+              temp.push(temp_a);
+            }
+            return temp;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [searchText]);
 
   useEffect(() => {
     //test
     console.log("Search : ", foodItems);
+    console.log("SEARCH TEXT : 213213123123312", searchText);
   });
 
   return (

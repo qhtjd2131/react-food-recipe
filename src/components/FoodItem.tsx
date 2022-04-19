@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { Hit, Ingredient } from "./type2";
-import MoreInfoButton from "./MoreInfoButton";
 import { IoMdPerson } from "react-icons/io";
 import FoodItemNutrients from "./Nutrients_Nutrients";
 import FoodItemCalories from "./Nutrients_Calories";
@@ -59,7 +58,7 @@ const Image = styled.img<{ isOnLoaded: boolean }>`
 `;
 
 const LoadingImage = styled.div`
-  width: 200px;
+  width: 200px !important;
   height: 200px;
   background-color: #e5e5e5;
   @media ${({ theme }) => theme.size_5} {
@@ -77,9 +76,10 @@ const DescriptionBox = styled.div`
   cursor: pointer;
   border: 1px solid transparent;
   overflow: hidden;
+  transition: 0.2 ease-in-out;
 
   &:hover {
-    border: 1px solid gray;
+    box-shadow: 0px 0px 3px 2px #ffbd43;
   }
 
   @media ${({ theme }) => theme.size_10} {
@@ -99,15 +99,26 @@ const Name = styled.p`
 
 const NutrientsBox = styled.div`
   max-width: 320px;
-  height: 100%;
+  height: 200px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  border: 1px solid transparent;
   padding: 0.4rem;
   width: 100%;
   justify-content: space-between;
   align-items: center;
   grid-area: nutrients;
+  transition: inherit;
+  @media ${({ theme }) => theme.size_10} {
+    height: auto;
+  }
+
+  transition: 0.2 ease-in-out;
+
+  &:hover {
+    box-shadow: 0px 0px 3px 2px #ffbd43;
+  }
 `;
 const MainNutrients = styled.div`
   display: flex;
@@ -215,6 +226,10 @@ export const getIngredients = (ingredients: Ingredient[]) => {
 const FoodItem = ({ foodinfo }: FoodItemProps) => {
   const [isOpenOverlay, setIsOpenOverlay] = useState(false);
   const [isOnLoaded, setIsOnLoaded] = useState(false);
+
+  useEffect(() => {
+    console.log("isOpenOverlay", isOpenOverlay);
+  }, [isOpenOverlay]);
 
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
@@ -374,9 +389,7 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
         onLoad={() => setIsOnLoaded(true)}
         isOnLoaded={isOnLoaded}
       />
-      {
-        !isOnLoaded && <LoadingImage />
-      }
+      {!isOnLoaded && <LoadingImage />}
 
       <DescriptionBox>
         <Link
@@ -415,7 +428,12 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
         </Link>
       </DescriptionBox>
 
-      <NutrientsBox>
+      <NutrientsBox
+        onClick={() => {
+          setIsOpenOverlay(true);
+          console.log("nutrientsbox click");
+        }}
+      >
         <FoodItemCalories
           foodTotalCalories={foodTotalCalories}
           foodCaloriesForServing={foodCaloriesForServing}
@@ -426,21 +444,16 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
           <FoodItemNutrients value={nutrientsInfo.Fat} />
           <FoodItemNutrients value={nutrientsInfo.Sugars} />
         </MainNutrients>
-        <MoreInfoButton
-          onClick={() => {
-            setIsOpenOverlay(true);
-          }}
-        />
-        {isOpenOverlay && (
-          <Overlay>
-            <MoreNutrients
-              nutrientsInfo={nutrientsInfo}
-              serving={serving}
-              setIsOpenOverlay={setIsOpenOverlay}
-            />
-          </Overlay>
-        )}
       </NutrientsBox>
+      {isOpenOverlay && (
+        <Overlay>
+          <MoreNutrients
+            nutrientsInfo={nutrientsInfo}
+            serving={serving}
+            setIsOpenOverlay={setIsOpenOverlay}
+          />
+        </Overlay>
+      )}
     </ItemBox>
   );
 };

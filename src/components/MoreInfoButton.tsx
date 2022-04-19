@@ -38,4 +38,4 @@ const MoreInfoButton = (props: MIButtonPropsInterface) => {
   );
 };
 
-export default MoreInfoButton;
+// export default MoreInfoButton;

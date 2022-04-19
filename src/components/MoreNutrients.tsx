@@ -12,7 +12,7 @@ const GrayLine = styled.div`
   background-color: #dfdfdf;
   width: 100%;
   margin: 1rem 0;
-  box-sizing : content-box;
+  box-sizing: content-box;
 `;
 
 const MoreNutrientsBox = styled.div`
@@ -30,9 +30,6 @@ const MoreNutrientsBox = styled.div`
   overflow-y: scroll;
 
   @media ${({ theme }) => theme.size_11} {
-    //800px 이하일때 반응형 필요
-    // 추가적으로 more info 버튼 클릭시 나타나는 컴포넌트 반응형 필요
-    // moreInfo 버튼이 필요한가에 대해서 생각해 볼 필요가 있음.
     width: 700px;
     min-width: 700px;
   }
@@ -70,7 +67,7 @@ const AllNutrientsBox = styled.div`
 
 const HeadLabel2 = styled(HeadLabel)`
   display: block;
-  margin-top : 2.5rem;
+  margin-top: 2.5rem;
   @media ${({ theme }) => theme.size_6} {
     display: none;
   }
@@ -106,22 +103,6 @@ const CloseButtonWrapper = styled.div`
 
 // 컴 포 넌 트 //
 
-const CloseButton = ({
-  clickHandler,
-}: {
-  clickHandler: (b: boolean) => void;
-}) => {
-  return (
-    <CloseButtonWrapper
-      onClick={() => {
-        clickHandler(false);
-      }}
-    >
-      <GrClose />
-    </CloseButtonWrapper>
-  );
-};
-
 const NutrientsInfoHeadLabel = () => {
   return (
     <>
@@ -140,7 +121,7 @@ const DailyNutrientsHeadLabel = () => {
   );
 };
 
-const renderAllNutrientsInfo = (nutrientsInfo : NutrientsInfoInterface) => {
+const renderAllNutrientsInfo = (nutrientsInfo: NutrientsInfoInterface) => {
   return (
     <>
       <NutrientsInfoHeadLabel />
@@ -153,7 +134,10 @@ const renderAllNutrientsInfo = (nutrientsInfo : NutrientsInfoInterface) => {
   );
 };
 
-const renderDailyNutrientsInfo = (nutrientsInfo : NutrientsInfoInterface, serving : number) => {
+const renderDailyNutrientsInfo = (
+  nutrientsInfo: NutrientsInfoInterface,
+  serving: number
+) => {
   return (
     <>
       <DailyNutrientsHeadLabel />
@@ -166,7 +150,7 @@ const renderDailyNutrientsInfo = (nutrientsInfo : NutrientsInfoInterface, servin
 
 interface MoreNutrientsProps {
   nutrientsInfo: NutrientsInfoInterface;
-  setIsOpenOverlay: (boolean: boolean) => void;
+  setIsOpenOverlay: React.Dispatch<React.SetStateAction<boolean>>;
   serving: number;
 }
 
@@ -176,7 +160,9 @@ const MoreNutrients = ({
   serving,
 }: MoreNutrientsProps) => {
   const moreNutRef = useRef(null);
-  const onSetIsOverlayState = (bool: boolean) => setIsOpenOverlay(bool);
+  const onSetIsOverlayState = (bool: boolean) => {
+    setIsOpenOverlay(bool);
+  };
 
   useOutsideClick(moreNutRef, () => {
     onSetIsOverlayState(false);
@@ -184,14 +170,19 @@ const MoreNutrients = ({
 
   return (
     <MoreNutrientsBox ref={moreNutRef}>
-      <CloseButton clickHandler={onSetIsOverlayState} />
+      <CloseButtonWrapper
+        onClick={() => {
+          onSetIsOverlayState(false);
+        }}
+      >
+        <GrClose />
+      </CloseButtonWrapper>
       {/* 영양소 포함 정보 */}
-      {/* <AllNutrientsInfo nutrientsInfo = {nutrientsInfo}/> */}
       {renderAllNutrientsInfo(nutrientsInfo)}
 
       {/* 일 섭취 영양소 정보 */}
       {renderDailyNutrientsInfo(nutrientsInfo, serving)}
-    </MoreNutrientsBox >
+    </MoreNutrientsBox>
   );
 };
 

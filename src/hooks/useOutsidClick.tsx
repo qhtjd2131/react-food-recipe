@@ -10,12 +10,10 @@ export function useOutsideClick(ref: any, callback: any) {
       }
     }
     // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside, { capture: true });
+    document.addEventListener("click", handleClickOutside);
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside, {
-        capture: true,
-      });
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 }
