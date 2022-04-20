@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { LoadingBox } from "../components/FoodList";
 import { roundToTwo } from "../functions/othersFunctions";
 import DefaultPageLayout from "./DefaultPageLayout";
@@ -32,9 +32,33 @@ const NameLabel = styled.p`
   color: gray;
   padding: 1rem 0;
 `;
-const FoodImage = styled.img`
-  border: 1px solid black;
+const FoodImage = styled.img<{ isOnLoadedImage: boolean }>`
+  width: 300px;
+  height: 300px;
+  display: none;
+
+  ${(props) =>
+    props.isOnLoadedImage &&
+    css`
+      display: block;
+    `}
 `;
+
+const LoadingImage = styled.img<{ isOnLoadedImage: boolean }>`
+  width: 300px;
+  height: 300px;
+  min-width: 300px;
+  min-height: 300px;
+  background-color: #e5e5e5;
+  display: block;
+
+  ${(props) =>
+    props.isOnLoadedImage &&
+    css`
+      display: none;
+    `}
+`;
+
 const IngredientsBox = styled.div``;
 
 const IngredientsItem = styled.div`
@@ -60,10 +84,11 @@ interface ingredientProps {
   weight: number;
 }
 const Recipe = () => {
+  const [isOnLoadedImage, setIsOnLoadedImage] = useState(false);
   const location = useLocation();
   const state = location.state as StateInterface;
   console.log(location);
-    console.log(store.getState())
+  console.log(store.getState());
   const [isLoading, setIsLoading] = useState(() => {
     return state === null ? true : false;
   });
@@ -121,6 +146,10 @@ const Recipe = () => {
   }, []);
 
   useEffect(() => {
+    console.log("render recipe page");
+  }, []);
+
+  useEffect(() => {
     if (data.id.length > 4) {
       setIsLoading(false);
     }
@@ -170,14 +199,25 @@ const Recipe = () => {
     </DefaultPageLayout>
   ) : (
     <DefaultPageLayout>
-        <button onClick = {()=>{
-            console.log(store.getState())
-        }} >button</button>
+      <button
+        onClick={() => {
+          console.log(store.getState());
+        }}
+      >
+        button
+      </button>
       <RecipeBox>
         <HeadLabel>Food Infos</HeadLabel>
         <NameLabel>{data.name}</NameLabel>
-        <FoodImage src={data.image} alt="" />
-
+        <FoodImage
+          src={data.image}
+          alt=""
+          isOnLoadedImage={isOnLoadedImage}
+          onLoad={() => {
+            setIsOnLoadedImage(true);
+          }}
+        />
+        <LoadingImage isOnLoadedImage={isOnLoadedImage} />
         <HeadLabel>Ingredients</HeadLabel>
         {renderIngredients()}
 
@@ -189,7 +229,6 @@ const Recipe = () => {
 };
 
 export default Recipe;
-
 
 // MainPage Search button 로직 다시보기 : 새로고침안하면 아무검색어가 없어도 검색버튼 활성화됨
 // 리팩토링 필요한곳 리팩토링
