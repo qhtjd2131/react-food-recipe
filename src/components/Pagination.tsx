@@ -101,13 +101,15 @@ const Pagination = () => {
   };
   const rightClickHandler = () => {
     const nextPageNumber = lineNum + pageUnit + 1;
+    const nextLineNum = lineNum + pageUnit;
+    console.log("linenum : ", lineNum);
     onSetCurrentPageNumber(nextPageNumber);
-    if (lineNum % PAGE_BY_API_CALL === 0) {
-        console.log(!exist[lineNum + PAGE_BY_API_CALL]?.exist)
+    if (nextLineNum % PAGE_BY_API_CALL === 0) {
+      console.log(!exist[lineNum + PAGE_BY_API_CALL]?.exist);
       if (!exist[lineNum + PAGE_BY_API_CALL]?.exist && nextLink.length > 0) {
         onAddExistData(lineNum + PAGE_BY_API_CALL, true);
         //data 추가로받아와서 set해주기
-        console.log("오른쪽 버튼 클릭하여 getData")
+        console.log("오른쪽 버튼 클릭하여 getData");
         getData(nextLink)
           .then((res: Hit[]) => {
             const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
