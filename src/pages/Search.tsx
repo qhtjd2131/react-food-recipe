@@ -5,9 +5,7 @@ import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addExistData,
-  clearExistData,
-  clearSearchText,
-  setCurrentPageNumber,
+
   setDataCount,
   setFoodItems,
   setNextLink,
@@ -32,6 +30,8 @@ const SearchTitle = styled.p`
 `;
 
 const Search = () => {
+
+  const [isZeroData, setIsZeroData] = useState(false);
   const foodItems = useSelector(
     (state: RootState) => state.searchReducer.foodItems
   );
@@ -43,9 +43,6 @@ const Search = () => {
     (state: RootState) => state.searchReducer.currentPageNumber
   );
 
-  const existData = useSelector(
-    (state: RootState) => state.searchReducer.existData
-  );
   const item_index = currentPageNumber - 1;
 
   const location = useLocation();
@@ -59,9 +56,6 @@ const Search = () => {
   const onSetFoodItems = (foodItems: Hit[][]) =>
     dispatch(setFoodItems(foodItems));
 
-  const onSetCurrentPage = (page: number) =>
-    dispatch(setCurrentPageNumber(page));
-  const onClearExistData = () => dispatch(clearExistData());
 
   const queryString: any = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -78,13 +72,6 @@ const Search = () => {
     return result.data;
   };
 
-  const clearReducer = () => {
-    onSetCurrentPage(1);
-    onClearExistData();
-    onSetDataCount(0);
-    onSetNextLink("");
-    onSetFoodItems([]);
-  };
 
   useEffect(() => {
     if (queryString.length > 0) onSetSearchText(queryString);
@@ -92,7 +79,7 @@ const Search = () => {
 
   useEffect(() => {
     if (searchText.length > 0 && foodItems.length === 0) {
-      // clearReducer();
+      setIsZeroData(false);
       getData()
         .then((res: Hit[]) => {
           const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
@@ -104,6 +91,7 @@ const Search = () => {
           }
           onSetFoodItems(temp);
           onAddExistData(0, true);
+          if(temp.length === 0) setIsZeroData(true);
         })
         .catch((error) => {
           console.log(error);
@@ -111,16 +99,11 @@ const Search = () => {
     }
   }, [searchText]);
 
-  useEffect(() => {
-    //test
-    console.log("Search : ", foodItems);
-    console.log("SEARCH TEXT : 213213123123312", searchText);
-  });
 
   return (
     <DefaultPageLayout>
       <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
-      <FoodList items={foodItems[item_index]} />
+      <FoodList items={foodItems[item_index]} isZeroData={isZeroData} />
       <Pagination />
       <button onClick = {()=>{
             console.log(store.getState())

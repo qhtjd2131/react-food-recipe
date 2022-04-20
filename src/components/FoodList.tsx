@@ -45,20 +45,12 @@ const ZeroDataBox = styled.div`
 `;
 interface IFoodListProps {
   items: Hit[] | undefined;
+  isZeroData : boolean;
 }
 
-const FoodList = ({ items }: IFoodListProps) => {
-  const [isZeroData, setIsZeroData] = useState(false);
+const FoodList = ({ items, isZeroData }: IFoodListProps) => {
 
-  useEffect(()=>{
-      if(items?.length === 0){
-          console.log(items?.length)
-          setIsZeroData(true);
-      } else {
-          setIsZeroData(false)
-      }
 
-  }, [items])
 
   return (
     
@@ -66,7 +58,7 @@ const FoodList = ({ items }: IFoodListProps) => {
         {isZeroData ? (
           <ZeroDataBox>zero data</ZeroDataBox>
         ) : (
-          items?.map((info, idx) => (
+          items?.map((info) => (
             <FoodItem
               foodinfo={info}
               key={info._links.self.href}
