@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,6 +51,7 @@ const SearchButton = styled.button<{ on: string }>`
   }
 `;
 const InputCom = () => {
+  const [inputText, setInputText] = useState("");
   // input으로 받은 state 처리 필요
   const searchText: string = useSelector(
     (state: RootState) => state.searchReducer.searchText
@@ -65,11 +66,11 @@ const InputCom = () => {
   const onClearExistData = () => dispatch(clearExistData());
 
   const searchButtonClickHandler = () => {
-    
+    onSetSearchText(inputText);
 
   }
 
-  const linkRender = () => {
+  const renderLink = useCallback(() => {
     if (searchText.replace(/\s/gi, "").length > 0) {
       return (
         <Link to={`/search?q=${searchText}`}>
@@ -84,16 +85,17 @@ const InputCom = () => {
     } else {
       return <SearchButton on="false">SEARCH</SearchButton>;
     }
-  };
+  },[searchText])
   return (
     <InputBox>
       <Input
         placeholder="Please write english."
         onChange={(e) => {
-          onSetSearchText(e.target.value);
+          // onSetSearchText(e.target.value);
+          setInputText(e.target.value)
         }}
       />
-      <ButtonBox>{linkRender()}</ButtonBox>
+      <ButtonBox>{renderLink()}</ButtonBox>
     </InputBox>
   );
 };

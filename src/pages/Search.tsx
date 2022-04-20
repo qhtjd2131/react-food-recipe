@@ -96,15 +96,6 @@ const Search = () => {
       getData()
         .then((res: Hit[]) => {
           const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
-          // const res_copy2 = res.slice();
-          // setFoodItems((items: Hit[][] | []) => {
-          //   const temp= [];
-          //   while (res_copy.length > 0) {
-          //     const temp_a : Hit[]= res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
-          //     temp.push(temp_a);
-          //   }
-          //   return temp;
-          // });
 
           const temp: Hit[][] = [];
           while (res_copy.length > 0) {
