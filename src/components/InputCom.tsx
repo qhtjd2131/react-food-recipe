@@ -3,7 +3,16 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux-modules";
-import { setSearchText, clearSearchText, clearExistData, setDataCount, setCurrentPageNumber, setNextLink } from "../redux-modules/search";
+import {
+  setSearchText,
+  clearSearchText,
+  clearExistData,
+  setDataCount,
+  setCurrentPageNumber,
+  setNextLink,
+  setFoodItems,
+} from "../redux-modules/search";
+import { Hit } from "./type2";
 
 const InputBox = styled.div`
   display: flex;
@@ -17,7 +26,6 @@ const InputBox = styled.div`
   @media ${({ theme }) => theme.size_7} {
     min-width: 300px;
   }
- 
 `;
 const Input = styled.input`
   box-sizing: border-box;
@@ -59,25 +67,32 @@ const InputCom = () => {
 
   const dispatch = useDispatch();
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
-  const onSetDataCount = (count : number) => dispatch(setDataCount(count));
-  const onSetCurrentPage = (page : number) => dispatch(setCurrentPageNumber(page));
-  const onSetNextLink = (nextLink : string) => dispatch(setNextLink(nextLink));
+  const onSetDataCount = (count: number) => dispatch(setDataCount(count));
+  const onSetCurrentPage = (page: number) =>
+    dispatch(setCurrentPageNumber(page));
+  const onSetNextLink = (nextLink: string) => dispatch(setNextLink(nextLink));
   const onClearSearchText = () => dispatch(clearSearchText());
   const onClearExistData = () => dispatch(clearExistData());
+  const onSetFoodItems = (foodItems: Hit[][] | []) =>
+    dispatch(setFoodItems(foodItems));
 
+  const clearReducer = () => {
+    onSetCurrentPage(1);
+    onClearExistData();
+    onSetDataCount(0);
+    onSetNextLink("");
+    onSetFoodItems([]);
+  };
   const searchButtonClickHandler = () => {
+    clearReducer();
     onSetSearchText(inputText);
-
-  }
+  };
 
   const renderLink = useCallback(() => {
-    if (searchText.replace(/\s/gi, "").length > 0) {
+    if (inputText.replace(/\s/gi, "").length > 0) {
       return (
-        <Link to={`/search?q=${searchText}`}>
-          <SearchButton
-            on="true"
-           onClick = {searchButtonClickHandler} 
-          >
+        <Link to={`/search?q=${inputText}`}>
+          <SearchButton on="true" onClick={searchButtonClickHandler}>
             SEARCH
           </SearchButton>
         </Link>
@@ -85,14 +100,18 @@ const InputCom = () => {
     } else {
       return <SearchButton on="false">SEARCH</SearchButton>;
     }
-  },[searchText])
+  }, [inputText]);
+
+  useEffect(() => {
+    console.log(inputText);
+  }, [inputText]);
   return (
     <InputBox>
       <Input
         placeholder="Please write english."
         onChange={(e) => {
           // onSetSearchText(e.target.value);
-          setInputText(e.target.value)
+          setInputText(e.target.value);
         }}
       />
       <ButtonBox>{renderLink()}</ButtonBox>

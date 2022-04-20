@@ -58,12 +58,16 @@ const Image = styled.img<{ isOnLoaded: boolean }>`
 `;
 
 const LoadingImage = styled.div`
-  width: 200px !important;
-  height: 200px;
+  min-width: 200px;
+  min-height: 200px;
   background-color: #e5e5e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: image;
   @media ${({ theme }) => theme.size_5} {
-    width: 160px;
-    height: 160px;
+    min-width: 160px;
+    min-height: 160px;
   }
 `;
 

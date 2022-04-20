@@ -92,7 +92,7 @@ const Search = () => {
 
   useEffect(() => {
     if (searchText.length > 0 && foodItems.length === 0) {
-      clearReducer();
+      // clearReducer();
       getData()
         .then((res: Hit[]) => {
           const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성

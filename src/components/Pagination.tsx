@@ -14,6 +14,8 @@ import { ITEM_LENGTH } from "../pages/Search";
 import { Hit } from "./type2";
 import { getRecipeFromNextLink } from "../functions/apiCall";
 
+const PAGE_BY_API_CALL = 10; //API CALL 한번에 보여줄 수 있는 페이지 (40개 , 1페이지당 4개, 총 10페이지)
+
 const PaginationBox = styled.div`
   display: flex;
   padding: 1rem 2rem;
@@ -100,10 +102,12 @@ const Pagination = () => {
   const rightClickHandler = () => {
     const nextPageNumber = lineNum + pageUnit + 1;
     onSetCurrentPageNumber(nextPageNumber);
-    if (lineNum % 0 === 0) {
-      if (!exist[lineNum + pageUnit]?.exist && nextLink.length > 0) {
-        onAddExistData(lineNum + pageUnit, true);
+    if (lineNum % PAGE_BY_API_CALL === 0) {
+        console.log(!exist[lineNum + PAGE_BY_API_CALL]?.exist)
+      if (!exist[lineNum + PAGE_BY_API_CALL]?.exist && nextLink.length > 0) {
+        onAddExistData(lineNum + PAGE_BY_API_CALL, true);
         //data 추가로받아와서 set해주기
+        console.log("오른쪽 버튼 클릭하여 getData")
         getData(nextLink)
           .then((res: Hit[]) => {
             const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
