@@ -1,3 +1,5 @@
+import { Hit } from "../components/type2";
+
 const SET_SEARCH_TEXT = "search/SET_SEARCH_TEXT" as const;
 const CLEAR_SEARCH_TEXT = "search/CLEAR_SEARCH_TEXT" as const;
 const SET_CURRENT_PAGE = "search/SET_CURRENT_PAGE" as const;
@@ -5,6 +7,8 @@ const SET_DATA_COUNT = "search/SET_DATA_COUNT" as const;
 const ADD_EXIST_DATA = "search/ADD_EXIST_DATA" as const;
 const SET_NEXT_LINK = "search/SET_NEXT_LINK" as const;
 const CLEAR_EXIST_DATA = "search/CLEAR_EXIST_DATA" as const;
+const SET_FOODITEMS = "search/SET_FOODITEMS" as const;
+const ADD_FOODITEMS = "search/ADD_FOODITEMS" as const;
 
 // 인터페이스
 interface IState {
@@ -13,6 +17,7 @@ interface IState {
   dataCount: number;
   existData: IExistData;
   nextLink: string;
+  foodItems: Hit[][] | [];
 }
 interface IExistData {
   [key: number]: { exist: boolean };
@@ -53,6 +58,16 @@ export const setNextLink = (nextLink: string) => ({
   payload: { nextLink: nextLink },
 });
 
+export const setFoodItems = (foodItems: Hit[][] | []) => ({
+  type: SET_FOODITEMS,
+  payload: { foodItems: foodItems },
+});
+
+export const addFoodItems = (foodItems: Hit[][]) => ({
+  type: ADD_FOODITEMS,
+  payload: { foodItems: foodItems },
+});
+
 type ActionSearchReducer =
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof clearSearchText>
@@ -60,7 +75,9 @@ type ActionSearchReducer =
   | ReturnType<typeof setDataCount>
   | ReturnType<typeof addExistData>
   | ReturnType<typeof setNextLink>
-  | ReturnType<typeof clearExistData> ;
+  | ReturnType<typeof clearExistData>
+  | ReturnType<typeof setFoodItems>
+  | ReturnType<typeof addFoodItems>;
 
 // 초기값 선언
 const initialState: IState = {
@@ -73,9 +90,9 @@ const initialState: IState = {
     },
   },
   nextLink: "",
+  foodItems: [],
 };
 
-//current routes를 추가해야할까?
 
 //리듀서 선언
 export default function searchReducer(
@@ -112,12 +129,23 @@ export default function searchReducer(
     case CLEAR_EXIST_DATA:
       return {
         ...state,
-        existData : { 0 : {exist : false} },
+        existData: { 0: { exist: false } },
       };
     case SET_NEXT_LINK:
       return {
         ...state,
         nextLink: action.payload.nextLink,
+      };
+    case SET_FOODITEMS:
+      return {
+        ...state,
+        foodItems: action.payload.foodItems,
+      };
+    case ADD_FOODITEMS:
+      const newFoodItem = action.payload.foodItems;
+      return {
+        ...state,
+        foodItems: [...state.foodItems, ...newFoodItem],
       };
     default:
       return state;

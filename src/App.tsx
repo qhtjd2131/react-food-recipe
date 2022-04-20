@@ -17,6 +17,7 @@ const GlobalWrapper = styled.div`
 
 const App = () => {
   console.log(store.getState())
+
   return (
     <GlobalWrapper>
       <BrowserRouter>

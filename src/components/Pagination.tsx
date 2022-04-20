@@ -4,6 +4,7 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addExistData,
+  addFoodItems,
   setCurrentPageNumber,
   setNextLink,
 } from "../redux-modules/search";
@@ -41,10 +42,7 @@ const SpaceBlock = styled.div`
   border-radius: 50%;
 `;
 
-interface IPagination {
-  setFoodItems: React.Dispatch<React.SetStateAction<[] | Hit[][]>>;
-}
-const Pagination = ({ setFoodItems }: IPagination) => {
+const Pagination = () => {
   const { height, width } = useWindowDimensions();
   const [pageUnit, setPageUnit] = useState(10);
   useEffect(() => {
@@ -82,6 +80,9 @@ const Pagination = ({ setFoodItems }: IPagination) => {
     dispatch(setCurrentPageNumber(num));
   const onSetNextLink = (nextLink: string) => dispatch(setNextLink(nextLink));
 
+  const onAddFoodItems = (foodItems: Hit[][]) =>
+    dispatch(addFoodItems(foodItems));
+
   const pageNumArr = [];
 
   for (let i = 1; i <= pageUnit; i++) {
@@ -99,22 +100,21 @@ const Pagination = ({ setFoodItems }: IPagination) => {
   const rightClickHandler = () => {
     const nextPageNumber = lineNum + pageUnit + 1;
     onSetCurrentPageNumber(nextPageNumber);
-    if (lineNum % 10 === 0) {
-      if (!exist[lineNum]?.exist && nextLink.length > 0) {
-        onAddExistData(lineNum, true);
+    if (lineNum % 0 === 0) {
+      if (!exist[lineNum + pageUnit]?.exist && nextLink.length > 0) {
+        onAddExistData(lineNum + pageUnit, true);
         //data 추가로받아와서 set해주기
         getData(nextLink)
           .then((res: Hit[]) => {
             const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
 
-            setFoodItems((items: Hit[][] | []) => {
-              const temp = [];
-              while (res_copy.length > 0) {
-                const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
-                temp.push(temp_a);
-              }
-              return [...items, ...temp];
-            });
+            const temp: Hit[][] = [];
+            while (res_copy.length > 0) {
+              const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+              temp.push(temp_a);
+            }
+
+            onAddFoodItems(temp);
           })
           .catch((error) => {
             console.log(error.code);

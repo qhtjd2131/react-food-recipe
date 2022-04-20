@@ -7,6 +7,7 @@ import DefaultPageLayout from "./DefaultPageLayout";
 import QueryString from "qs";
 import { getRecipeFromId } from "../functions/apiCall";
 import { getIngredients } from "../components/FoodItem";
+import { store } from "..";
 
 //styled-components//
 
@@ -62,7 +63,7 @@ const Recipe = () => {
   const location = useLocation();
   const state = location.state as StateInterface;
   console.log(location);
-
+    console.log(store.getState())
   const [isLoading, setIsLoading] = useState(() => {
     return state === null ? true : false;
   });
@@ -169,6 +170,9 @@ const Recipe = () => {
     </DefaultPageLayout>
   ) : (
     <DefaultPageLayout>
+        <button onClick = {()=>{
+            console.log(store.getState())
+        }} >button</button>
       <RecipeBox>
         <HeadLabel>Food Infos</HeadLabel>
         <NameLabel>{data.name}</NameLabel>

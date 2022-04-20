@@ -4,10 +4,12 @@ import styled from "styled-components";
 import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addExistData,
   clearExistData,
   clearSearchText,
   setCurrentPageNumber,
   setDataCount,
+  setFoodItems,
   setNextLink,
   setSearchText,
 } from "../redux-modules/search";
@@ -17,6 +19,7 @@ import { getRecipe } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
 import DefaultPageLayout from "./DefaultPageLayout";
+import { store } from "..";
 
 export const ITEM_LENGTH = 4;
 
@@ -29,7 +32,9 @@ const SearchTitle = styled.p`
 `;
 
 const Search = () => {
-  const [foodItems, setFoodItems] = useState<Hit[][] | []>([]);
+  const foodItems = useSelector(
+    (state: RootState) => state.searchReducer.foodItems
+  );
 
   const searchText = useSelector(
     (state: RootState) => state.searchReducer.searchText
@@ -48,6 +53,11 @@ const Search = () => {
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
   const onSetDataCount = (count: number) => dispatch(setDataCount(count));
   const onSetNextLink = (nextLink: string) => dispatch(setNextLink(nextLink));
+  const onAddExistData = (key: number, value: boolean) =>
+    dispatch(addExistData(key, value));
+
+  const onSetFoodItems = (foodItems: Hit[][]) =>
+    dispatch(setFoodItems(foodItems));
 
   const onSetCurrentPage = (page: number) =>
     dispatch(setCurrentPageNumber(page));
@@ -68,33 +78,41 @@ const Search = () => {
     return result.data;
   };
 
-  const clearReducer = (queryString: string) => {
+  const clearReducer = () => {
     onSetCurrentPage(1);
-    onSetSearchText(queryString);
     onClearExistData();
     onSetDataCount(0);
     onSetNextLink("");
-    setFoodItems([]);
+    onSetFoodItems([]);
   };
 
   useEffect(() => {
     if (queryString.length > 0) onSetSearchText(queryString);
   }, [queryString]);
+
   useEffect(() => {
-    if (searchText.length > 0) {
-      clearReducer(searchText);
+    if (searchText.length > 0 && foodItems.length === 0) {
+      clearReducer();
       getData()
         .then((res: Hit[]) => {
           const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
+          // const res_copy2 = res.slice();
+          // setFoodItems((items: Hit[][] | []) => {
+          //   const temp= [];
+          //   while (res_copy.length > 0) {
+          //     const temp_a : Hit[]= res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+          //     temp.push(temp_a);
+          //   }
+          //   return temp;
+          // });
 
-          setFoodItems((items: Hit[][] | []) => {
-            const temp = [];
-            while (res_copy.length > 0) {
-              const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
-              temp.push(temp_a);
-            }
-            return temp;
-          });
+          const temp: Hit[][] = [];
+          while (res_copy.length > 0) {
+            const temp_a: Hit[] = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+            temp.push(temp_a);
+          }
+          onSetFoodItems(temp);
+          onAddExistData(0, true);
         })
         .catch((error) => {
           console.log(error);
@@ -112,7 +130,10 @@ const Search = () => {
     <DefaultPageLayout>
       <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
       <FoodList items={foodItems[item_index]} />
-      <Pagination setFoodItems={setFoodItems} />
+      <Pagination />
+      <button onClick = {()=>{
+            console.log(store.getState())
+        }} >button</button>
     </DefaultPageLayout>
   );
 };
