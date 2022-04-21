@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { LoadingBox } from "../components/FoodList";
@@ -145,8 +145,8 @@ const Recipe = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("render recipe page");
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -229,7 +229,3 @@ const Recipe = () => {
 };
 
 export default Recipe;
-
-// MainPage Search button 로직 다시보기 : 새로고침안하면 아무검색어가 없어도 검색버튼 활성화됨
-// 리팩토링 필요한곳 리팩토링
-// footer 제작 edam 로고 부착 필수

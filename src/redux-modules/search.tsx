@@ -9,6 +9,7 @@ const SET_NEXT_LINK = "search/SET_NEXT_LINK" as const;
 const CLEAR_EXIST_DATA = "search/CLEAR_EXIST_DATA" as const;
 const SET_FOODITEMS = "search/SET_FOODITEMS" as const;
 const ADD_FOODITEMS = "search/ADD_FOODITEMS" as const;
+const SET_IS_LOADING = "search/SET_IS_LOADING" as const;
 
 // 인터페이스
 interface IState {
@@ -17,6 +18,7 @@ interface IState {
   dataCount: number;
   existData: IExistData;
   nextLink: string;
+  isLoading : boolean;
   foodItems: Hit[][] | [];
 }
 interface IExistData {
@@ -68,6 +70,11 @@ export const addFoodItems = (foodItems: Hit[][]) => ({
   payload: { foodItems: foodItems },
 });
 
+export const setIsLoading = ( bool : boolean) => ({
+  type : SET_IS_LOADING,
+  payload : {isLoading : bool},
+})
+
 type ActionSearchReducer =
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof clearSearchText>
@@ -77,7 +84,8 @@ type ActionSearchReducer =
   | ReturnType<typeof setNextLink>
   | ReturnType<typeof clearExistData>
   | ReturnType<typeof setFoodItems>
-  | ReturnType<typeof addFoodItems>;
+  | ReturnType<typeof addFoodItems>
+| ReturnType<typeof setIsLoading>;
 
 // 초기값 선언
 const initialState: IState = {
@@ -91,6 +99,7 @@ const initialState: IState = {
   },
   nextLink: "",
   foodItems: [],
+  isLoading : true,
 };
 
 
@@ -147,6 +156,11 @@ export default function searchReducer(
         ...state,
         foodItems: [...state.foodItems, ...newFoodItem],
       };
+      case SET_IS_LOADING:
+        return{
+          ...state,
+          isLoading : action.payload.isLoading,
+        }
     default:
       return state;
   }

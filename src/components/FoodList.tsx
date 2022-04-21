@@ -45,29 +45,26 @@ const ZeroDataBox = styled.div`
 `;
 interface IFoodListProps {
   items: Hit[] | undefined;
-  isZeroData : boolean;
+  isZeroData: boolean;
+  isLoading: boolean;
 }
 
-const FoodList = ({ items, isZeroData }: IFoodListProps) => {
-
-
-
-  return (
-    
+const FoodList = ({ items, isZeroData, isLoading }: IFoodListProps) => {
+  if (isLoading) {
+    return <FoodListBox>loading...</FoodListBox>;
+  } else {
+    return (
       <FoodListBox>
         {isZeroData ? (
           <ZeroDataBox>zero data</ZeroDataBox>
         ) : (
           items?.map((info) => (
-            <FoodItem
-              foodinfo={info}
-              key={info._links.self.href}
-            />
+            <FoodItem foodinfo={info} key={info._links.self.href} />
           ))
         )}
       </FoodListBox>
-    
-  );
+    );
+  }
 };
 
 export default FoodList;

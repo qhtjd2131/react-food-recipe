@@ -6,6 +6,7 @@ import {
   addExistData,
   addFoodItems,
   setCurrentPageNumber,
+  setIsLoading,
   setNextLink,
 } from "../redux-modules/search";
 import { RootState } from "../redux-modules/index";
@@ -44,6 +45,8 @@ const SpaceBlock = styled.div`
   border-radius: 50%;
 `;
 
+interface IPagination {
+}
 const Pagination = () => {
   const { height, width } = useWindowDimensions();
   const [pageUnit, setPageUnit] = useState(10);
@@ -69,6 +72,7 @@ const Pagination = () => {
     (state: RootState) => state.searchReducer.nextLink
   );
 
+
   const pageCount = Math.floor(dataCount / ITEM_LENGTH) + 1; //ITEM_LENGTH : 한 페이지당 데이터 갯수
   const lineCount = Math.floor(pageCount / pageUnit) + 1;
   const lineNum = Math.floor((currentPageNumber - 1) / pageUnit) * pageUnit;
@@ -84,6 +88,8 @@ const Pagination = () => {
 
   const onAddFoodItems = (foodItems: Hit[][]) =>
     dispatch(addFoodItems(foodItems));
+
+    const onSetIsLoading = (bool : boolean) => dispatch(setIsLoading(bool));
 
   const pageNumArr = [];
 
@@ -102,14 +108,12 @@ const Pagination = () => {
   const rightClickHandler = () => {
     const nextPageNumber = lineNum + pageUnit + 1;
     const nextLineNum = lineNum + pageUnit;
-    console.log("linenum : ", lineNum);
     onSetCurrentPageNumber(nextPageNumber);
     if (nextLineNum % PAGE_BY_API_CALL === 0) {
-      console.log(!exist[lineNum + PAGE_BY_API_CALL]?.exist);
       if (!exist[lineNum + PAGE_BY_API_CALL]?.exist && nextLink.length > 0) {
+        onSetIsLoading(true);
         onAddExistData(lineNum + PAGE_BY_API_CALL, true);
-        //data 추가로받아와서 set해주기
-        console.log("오른쪽 버튼 클릭하여 getData");
+
         getData(nextLink)
           .then((res: Hit[]) => {
             const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
@@ -119,7 +123,7 @@ const Pagination = () => {
               const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
               temp.push(temp_a);
             }
-
+            onSetIsLoading(false);
             onAddFoodItems(temp);
           })
           .catch((error) => {
@@ -140,10 +144,6 @@ const Pagination = () => {
   const checkSelected = (pageNum: number) => {
     return currentPageNumber === pageNum ? true : false;
   };
-
-  useEffect(() => {
-    //test
-  });
 
   return (
     <PaginationBox>

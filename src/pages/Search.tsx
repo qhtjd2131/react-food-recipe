@@ -5,9 +5,9 @@ import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addExistData,
-
   setDataCount,
   setFoodItems,
+  setIsLoading,
   setNextLink,
   setSearchText,
 } from "../redux-modules/search";
@@ -30,7 +30,6 @@ const SearchTitle = styled.p`
 `;
 
 const Search = () => {
-
   const [isZeroData, setIsZeroData] = useState(false);
   const foodItems = useSelector(
     (state: RootState) => state.searchReducer.foodItems
@@ -42,7 +41,9 @@ const Search = () => {
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
   );
-
+  const isLoading = useSelector(
+    (state: RootState) => state.searchReducer.isLoading
+  );
   const item_index = currentPageNumber - 1;
 
   const location = useLocation();
@@ -55,7 +56,7 @@ const Search = () => {
 
   const onSetFoodItems = (foodItems: Hit[][]) =>
     dispatch(setFoodItems(foodItems));
-
+  const onSetIsLoading = (bool: boolean) => dispatch(setIsLoading(bool));
 
   const queryString: any = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -72,9 +73,14 @@ const Search = () => {
     return result.data;
   };
 
-
   useEffect(() => {
-    if (queryString.length > 0) onSetSearchText(queryString);
+    if (queryString.length > 0) {
+      onSetSearchText(queryString);
+    }
+
+    if (foodItems.length === 0) {
+      onSetIsLoading(true);
+    }
   }, [queryString]);
 
   useEffect(() => {
@@ -91,7 +97,8 @@ const Search = () => {
           }
           onSetFoodItems(temp);
           onAddExistData(0, true);
-          if(temp.length === 0) setIsZeroData(true);
+          onSetIsLoading(false);
+          if (temp.length === 0) setIsZeroData(true);
         })
         .catch((error) => {
           console.log(error);
@@ -99,15 +106,25 @@ const Search = () => {
     }
   }, [searchText]);
 
-
+  // useEffect(()=>{
+  //   onSetIsLoading(true);
+  // }, [])
   return (
     <DefaultPageLayout>
       <SearchTitle>{"'" + queryString + "' 검색 결과"}</SearchTitle>
-      <FoodList items={foodItems[item_index]} isZeroData={isZeroData} />
+      <FoodList
+        items={foodItems[item_index]}
+        isZeroData={isZeroData}
+        isLoading={isLoading}
+      />
       <Pagination />
-      <button onClick = {()=>{
-            console.log(store.getState())
-        }} >button</button>
+      <button
+        onClick={() => {
+          console.log(store.getState());
+        }}
+      >
+        button
+      </button>
     </DefaultPageLayout>
   );
 };
