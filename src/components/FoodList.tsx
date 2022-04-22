@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import FoodItem from "./FoodItem";
+import Loading from "./Loading";
 import { Hit } from "./type2";
 
 const FoodListBox = styled.div`
@@ -27,7 +28,6 @@ const FoodListBox = styled.div`
 `;
 
 export const LoadingBox = styled.div`
-  font-size: 4rem;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -51,7 +51,14 @@ interface IFoodListProps {
 
 const FoodList = ({ items, isZeroData, isLoading }: IFoodListProps) => {
   if (isLoading) {
-    return <FoodListBox>loading...</FoodListBox>;
+    // isLoading
+    return (
+      <FoodListBox>
+        <LoadingBox>
+          <Loading />
+        </LoadingBox>
+      </FoodListBox>
+    );
   } else {
     return (
       <FoodListBox>

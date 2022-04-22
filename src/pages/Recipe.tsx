@@ -8,6 +8,7 @@ import QueryString from "qs";
 import { getRecipeFromId } from "../functions/apiCall";
 import { getIngredients } from "../components/FoodItem";
 import { store } from "..";
+import Loading from "../components/Loading";
 
 //styled-components//
 
@@ -195,7 +196,7 @@ const Recipe = () => {
 
   return isLoading ? (
     <DefaultPageLayout>
-      <LoadingBox>LOADING ...</LoadingBox>
+      <LoadingBox><Loading /></LoadingBox>
     </DefaultPageLayout>
   ) : (
     <DefaultPageLayout>

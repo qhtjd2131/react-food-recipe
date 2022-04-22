@@ -152,7 +152,8 @@ const NeedsBox = styled.div`
   /* white-space : nowrap; */
   padding-top: 0.8rem;
   flex-wrap: wrap;
-  gap: 0.2rem;
+  overflow: hidden;
+
 `;
 
 const NeedsTag = styled.div`
@@ -161,8 +162,10 @@ const NeedsTag = styled.div`
   background-color: inherit;
   color: gray;
   box-sizing: border-box;
+  height: 25.6px;
   padding: 0.4rem;
   font-weight: 500;
+  
   &::before {
     content: "| ";
   }
@@ -173,6 +176,7 @@ const PersonIconBox = styled.div`
   justify-content: flex-start;
   width: 100%;
   flex-wrap: wrap;
+  margin-top : 0.4rem;
 `;
 
 const HeadContentsWrapper = styled.div`
@@ -414,7 +418,6 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
           <HeadContentsWrapper>
             <NameBox>
               <Name>{foodName}</Name>
-              <PersonIcon personCount={serving}></PersonIcon>
             </NameBox>
             <CuisineTypeBox>
               {cuisineType.map((type, key) => {
@@ -424,6 +427,8 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
               })}
             </CuisineTypeBox>
           </HeadContentsWrapper>
+          <PersonIcon personCount={serving}></PersonIcon>
+
           <NeedsBox>
             {needs.map((ingredient, key) => (
               <NeedsTag key={key}>{ingredient.food}</NeedsTag>
