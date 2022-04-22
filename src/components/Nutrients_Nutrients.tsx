@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { GoPrimitiveDot } from "react-icons/go";
-import { BlackLabel } from "./FoodItem";
+import { BlackText } from "./FoodItem";
 
 const NutrientsItem = styled.div`
   display: flex;
   justify-content: space-between;
+  cursor : pointer;
+
 `;
 const IconWithText = styled.div`
   display: flex;
@@ -50,9 +52,9 @@ const FoodItemNutrients = ({ value }: FINutrinetsProps) => {
     <NutrientsItem>
       <IconWithText>
         <NetrientsIcon color={color} />
-        <BlackLabel>{value.krText}</BlackLabel>
+        <BlackText>{value.krText}</BlackText>
       </IconWithText>
-      <BlackLabel>{value.value}</BlackLabel>
+      <BlackText>{value.value}</BlackText>
     </NutrientsItem>
   );
 };

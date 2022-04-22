@@ -114,6 +114,7 @@ const NutrientsBox = styled.div`
   align-items: center;
   grid-area: nutrients;
   transition: inherit;
+  cursor : pointer;
   @media ${({ theme }) => theme.size_10} {
     height: auto;
   }
@@ -129,9 +130,10 @@ const MainNutrients = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 0.4rem;
+  cursor : pointer;
 `;
 
-export const BlackLabel = styled.label`
+export const BlackText = styled.p`
   font-weight: 600;
   font-size: 1rem;
   font-weight: 500;
@@ -140,7 +142,7 @@ export const BlackLabel = styled.label`
   align-items: center;
 `;
 
-export const GrayLabel = styled.label`
+export const GrayText = styled.p`
   color: gray;
   font-size: 1rem;
   font-weight: 500;

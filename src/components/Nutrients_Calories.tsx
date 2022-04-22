@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import {  GrayLabel } from "./FoodItem";
+import { GrayText } from "./FoodItem";
 import { roundToTwo } from "../functions/othersFunctions";
 
+const KcalBox = styled.div`
 
-const KcalBox = styled.label`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom : 0.4rem;
-  
+  margin-bottom: 0.4rem;
 `;
 
 interface FICaloriesProps {
@@ -26,7 +25,7 @@ const FoodItemCalories = ({
   return (
     <KcalBox>
       {roundToTwo(foodTotalCalories) + " kcal"}
-      <GrayLabel>{"(1인) " + foodCaloriesForServing + " kcal"}</GrayLabel>
+      <GrayText>{"(1인) " + foodCaloriesForServing + " kcal"}</GrayText>
     </KcalBox>
   );
 };

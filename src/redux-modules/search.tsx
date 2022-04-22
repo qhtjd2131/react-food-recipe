@@ -10,6 +10,7 @@ const CLEAR_EXIST_DATA = "search/CLEAR_EXIST_DATA" as const;
 const SET_FOODITEMS = "search/SET_FOODITEMS" as const;
 const ADD_FOODITEMS = "search/ADD_FOODITEMS" as const;
 const SET_IS_LOADING = "search/SET_IS_LOADING" as const;
+const SET_IS_LIMITED_CALL = "search/SET_IS_LIMITED_CALL" as const;
 
 // 인터페이스
 interface IState {
@@ -18,7 +19,8 @@ interface IState {
   dataCount: number;
   existData: IExistData;
   nextLink: string;
-  isLoading : boolean;
+  isLoading: boolean;
+  isLimitedCall: boolean;
   foodItems: Hit[][] | [];
 }
 interface IExistData {
@@ -70,11 +72,15 @@ export const addFoodItems = (foodItems: Hit[][]) => ({
   payload: { foodItems: foodItems },
 });
 
-export const setIsLoading = ( bool : boolean) => ({
-  type : SET_IS_LOADING,
-  payload : {isLoading : bool},
-})
+export const setIsLoading = (bool: boolean) => ({
+  type: SET_IS_LOADING,
+  payload: { isLoading: bool },
+});
 
+export const setIsLimitedCall = (bool: boolean) => ({
+  type: SET_IS_LIMITED_CALL,
+  payload: { isLimitedCall: bool },
+});
 type ActionSearchReducer =
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof clearSearchText>
@@ -85,7 +91,8 @@ type ActionSearchReducer =
   | ReturnType<typeof clearExistData>
   | ReturnType<typeof setFoodItems>
   | ReturnType<typeof addFoodItems>
-| ReturnType<typeof setIsLoading>;
+  | ReturnType<typeof setIsLoading>
+  | ReturnType<typeof setIsLimitedCall>;
 
 // 초기값 선언
 const initialState: IState = {
@@ -99,9 +106,9 @@ const initialState: IState = {
   },
   nextLink: "",
   foodItems: [],
-  isLoading : true,
+  isLoading: true,
+  isLimitedCall: false,
 };
-
 
 //리듀서 선언
 export default function searchReducer(
@@ -156,11 +163,16 @@ export default function searchReducer(
         ...state,
         foodItems: [...state.foodItems, ...newFoodItem],
       };
-      case SET_IS_LOADING:
-        return{
-          ...state,
-          isLoading : action.payload.isLoading,
-        }
+    case SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload.isLoading,
+      };
+    case SET_IS_LIMITED_CALL:
+      return {
+        ...state,
+        isLimitedCall: action.payload.isLimitedCall,
+      };
     default:
       return state;
   }
