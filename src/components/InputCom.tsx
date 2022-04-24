@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSearchText,
@@ -56,6 +56,7 @@ const SearchButton = styled.button<{ on: string }>`
 `;
 const InputCom = () => {
   const [inputText, setInputText] = useState("");
+  const navigation = useNavigate();
   // input으로 받은 state 처리 필요
 
   const searchText = useSelector(
@@ -78,6 +79,11 @@ const InputCom = () => {
     }
   };
 
+  const enterPressHandler = () => {
+    searchButtonClickHandler();
+    navigation(`/search?q=${inputText}`);
+  };
+
   const renderLink = useCallback(() => {
     if (inputText.replace(/\s/gi, "").length > 0) {
       return (
@@ -92,13 +98,17 @@ const InputCom = () => {
     }
   }, [inputText]);
 
-
   return (
     <InputBox>
       <Input
         placeholder="Please write english."
         onChange={(e) => {
           setInputText(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && inputText.length > 0) {
+            enterPressHandler();
+          }
         }}
       />
       <ButtonBox>{renderLink()}</ButtonBox>
