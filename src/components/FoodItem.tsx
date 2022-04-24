@@ -237,10 +237,6 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
   const [isOpenOverlay, setIsOpenOverlay] = useState(false);
   const [isOnLoaded, setIsOnLoaded] = useState(false);
 
-  useEffect(() => {
-    console.log("isOpenOverlay", isOpenOverlay);
-  }, [isOpenOverlay]);
-
   const foodInfo: Hit = foodinfo;
   const foodName = foodInfo.recipe.label;
 

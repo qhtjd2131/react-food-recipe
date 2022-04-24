@@ -1,4 +1,4 @@
-import React, { useEffect,useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { LoadingBox } from "../components/FoodList";
@@ -9,6 +9,8 @@ import { getRecipeFromId } from "../functions/apiCall";
 import { getIngredients } from "../components/FoodItem";
 import { store } from "..";
 import Loading from "../components/Loading";
+import { useDispatch } from "react-redux";
+import { setIsLimitedCall } from "../redux-modules/search";
 
 //styled-components//
 
@@ -94,6 +96,10 @@ const Recipe = () => {
     return state === null ? true : false;
   });
 
+  const dispatch = useDispatch();
+  const onSetIsLimitedCall = (bool: boolean) =>
+    dispatch(setIsLimitedCall(bool));
+
   const [data, setData] = useState<StateInterface>(() => {
     if (state != null) {
       return {
@@ -122,16 +128,22 @@ const Recipe = () => {
   });
 
   const getData = async (id: string) => {
-    await getRecipeFromId(id).then((res) => {
-      console.log(res);
-      setData({
-        recipeInfo: res.recipe.ingredientLines,
-        image: res.recipe.image,
-        name: res.recipe.label,
-        id: id,
-        ingredients: getIngredients(res.recipe.ingredients),
+    await getRecipeFromId(id)
+      .then((res) => {
+        console.log(res);
+        setData({
+          recipeInfo: res.recipe.ingredientLines,
+          image: res.recipe.image,
+          name: res.recipe.label,
+          id: id,
+          ingredients: getIngredients(res.recipe.ingredients),
+        });
+      })
+      .catch((error) => {
+        if (error.message === "Network Error") {
+          onSetIsLimitedCall(true);
+        }
       });
-    });
   };
   useEffect(() => {
     if (state === null || state.recipeInfo === undefined) {
@@ -140,9 +152,7 @@ const Recipe = () => {
         ignoreQueryPrefix: true,
         parameterLimit: 1,
       }).id;
-      console.log(queryString);
       getData(queryString);
-      console.log("get data from id !!!!!!!!!!!!!!!!!!!!");
     }
   }, []);
 
@@ -196,7 +206,9 @@ const Recipe = () => {
 
   return isLoading ? (
     <DefaultPageLayout>
-      <LoadingBox><Loading /></LoadingBox>
+      <LoadingBox>
+        <Loading />
+      </LoadingBox>
     </DefaultPageLayout>
   ) : (
     <DefaultPageLayout>

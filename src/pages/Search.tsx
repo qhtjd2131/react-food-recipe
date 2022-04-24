@@ -5,6 +5,7 @@ import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addExistData,
+  clearExistData,
   setDataCount,
   setFoodItems,
   setIsLimitedCall,
@@ -36,14 +37,17 @@ const Search = () => {
     (state: RootState) => state.searchReducer.foodItems
   );
 
-  const searchText = useSelector(
-    (state: RootState) => state.searchReducer.searchText
+  const searchText = useSelector((state: RootState) =>
+    state.searchReducer.searchText
   );
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
   );
   const isLoading = useSelector(
     (state: RootState) => state.searchReducer.isLoading
+  );
+  const isLimitedCall = useSelector(
+    (state: RootState) => state.searchReducer.isLimitedCall
   );
   const item_index = currentPageNumber - 1;
 
@@ -57,7 +61,9 @@ const Search = () => {
   const onSetFoodItems = (foodItems: Hit[][]) =>
     dispatch(setFoodItems(foodItems));
   const onSetIsLoading = (bool: boolean) => dispatch(setIsLoading(bool));
-  const onSetIsLimitedCall = (bool: boolean) => dispatch(setIsLimitedCall);
+  const onSetIsLimitedCall = (bool: boolean) =>
+    dispatch(setIsLimitedCall(bool));
+  const onClearExistData = () => dispatch(clearExistData());
 
   const queryString: any = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -65,14 +71,6 @@ const Search = () => {
   }).q;
 
   const getData = async (): Promise<recipeInterface> => {
-    // const result = await getRecipe(queryString); // "chicken => queryString"
-    // console.log("SEARCH : getdata 실행");
-
-    // onSetDataCount(result.count);
-    // onSetNextLink(result.nextLink);
-
-    // return result.data;
-
     return await getRecipe(queryString); // "chicken => queryString"
   };
 
@@ -88,13 +86,17 @@ const Search = () => {
 
   useEffect(() => {
     if (searchText.length > 0 && foodItems.length === 0) {
+      console.log("검색 effect 실행");
       setIsZeroData(false);
+      onClearExistData();
+      onSetIsLimitedCall(false);
+
       getData()
         .then((res: recipeInterface) => {
           onSetDataCount(res.count);
           onSetNextLink(res.nextLink);
-          const res_copy = res.data.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
 
+          const res_copy = res.data.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
           const temp: Hit[][] = [];
           while (res_copy.length > 0) {
             const temp_a: Hit[] = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
@@ -112,9 +114,15 @@ const Search = () => {
           onSetNextLink("");
           onSetFoodItems([]);
           console.log("dddd :", error);
+          console.log(error.message);
           if (error.message === "Network Error") {
+            console.log("network erroe 인것 확인");
             onSetIsLimitedCall(true);
           }
+          // apicall error handle
+          // NetWork Error 일때만 처리중이다 다른 에러도 적용해야한다. !
+          // limitedCall 컴포넌트 작성 후 적용
+          // 다른 api call 에서도 error handle 필요
         });
     }
   }, [searchText]);
@@ -126,6 +134,7 @@ const Search = () => {
         items={foodItems[item_index]}
         isZeroData={isZeroData}
         isLoading={isLoading}
+        isLimitedCall={isLimitedCall}
       />
       <Pagination />
       <button

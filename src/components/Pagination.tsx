@@ -6,6 +6,7 @@ import {
   addExistData,
   addFoodItems,
   setCurrentPageNumber,
+  setIsLimitedCall,
   setIsLoading,
   setNextLink,
 } from "../redux-modules/search";
@@ -90,7 +91,7 @@ const Pagination = () => {
     dispatch(addFoodItems(foodItems));
 
     const onSetIsLoading = (bool : boolean) => dispatch(setIsLoading(bool));
-
+const onSetIsLimitedCall = ( bool : boolean) => dispatch(setIsLimitedCall(bool));
   const pageNumArr = [];
 
   for (let i = 1; i <= pageUnit; i++) {
@@ -127,7 +128,11 @@ const Pagination = () => {
             onAddFoodItems(temp);
           })
           .catch((error) => {
-            console.log(error.code);
+            onSetIsLoading(false);
+
+            if(error.message === "Network Error"){
+                onSetIsLimitedCall(true);
+            }
           });
       }
     } //10 은 한번의 apicall이 있을때 받아오는 page 갯수

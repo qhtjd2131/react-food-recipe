@@ -20,12 +20,7 @@ export const getRecipe = async (
     .then((res) => res)
     .catch((error) => {
       // function 내부에서 에러처리 불가능(state 변경 불가능), 따라서 다시 error를 던져서 컴포넌트에서 처리하게 함.
-      if (error.message === "Network Error") throw new Error("Network Error");
-      return {
-        data: [],
-        count: 0,
-        nextLink: undefined,
-      };
+      throw new Error(error.message);
     });
   console.log("result : ", result);
 
@@ -46,14 +41,7 @@ export const getRecipe = async (
     .get(next_links)
     .then((res) => res)
     .catch((error) => {
-      alert(error);
-      if (error.message === "Network Error") throw new Error(error);
-
-      return {
-        data: [],
-        count: 0,
-        nextLink: undefined,
-      };
+      throw new Error(error.message);
     });
 
   return new Promise((resolve, reject) => {
@@ -71,7 +59,12 @@ export const getRecipe = async (
 export const getRecipeFromId = async (id: string): Promise<Hit> => {
   console.log("excute getRecipeFromId function");
   const url = `https://api.edamam.com/api/recipes/v2/${id}?type=public&app_id=${APP_ID}&app_key=${API_KEY}`;
-  const result = await axios.get(url);
+  const result = await axios
+    .get(url)
+    .then((res) => res)
+    .catch((error) => {
+      throw new Error(error.message);
+    });
 
   return new Promise((resolve, reject) => {
     resolve(result.data);
@@ -84,7 +77,12 @@ export const getRecipeFromNextLink = async (
 ): Promise<{ data: Hit[]; count: number; nextLink: string }> => {
   console.log("excute getRecipeFromNextLink");
   const url = nextLink;
-  const result = await axios.get(url);
+  const result = await axios
+    .get(url)
+    .then((res) => res)
+    .catch((error) => {
+      throw new Error(error.message);
+    });
   const nextLinkTemp = result.data._links.next?.href;
 
   if (nextLinkTemp === undefined) {
@@ -98,7 +96,12 @@ export const getRecipeFromNextLink = async (
       reject({ code: "ERROR : CODE_4" });
     });
   }
-  const result2 = await axios.get(nextLinkTemp);
+  const result2 = await axios
+    .get(nextLinkTemp)
+    .then((res) => res)
+    .catch((error) => {
+      throw new Error(error.message);
+    });
 
   return new Promise((resolve, reject) => {
     const merged_result = [...result.data.hits, ...result2.data.hits];

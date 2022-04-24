@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import FoodItem from "./FoodItem";
+import LimitedCall from "./LimitedCall";
 import Loading from "./Loading";
 import { Hit } from "./type2";
 
@@ -47,9 +48,10 @@ interface IFoodListProps {
   items: Hit[] | undefined;
   isZeroData: boolean;
   isLoading: boolean;
+  isLimitedCall : boolean,
 }
 
-const FoodList = ({ items, isZeroData, isLoading }: IFoodListProps) => {
+const FoodList = ({ items, isZeroData, isLoading, isLimitedCall }: IFoodListProps) => {
   if (isLoading) {
     // isLoading
     return (
@@ -59,6 +61,14 @@ const FoodList = ({ items, isZeroData, isLoading }: IFoodListProps) => {
         </LoadingBox>
       </FoodListBox>
     );
+  }else if(isLimitedCall){
+    return (
+        <FoodListBox>
+            <LoadingBox>
+                <LimitedCall />
+            </LoadingBox>
+        </FoodListBox>
+    )
   } else {
     return (
       <FoodListBox>

@@ -1,18 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../redux-modules";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setSearchText,
-  clearSearchText,
-  clearExistData,
-  setDataCount,
-  setCurrentPageNumber,
-  setNextLink,
   setFoodItems,
+  setCurrentPageNumber,
 } from "../redux-modules/search";
 import { Hit } from "./type2";
+import { RootState } from "../redux-modules";
 
 const InputBox = styled.div`
   display: flex;
@@ -61,31 +57,25 @@ const SearchButton = styled.button<{ on: string }>`
 const InputCom = () => {
   const [inputText, setInputText] = useState("");
   // input으로 받은 state 처리 필요
-  const searchText: string = useSelector(
+
+  const searchText = useSelector(
     (state: RootState) => state.searchReducer.searchText
   );
-
   const dispatch = useDispatch();
   const onSetSearchText = (str: string) => dispatch(setSearchText(str));
-  const onSetDataCount = (count: number) => dispatch(setDataCount(count));
   const onSetCurrentPage = (page: number) =>
     dispatch(setCurrentPageNumber(page));
-  const onSetNextLink = (nextLink: string) => dispatch(setNextLink(nextLink));
-  const onClearSearchText = () => dispatch(clearSearchText());
-  const onClearExistData = () => dispatch(clearExistData());
+
   const onSetFoodItems = (foodItems: Hit[][] | []) =>
     dispatch(setFoodItems(foodItems));
 
-  const clearReducer = () => {
-    onSetCurrentPage(1);
-    onClearExistData();
-    onSetDataCount(0);
-    onSetNextLink("");
-    onSetFoodItems([]);
-  };
   const searchButtonClickHandler = () => {
-    clearReducer();
-    onSetSearchText(inputText);
+    if (searchText != inputText) {
+      onSetFoodItems([]);
+      onSetSearchText(inputText);
+    } else {
+      onSetCurrentPage(1);
+    }
   };
 
   const renderLink = useCallback(() => {
@@ -102,15 +92,12 @@ const InputCom = () => {
     }
   }, [inputText]);
 
-  useEffect(() => {
-    console.log(inputText);
-  }, [inputText]);
+
   return (
     <InputBox>
       <Input
         placeholder="Please write english."
         onChange={(e) => {
-          // onSetSearchText(e.target.value);
           setInputText(e.target.value);
         }}
       />
