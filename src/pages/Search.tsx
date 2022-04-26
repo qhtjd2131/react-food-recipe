@@ -77,20 +77,10 @@ const Search = () => {
     return await getRecipe(queryString); // "chicken => queryString"
   };
 
-  useEffect(() => {
-    if (queryString.length > 0) {
-    }
-
-    if (foodItems.length === 0) {
-    }
-
-    console.log("querystring changed");
-  }, [queryString]);
 
   useEffect(() => {
     if (queryString.length > 0 && queryString != searchText) {
       onSetFoodItems([]);
-      onSetSearchText(queryString);
       onSetCurrentPage(1);
       onClearExistData();
 
@@ -102,7 +92,8 @@ const Search = () => {
         .then((res: recipeInterface) => {
           onSetDataCount(res.count);
           onSetNextLink(res.nextLink);
-
+          onSetSearchText(queryString);
+          
           const res_copy = res.data.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
           const temp: Hit[][] = [];
           while (res_copy.length > 0) {
@@ -120,7 +111,6 @@ const Search = () => {
           onSetDataCount(0);
           onSetNextLink("");
           onSetFoodItems([]);
-          console.log("dddd :", error);
           console.log(error.message);
           if (error.message === "Network Error") {
             console.log("network erroe 인것 확인");

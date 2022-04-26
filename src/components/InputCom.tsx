@@ -1,14 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setSearchText,
-  setFoodItems,
-  setCurrentPageNumber,
-} from "../redux-modules/search";
-import { Hit } from "./type2";
-import { RootState } from "../redux-modules";
+
 
 const InputBox = styled.div`
   display: flex;
@@ -57,30 +50,13 @@ const SearchButton = styled.button<{ on: string }>`
 const InputCom = () => {
   const [inputText, setInputText] = useState("");
   const navigation = useNavigate();
-  // input으로 받은 state 처리 필요
+  const inputRef : any = useRef();
 
-  const searchText = useSelector(
-    (state: RootState) => state.searchReducer.searchText
-  );
-  const dispatch = useDispatch();
-  const onSetSearchText = (str: string) => dispatch(setSearchText(str));
-  const onSetCurrentPage = (page: number) =>
-    dispatch(setCurrentPageNumber(page));
-
-  const onSetFoodItems = (foodItems: Hit[][] | []) =>
-    dispatch(setFoodItems(foodItems));
-
-  const searchButtonClickHandler = ()=>{
-    console.log("click handler : searchText", searchText);
-    console.log("click handler : inputtext", inputText);
+  const searchButtonClickHandler = () => {
+    setInputText("");
+    inputRef.current.value="";
   }
 
-  useEffect(() => {
-    // console.log("rerender inputcom")
-    console.log("searchText", searchText);
-    console.log("inputtext", inputText);
-    console.log("----------");
-  });
 
   const enterPressHandler = () => {
     searchButtonClickHandler();
@@ -104,6 +80,7 @@ const InputCom = () => {
   return (
     <InputBox>
       <Input
+      ref={inputRef}
         placeholder="Please write english."
         onChange={(e) => {
           setInputText(e.target.value);
@@ -112,6 +89,7 @@ const InputCom = () => {
           if (e.key === "Enter" && inputText.length > 0) {
             enterPressHandler();
           }
+  
         }}
       />
       <ButtonBox>{renderLink()}</ButtonBox>

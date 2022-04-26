@@ -18,6 +18,7 @@ const HeaderBox = styled.section`
   /* z-index : 999; */
   @media ${({ theme }) => theme.size_5} {
     height: 160px;
+    min-width : 400px;
   }
 `;
 
