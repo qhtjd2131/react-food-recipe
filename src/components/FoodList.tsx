@@ -9,6 +9,7 @@ import FoodItem from "./FoodItem";
 import LimitedCall from "./LimitedCall";
 import Loading from "./Loading";
 import { Hit } from "./type2";
+import ZeroData from "./ZeroData";
 
 const FoodListBox = styled.div`
   width: 1200px;
@@ -36,14 +37,6 @@ export const LoadingBox = styled.div`
   align-items: center;
 `;
 
-const ZeroDataBox = styled.div`
-  width: 100%;
-  height: 100vh;
-  font-size: 4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 interface IFoodListProps {
   items: Hit[] | undefined;
   isZeroData: boolean;
@@ -73,7 +66,7 @@ const FoodList = ({ items, isZeroData, isLoading, isLimitedCall }: IFoodListProp
     return (
       <FoodListBox>
         {isZeroData ? (
-          <ZeroDataBox>zero data</ZeroDataBox>
+          <LoadingBox><ZeroData /></LoadingBox>
         ) : (
           items?.map((info) => (
             <FoodItem foodinfo={info} key={info._links.self.href} />
