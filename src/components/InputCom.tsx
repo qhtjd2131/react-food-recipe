@@ -70,14 +70,17 @@ const InputCom = () => {
   const onSetFoodItems = (foodItems: Hit[][] | []) =>
     dispatch(setFoodItems(foodItems));
 
-  const searchButtonClickHandler = () => {
-    if (searchText != inputText) {
-      onSetFoodItems([]);
-      onSetSearchText(inputText);
-    } else {
-      onSetCurrentPage(1);
-    }
-  };
+  const searchButtonClickHandler = ()=>{
+    console.log("click handler : searchText", searchText);
+    console.log("click handler : inputtext", inputText);
+  }
+
+  useEffect(() => {
+    // console.log("rerender inputcom")
+    console.log("searchText", searchText);
+    console.log("inputtext", inputText);
+    console.log("----------");
+  });
 
   const enterPressHandler = () => {
     searchButtonClickHandler();

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addExistData,
   clearExistData,
+  setCurrentPageNumber,
   setDataCount,
   setFoodItems,
   setIsLimitedCall,
@@ -37,8 +38,8 @@ const Search = () => {
     (state: RootState) => state.searchReducer.foodItems
   );
 
-  const searchText = useSelector((state: RootState) =>
-    state.searchReducer.searchText
+  const searchText = useSelector(
+    (state: RootState) => state.searchReducer.searchText
   );
   const currentPageNumber = useSelector(
     (state: RootState) => state.searchReducer.currentPageNumber
@@ -64,6 +65,8 @@ const Search = () => {
   const onSetIsLimitedCall = (bool: boolean) =>
     dispatch(setIsLimitedCall(bool));
   const onClearExistData = () => dispatch(clearExistData());
+  const onSetCurrentPage = (page: number) =>
+    dispatch(setCurrentPageNumber(page));
 
   const queryString: any = QueryString.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -76,19 +79,23 @@ const Search = () => {
 
   useEffect(() => {
     if (queryString.length > 0) {
-      onSetSearchText(queryString);
     }
 
     if (foodItems.length === 0) {
-      onSetIsLoading(true);
     }
+
+    console.log("querystring changed");
   }, [queryString]);
 
   useEffect(() => {
-    if (searchText.length > 0 && foodItems.length === 0) {
-      console.log("검색 effect 실행");
-      setIsZeroData(false);
+    if (queryString.length > 0 && queryString != searchText) {
+      onSetFoodItems([]);
+      onSetSearchText(queryString);
+      onSetCurrentPage(1);
       onClearExistData();
+
+      onSetIsLoading(true);
+      setIsZeroData(false);
       onSetIsLimitedCall(false);
 
       getData()
@@ -125,7 +132,7 @@ const Search = () => {
           // 다른 api call 에서도 error handle 필요
         });
     }
-  }, [searchText]);
+  }, [queryString, searchText]);
 
   return (
     <DefaultPageLayout>

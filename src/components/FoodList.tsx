@@ -31,7 +31,7 @@ const FoodListBox = styled.div`
 
 export const LoadingBox = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 600px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,10 +41,15 @@ interface IFoodListProps {
   items: Hit[] | undefined;
   isZeroData: boolean;
   isLoading: boolean;
-  isLimitedCall : boolean,
+  isLimitedCall: boolean;
 }
 
-const FoodList = ({ items, isZeroData, isLoading, isLimitedCall }: IFoodListProps) => {
+const FoodList = ({
+  items,
+  isZeroData,
+  isLoading,
+  isLimitedCall,
+}: IFoodListProps) => {
   if (isLoading) {
     // isLoading
     return (
@@ -54,19 +59,21 @@ const FoodList = ({ items, isZeroData, isLoading, isLimitedCall }: IFoodListProp
         </LoadingBox>
       </FoodListBox>
     );
-  }else if(isLimitedCall){
+  } else if (isLimitedCall) {
     return (
-        <FoodListBox>
-            <LoadingBox>
-                <LimitedCall />
-            </LoadingBox>
-        </FoodListBox>
-    )
+      <FoodListBox>
+        <LoadingBox>
+          <LimitedCall />
+        </LoadingBox>
+      </FoodListBox>
+    );
   } else {
     return (
       <FoodListBox>
         {isZeroData ? (
-          <LoadingBox><ZeroData /></LoadingBox>
+          <LoadingBox>
+            <ZeroData />
+          </LoadingBox>
         ) : (
           items?.map((info) => (
             <FoodItem foodinfo={info} key={info._links.self.href} />
