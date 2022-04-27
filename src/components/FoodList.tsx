@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import FoodItem from "./FoodItem";
 import LimitedCall from "./LimitedCall";
@@ -45,6 +45,10 @@ const FoodList = ({
   isLoading,
   isLimitedCall,
 }: IFoodListProps) => {
+
+
+
+
   if (isLoading) {
     return (
       <FoodListBox>

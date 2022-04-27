@@ -4,7 +4,6 @@ import DefaultPageLayout from "./DefaultPageLayout";
 
 const BosungBox = styled.div`
   width: 800px;
-
   display: inline-block;
   line-height: 2rem;
 

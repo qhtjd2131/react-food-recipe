@@ -87,6 +87,12 @@ const Search = () => {
     return await getRecipe(queryString); // "chicken => queryString"
   };
 
+
+  useLayoutEffect(()=>{
+    if(foodItems?.length === 0){
+      setIsZeroData(true);
+    }
+  },[foodItems])
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPageNumber]);

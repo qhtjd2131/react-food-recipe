@@ -11,6 +11,7 @@ const SET_FOODITEMS = "search/SET_FOODITEMS" as const;
 const ADD_FOODITEMS = "search/ADD_FOODITEMS" as const;
 const SET_IS_LOADING = "search/SET_IS_LOADING" as const;
 const SET_IS_LIMITED_CALL = "search/SET_IS_LIMITED_CALL" as const;
+const SET_IS_ZERO_DATA = "search/SET_IS_ZERO_DATA" as const;
 
 // 인터페이스
 interface IState {
@@ -21,6 +22,7 @@ interface IState {
   nextLink: string;
   isLoading: boolean;
   isLimitedCall: boolean;
+  isZeroData : boolean;
   foodItems: Hit[][] | [];
 }
 interface IExistData {
@@ -81,6 +83,12 @@ export const setIsLimitedCall = (bool: boolean) => ({
   type: SET_IS_LIMITED_CALL,
   payload: { isLimitedCall: bool },
 });
+
+export const setIsZeroData = (bool : boolean) => ({
+  type : SET_IS_ZERO_DATA,
+  payload : {isZeroData : bool}
+})
+
 type ActionSearchReducer =
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof clearSearchText>
@@ -92,7 +100,8 @@ type ActionSearchReducer =
   | ReturnType<typeof setFoodItems>
   | ReturnType<typeof addFoodItems>
   | ReturnType<typeof setIsLoading>
-  | ReturnType<typeof setIsLimitedCall>;
+  | ReturnType<typeof setIsLimitedCall>
+  | ReturnType<typeof setIsZeroData>;
 
 // 초기값 선언
 const initialState: IState = {
@@ -108,6 +117,7 @@ const initialState: IState = {
   foodItems: [],
   isLoading: true,
   isLimitedCall: false,
+  isZeroData : false,
 };
 
 //리듀서 선언
@@ -173,6 +183,11 @@ export default function searchReducer(
         ...state,
         isLimitedCall: action.payload.isLimitedCall,
       };
+      case SET_IS_ZERO_DATA:
+        return{
+          ...state,
+          isZeroData : action.payload.isZeroData,
+        }
     default:
       return state;
   }
