@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import QueryString from "qs";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +34,8 @@ const SearchTitle = styled.p`
 
 const Search = () => {
   const [isZeroData, setIsZeroData] = useState(false);
+  const [queryString, setQueryString] = useState<any>("");
+  const navigate = useNavigate();
   const foodItems = useSelector(
     (state: RootState) => state.searchReducer.foodItems
   );
@@ -68,10 +70,18 @@ const Search = () => {
   const onSetCurrentPage = (page: number) =>
     dispatch(setCurrentPageNumber(page));
 
-  const queryString: any = QueryString.parse(location.search, {
-    ignoreQueryPrefix: true,
-    parameterLimit: 1,
-  }).q;
+
+  useEffect(()=>{
+    const qs : any = QueryString.parse(location.search, {
+      ignoreQueryPrefix: true,
+      parameterLimit: 1,
+    })?.q;
+
+    if(qs === undefined || qs.length < 1){
+      navigate("/");
+    }
+    setQueryString(qs);
+  })
 
   const getData = async (): Promise<recipeInterface> => {
     return await getRecipe(queryString); // "chicken => queryString"
@@ -80,6 +90,7 @@ const Search = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPageNumber]);
+
   useEffect(() => {
     if (queryString.length > 0 && queryString != searchText) {
       onSetFoodItems([]);
@@ -116,10 +127,7 @@ const Search = () => {
           if (error.message === "Network Error") {
             onSetIsLimitedCall(true);
           }
-          // apicall error handle
-          // NetWork Error 일때만 처리중이다 다른 에러도 적용해야한다. !
-          // limitedCall 컴포넌트 작성 후 적용
-          // 다른 api call 에서도 error handle 필요
+
         });
     }
   }, [queryString, searchText]);
@@ -132,7 +140,6 @@ const Search = () => {
         isZeroData={isZeroData}
         isLoading={isLoading}
         isLimitedCall={isLimitedCall}
-        // isLimitedCall={true}
 
       />
       <Pagination />
