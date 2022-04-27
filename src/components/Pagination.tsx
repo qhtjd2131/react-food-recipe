@@ -14,7 +14,7 @@ import { RootState } from "../redux-modules/index";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import { ITEM_LENGTH } from "../pages/Search";
 import { Hit } from "./type2";
-import { getRecipeFromNextLink } from "../functions/apiCall";
+import { getRecipeFromNextLink, recipeInterface } from "../functions/apiCall";
 
 const PAGE_BY_API_CALL = 10; //API CALL 한번에 보여줄 수 있는 페이지 (40개 , 1페이지당 4개, 총 10페이지)
 
@@ -46,8 +46,7 @@ const SpaceBlock = styled.div`
   border-radius: 50%;
 `;
 
-interface IPagination {
-}
+interface IPagination {}
 const Pagination = () => {
   const { height, width } = useWindowDimensions();
   const [pageUnit, setPageUnit] = useState(10);
@@ -73,7 +72,6 @@ const Pagination = () => {
     (state: RootState) => state.searchReducer.nextLink
   );
 
-
   const pageCount = Math.floor(dataCount / ITEM_LENGTH) + 1; //ITEM_LENGTH : 한 페이지당 데이터 갯수
   const lineCount = Math.floor(pageCount / pageUnit) + 1;
   const lineNum = Math.floor((currentPageNumber - 1) / pageUnit) * pageUnit;
@@ -90,9 +88,10 @@ const Pagination = () => {
   const onAddFoodItems = (foodItems: Hit[][]) =>
     dispatch(addFoodItems(foodItems));
 
-    const onSetIsLoading = (bool : boolean) => dispatch(setIsLoading(bool));
-const onSetIsLimitedCall = ( bool : boolean) => dispatch(setIsLimitedCall(bool));
-  const pageNumArr = [];
+  const onSetIsLoading = (bool: boolean) => dispatch(setIsLoading(bool));
+  const onSetIsLimitedCall = (bool: boolean) =>
+    dispatch(setIsLimitedCall(bool));
+  const pageNumArr: number[] = [];
 
   for (let i = 1; i <= pageUnit; i++) {
     if (lineNum + i <= pageCount) {
@@ -101,11 +100,28 @@ const onSetIsLimitedCall = ( bool : boolean) => dispatch(setIsLimitedCall(bool))
   }
 
   const getData = async (nextLink_: string) => {
-    const result = await getRecipeFromNextLink(nextLink_);
-    onSetNextLink(result.nextLink);
-
-    return result.data;
+    await getRecipeFromNextLink(nextLink_)
+      .then((res: recipeInterface) => {
+        const res_copy: Hit[] = res.data.slice();
+        const temp: Hit[][] = [];
+        while (res_copy.length > 0) {
+          const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
+          temp.push(temp_a);
+        }
+        onAddFoodItems(temp);
+        onSetNextLink(res.nextLink);
+        onAddExistData(lineNum + PAGE_BY_API_CALL, true);
+      })
+      .catch((error) => {
+        if (error.message === "Network Error") {
+          onSetIsLimitedCall(true);
+        }
+      })
+      .finally(() => {
+        onSetIsLoading(false);
+      });
   };
+
   const rightClickHandler = () => {
     const nextPageNumber = lineNum + pageUnit + 1;
     const nextLineNum = lineNum + pageUnit;
@@ -113,29 +129,9 @@ const onSetIsLimitedCall = ( bool : boolean) => dispatch(setIsLimitedCall(bool))
     if (nextLineNum % PAGE_BY_API_CALL === 0) {
       if (!exist[lineNum + PAGE_BY_API_CALL]?.exist && nextLink.length > 0) {
         onSetIsLoading(true);
-        onAddExistData(lineNum + PAGE_BY_API_CALL, true);
-
-        getData(nextLink)
-          .then((res: Hit[]) => {
-            const res_copy = res.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
-
-            const temp: Hit[][] = [];
-            while (res_copy.length > 0) {
-              const temp_a = res_copy.splice(0, ITEM_LENGTH); //ITEM_LENGTH = 4 , 앞부분 부터 item 4개씩 잘라서 배열화
-              temp.push(temp_a);
-            }
-            onSetIsLoading(false);
-            onAddFoodItems(temp);
-          })
-          .catch((error) => {
-            onSetIsLoading(false);
-
-            if(error.message === "Network Error"){
-                onSetIsLimitedCall(true);
-            }
-          });
+        getData(nextLink);
       }
-    } //10 은 한번의 apicall이 있을때 받아오는 page 갯수
+    }
   };
   const leftClickHandler = () => {
     const nextPageNumber = lineNum - pageUnit + 1;

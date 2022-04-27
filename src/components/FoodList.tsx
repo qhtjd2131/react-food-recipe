@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React from "react";
 import styled from "styled-components";
 import FoodItem from "./FoodItem";
 import LimitedCall from "./LimitedCall";
@@ -51,7 +46,6 @@ const FoodList = ({
   isLimitedCall,
 }: IFoodListProps) => {
   if (isLoading) {
-    // isLoading
     return (
       <FoodListBox>
         <LoadingBox>

@@ -438,7 +438,6 @@ const FoodItem = ({ foodinfo }: FoodItemProps) => {
       <NutrientsBox
         onClick={() => {
           setIsOpenOverlay(true);
-          console.log("nutrientsbox click");
         }}
       >
         <FoodItemCalories

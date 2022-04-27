@@ -1,10 +1,7 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { Hit } from "../components/type2";
-import { setIsLimitedCall } from "../redux-modules/search";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const APP_ID = process.env.REACT_APP_APP_ID;
-
 export interface recipeInterface {
   data: Hit[];
   count: number;
@@ -13,7 +10,6 @@ export interface recipeInterface {
 export const getRecipe = async (
   searchText: string
 ): Promise<recipeInterface> => {
-  console.log("excute api call");
   const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${searchText}&app_id=${APP_ID}&app_key=${API_KEY}`;
   const result = await axios
     .get(url)
@@ -22,7 +18,6 @@ export const getRecipe = async (
       // function 내부에서 에러처리 불가능(state 변경 불가능), 따라서 다시 error를 던져서 컴포넌트에서 처리하게 함.
       throw new Error(error.message);
     });
-  console.log("result : ", result);
 
   const next_links = result.data._links.next?.href;
   if (next_links === undefined) {
@@ -57,7 +52,6 @@ export const getRecipe = async (
 };
 
 export const getRecipeFromId = async (id: string): Promise<Hit> => {
-  console.log("excute getRecipeFromId function");
   const url = `https://api.edamam.com/api/recipes/v2/${id}?type=public&app_id=${APP_ID}&app_key=${API_KEY}`;
   const result = await axios
     .get(url)
@@ -75,7 +69,6 @@ export const getRecipeFromId = async (id: string): Promise<Hit> => {
 export const getRecipeFromNextLink = async (
   nextLink: string
 ): Promise<{ data: Hit[]; count: number; nextLink: string }> => {
-  console.log("excute getRecipeFromNextLink");
   const url = nextLink;
   const result = await axios
     .get(url)

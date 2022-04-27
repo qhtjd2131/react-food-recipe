@@ -111,9 +111,7 @@ const Search = () => {
           onSetDataCount(0);
           onSetNextLink("");
           onSetFoodItems([]);
-          console.log(error.message);
           if (error.message === "Network Error") {
-            console.log("network erroe 인것 확인");
             onSetIsLimitedCall(true);
           }
           // apicall error handle

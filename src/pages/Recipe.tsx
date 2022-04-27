@@ -90,8 +90,6 @@ const Recipe = () => {
   const [isOnLoadedImage, setIsOnLoadedImage] = useState(false);
   const location = useLocation();
   const state = location.state as StateInterface;
-  console.log(location);
-  console.log(store.getState());
   const [isLoading, setIsLoading] = useState(() => {
     return state === null ? true : false;
   });
@@ -130,7 +128,6 @@ const Recipe = () => {
   const getData = async (id: string) => {
     await getRecipeFromId(id)
       .then((res) => {
-        console.log(res);
         setData({
           recipeInfo: res.recipe.ingredientLines,
           image: res.recipe.image,
@@ -166,7 +163,6 @@ const Recipe = () => {
     }
   }, [data]);
 
-  console.log(location);
 
   const renderIngredients = () => {
     return (
