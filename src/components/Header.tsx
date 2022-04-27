@@ -3,6 +3,7 @@ import styled from "styled-components";
 import logo from "../images/mainlogo.png";
 import { Link } from "react-router-dom";
 import InputCom from "./InputCom";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 const HeaderBox = styled.section`
   position: fixed;
@@ -14,10 +15,10 @@ const HeaderBox = styled.section`
   justify-content: center;
   box-shadow: 0 0 4px orange;
   background-color: white;
-  z-index : 999;
+  z-index: 990;
   @media ${({ theme }) => theme.size_5} {
     height: 160px;
-    min-width : 400px;
+    min-width: 400px;
   }
 `;
 
@@ -45,6 +46,36 @@ const MiniLogo = styled.img`
   width: 100px;
 `;
 
+const IconWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  color: orange;
+  font-size: 3rem;
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    color: #ffd27d;
+  }
+  &:hover::before{
+    
+    content : "who am i";
+    font-size : 1rem;
+    white-space :nowrap;
+    position : absolute;
+    top:50px;
+    left : 50%;
+    transform : translateX(-50%);
+    background-color : #f8cf82;
+    color : gray;
+    padding : 0.2rem 0.8rem;
+    
+  }
+  @media ${({ theme }) => theme.size_6} {
+    display: none;
+  }
+`;
 const Header = () => {
   return (
     <HeaderBox>
@@ -55,6 +86,12 @@ const Header = () => {
           </Link>
         </MiniLogoBox>
         <InputCom />
+
+        <Link to="/bosung">
+          <IconWrapper>
+            <AiOutlineQuestionCircle />
+          </IconWrapper>
+        </Link>
       </ContentWrapper>
     </HeaderBox>
   );

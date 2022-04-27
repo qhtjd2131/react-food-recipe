@@ -40,13 +40,7 @@ const IconWrapper = styled.div<{ isSelected?: boolean }>`
   }
 `;
 
-const SpaceBlock = styled.div`
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-`;
 
-interface IPagination {}
 const Pagination = () => {
   const { height, width } = useWindowDimensions();
   const [pageUnit, setPageUnit] = useState(10);

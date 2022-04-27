@@ -7,7 +7,6 @@ import DefaultPageLayout from "./DefaultPageLayout";
 import QueryString from "qs";
 import { getRecipeFromId } from "../functions/apiCall";
 import { getIngredients } from "../components/FoodItem";
-import { store } from "..";
 import Loading from "../components/Loading";
 import { useDispatch } from "react-redux";
 import { setIsLimitedCall } from "../redux-modules/search";

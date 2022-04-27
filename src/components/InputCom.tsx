@@ -2,16 +2,12 @@ import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 
-
 const InputBox = styled.div`
-  display: flex;
-  width: 33%;
+  width: 30%;
   height: 2rem;
-  min-width: 450px;
-  border: 1px solid orange;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
+  min-width: 400px;
+  display: flex;
+
   @media ${({ theme }) => theme.size_7} {
     min-width: 300px;
   }
@@ -23,6 +19,8 @@ const Input = styled.input`
   border: none;
   font-size: 18px;
   color: gray;
+  border: 1px solid orange;
+
   &:focus {
     outline: none;
     box-shadow: 0px 0px 4px orange;
@@ -35,7 +33,8 @@ const ButtonBox = styled.div`
 const SearchButton = styled.button<{ on: string }>`
   width: 100%;
   height: 100%;
-  border: none;
+  border: ${(props) =>
+    props.on === "true" ? "1px solid orange" : "1px solid #d88d01"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,13 +49,12 @@ const SearchButton = styled.button<{ on: string }>`
 const InputCom = () => {
   const [inputText, setInputText] = useState("");
   const navigation = useNavigate();
-  const inputRef : any = useRef();
+  const inputRef: any = useRef();
 
   const searchButtonClickHandler = () => {
     setInputText("");
-    inputRef.current.value="";
-  }
-
+    inputRef.current.value = "";
+  };
 
   const enterPressHandler = () => {
     searchButtonClickHandler();
@@ -80,7 +78,7 @@ const InputCom = () => {
   return (
     <InputBox>
       <Input
-      ref={inputRef}
+        ref={inputRef}
         placeholder="Please write english."
         onChange={(e) => {
           setInputText(e.target.value);
@@ -89,7 +87,6 @@ const InputCom = () => {
           if (e.key === "Enter" && inputText.length > 0) {
             enterPressHandler();
           }
-  
         }}
       />
       <ButtonBox>{renderLink()}</ButtonBox>
