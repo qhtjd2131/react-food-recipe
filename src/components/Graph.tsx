@@ -176,7 +176,7 @@ const GraphLine = ({ percentage, serving }: GraphLineProps) => {
 const GuideItem = () => {
   return (
     <GuidItem>
-      <ItemText>text</ItemText>
+      <ItemText>기준</ItemText>
       <GuideLine>
         <GuidePercent0>0</GuidePercent0>
         <GuidePercent100>100%</GuidePercent100>

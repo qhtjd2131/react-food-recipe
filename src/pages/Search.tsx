@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import QueryString from "qs";
@@ -77,7 +77,9 @@ const Search = () => {
     return await getRecipe(queryString); // "chicken => queryString"
   };
 
-
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPageNumber]);
   useEffect(() => {
     if (queryString.length > 0 && queryString != searchText) {
       onSetFoodItems([]);
@@ -93,7 +95,7 @@ const Search = () => {
           onSetDataCount(res.count);
           onSetNextLink(res.nextLink);
           onSetSearchText(queryString);
-          
+
           const res_copy = res.data.slice(); //side effect를 방지(원본을 유지하기위해) 복사본 생성
           const temp: Hit[][] = [];
           while (res_copy.length > 0) {
@@ -130,6 +132,8 @@ const Search = () => {
         isZeroData={isZeroData}
         isLoading={isLoading}
         isLimitedCall={isLimitedCall}
+        // isLimitedCall={true}
+
       />
       <Pagination />
       <button

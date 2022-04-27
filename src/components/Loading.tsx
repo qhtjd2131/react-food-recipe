@@ -32,6 +32,7 @@ const LoadingBox = styled.div`
   position: relative;
   width: 100px;
   border-radius: 100%;
+  z-index : 1;
 `;
 
 const Loader = styled.div`

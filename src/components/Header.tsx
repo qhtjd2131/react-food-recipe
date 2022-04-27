@@ -14,6 +14,7 @@ const HeaderBox = styled.section`
   justify-content: center;
   box-shadow: 0 0 4px orange;
   background-color: white;
+  z-index : 999;
   @media ${({ theme }) => theme.size_5} {
     height: 160px;
     min-width : 400px;
