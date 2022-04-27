@@ -91,6 +91,8 @@ const Search = () => {
   useLayoutEffect(()=>{
     if(foodItems?.length === 0){
       setIsZeroData(true);
+    } else {
+      setIsZeroData(false);
     }
   },[foodItems])
   useLayoutEffect(() => {

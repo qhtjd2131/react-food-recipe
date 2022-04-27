@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import styled from "styled-components";
 import DefaultPageLayout from "./DefaultPageLayout";
 
@@ -66,6 +66,10 @@ const Bosung = () => {
     "babel",
     "GSAP (Animation Library)",
   ];
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <DefaultPageLayout>
       <BosungBox>
