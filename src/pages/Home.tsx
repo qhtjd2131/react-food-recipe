@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
-import logo from "../images/mainlogo.png";
+import LogoSvg from "../images/mainlogo.svg";
 import { Link } from "react-router-dom";
 import InputCom from "../components/InputCom";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -61,9 +61,7 @@ const Home = () => {
   return (
     <HomeBox>
       <LogoBox>
-        <Link to="/">
-          <Logo src={logo} />
-        </Link>
+          <LogoSvg />
       </LogoBox>
       <InputCom />
 

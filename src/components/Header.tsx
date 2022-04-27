@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../images/mainlogo.png";
+import LogoSVG from "../images/mainlogo.svg";
 import { Link } from "react-router-dom";
 import InputCom from "./InputCom";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -33,6 +33,7 @@ const ContentWrapper = styled.div`
   }
 `;
 const MiniLogoBox = styled.div`
+  width: 100px;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -58,19 +59,17 @@ const IconWrapper = styled.div`
   &:hover {
     color: #ffd27d;
   }
-  &:hover::before{
-    
-    content : "who am i";
-    font-size : 1rem;
-    white-space :nowrap;
-    position : absolute;
-    top:50px;
-    left : 50%;
-    transform : translateX(-50%);
-    background-color : #f8cf82;
-    color : gray;
-    padding : 0.2rem 0.8rem;
-    
+  &:hover::before {
+    content: "who am i";
+    font-size: 1rem;
+    white-space: nowrap;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8cf82;
+    color: gray;
+    padding: 0.2rem 0.8rem;
   }
   @media ${({ theme }) => theme.size_6} {
     display: none;
@@ -80,11 +79,11 @@ const Header = () => {
   return (
     <HeaderBox>
       <ContentWrapper>
-        <MiniLogoBox>
-          <Link to="/">
-            <MiniLogo src={logo} />
-          </Link>
-        </MiniLogoBox>
+        <Link to="/">
+          <MiniLogoBox>
+            <LogoSVG />
+          </MiniLogoBox>
+        </Link>
         <InputCom />
 
         <Link to="/bosung">
