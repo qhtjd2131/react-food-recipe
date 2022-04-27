@@ -21,6 +21,23 @@ box-sizing : border-box;
 padding : 1.4rem 4.4rem;
 padding-top : 0;
 margin-top : 1rem;
+width : 800px;
+@media ${({ theme }) => theme.size_9} {
+    width: 700px;
+  }
+  
+@media ${({ theme }) => theme.size_8} {
+    width: 600px;
+  }
+  @media ${({ theme }) => theme.size_7} {
+    width: 500px;
+  }
+  @media ${({ theme }) => theme.size_6} {
+    width: 400px;
+    padding : 1rem 1rem;
+  }
+  
+
 `;
 const HeadLabel = styled.p`
   padding-top: 2.4rem;
@@ -31,7 +48,6 @@ const HeadLabel = styled.p`
 const NameLabel = styled.p`
   font-weight: 500;
   font-size: 1.2rem;
-
   color: gray;
   padding: 1rem 0;
 `;
@@ -45,6 +61,11 @@ const FoodImage = styled.img<{ isOnLoadedImage: boolean }>`
     css`
       display: block;
     `}
+
+  @media ${({ theme }) => theme.size_6} {
+    width: 240px;
+    height: 240px;
+  }
 `;
 
 const LoadingImage = styled.img<{ isOnLoadedImage: boolean }>`
@@ -163,7 +184,6 @@ const Recipe = () => {
     }
   }, [data]);
 
-
   const renderIngredients = () => {
     return (
       <IngredientsBox>
@@ -208,13 +228,13 @@ const Recipe = () => {
     </DefaultPageLayout>
   ) : (
     <DefaultPageLayout>
-      <button
+      {/* <button
         onClick={() => {
           console.log(store.getState());
         }}
       >
         button
-      </button>
+      </button> */}
       <RecipeBox>
         <HeadLabel>Food Infos</HeadLabel>
         <NameLabel>{data.name}</NameLabel>
