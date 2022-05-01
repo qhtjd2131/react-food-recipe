@@ -20,7 +20,6 @@ import { getRecipe, recipeInterface } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
 import DefaultPageLayout from "./DefaultPageLayout";
-import { store } from "..";
 
 export const ITEM_LENGTH = 4;
 

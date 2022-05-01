@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import styled from "styled-components";
-import DefaultPageLayout from "./DefaultPageLayout";
+// import DefaultPageLayout from "./DefaultPageLayout";
 
 const BosungBox = styled.div`
   width: 800px;
@@ -75,7 +75,6 @@ const Bosung = () => {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <DefaultPageLayout>
       <BosungBox>
         <TextLabel>이름 (Name)</TextLabel>
         <ValueText>최보성 (Choi Bosung)</ValueText>
@@ -118,7 +117,6 @@ const Bosung = () => {
           ))}
         </TechStackBox>
       </BosungBox>
-    </DefaultPageLayout>
   );
 };
 
