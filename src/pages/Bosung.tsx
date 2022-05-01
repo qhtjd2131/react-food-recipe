@@ -25,6 +25,10 @@ const BosungBox = styled.div`
     width: 400px;
     padding: 1rem 1rem;
   }
+  @media ${({ theme }) => theme.size_5} {
+    width: 300px;
+    padding: 1rem 1rem;
+  }
 `;
 
 const TextLabel = styled.label`
@@ -119,3 +123,5 @@ const Bosung = () => {
 };
 
 export default Bosung;
+
+

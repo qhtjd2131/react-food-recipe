@@ -43,7 +43,6 @@ const Image = styled.img<{ isOnLoaded: boolean }>`
   justify-content: center;
   align-items: center;
   grid-area: image;
-  /* background-color : gray; */
 
   ${(props) =>
     !props.isOnLoaded &&

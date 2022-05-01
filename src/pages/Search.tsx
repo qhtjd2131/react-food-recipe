@@ -151,13 +151,7 @@ const Search = () => {
 
       />
       <Pagination />
-      <button
-        onClick={() => {
-          console.log(store.getState());
-        }}
-      >
-        button
-      </button>
+  
     </DefaultPageLayout>
   );
 };

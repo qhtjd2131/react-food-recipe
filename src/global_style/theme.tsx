@@ -1,16 +1,4 @@
-// const size = {
-//   size_4: "400px",
-//   size_5: "500px",
-//   size_6: "600px",
-//   size_7: "700px",
-//   size_8: "800px",
-//   size_9: "900px",
-//   size_10: "1000px",
-//   size_11: "1100px",
-//   size_12: "1200px",
-//   size_13: "1300px",
-//   size_14: "1400px",
-// };
+
 interface Theme {
   size_4: string;
   size_5: string;

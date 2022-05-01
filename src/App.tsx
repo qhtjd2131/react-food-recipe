@@ -5,7 +5,6 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Search from "./pages/Search";
 import Recipe from "./pages/Recipe";
 import NotFound404 from "./pages/NotFound404";
-import { store } from ".";
 import Bosung from "./pages/Bosung";
 
 const GlobalWrapper = styled.div`
@@ -17,8 +16,6 @@ const GlobalWrapper = styled.div`
 `;
 
 const App = () => {
-  console.log(store.getState())
-
   return (
     <GlobalWrapper>
       <BrowserRouter>
