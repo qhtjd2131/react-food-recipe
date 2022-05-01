@@ -16,7 +16,6 @@ import { ThemeProvider } from "styled-components";
 import theme from "./global_style/theme";
 
 export const store = configureStore({ reducer: rootReducer });
-console.log(store.getState());
 
 ReactDom.render(
   <Provider store={store}>

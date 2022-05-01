@@ -24,13 +24,13 @@ interface DefaultPageProps {
 
 const DefaultPageLayout = ({ children }: DefaultPageProps) => {
   return (
-    <>
+    <div>
       <PageBox>
         <Header />
         <ResultBox>{children}</ResultBox>
       </PageBox>
       <Footer />
-    </>
+    </div>
   );
 };
 
