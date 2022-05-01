@@ -10,7 +10,7 @@ const createStyledComponentsTransformer =
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
 module.exports = {
-  mode: "development",
+  // mode: "production",
   entry: "./src/index.tsx",
   output: {
     filename: "main.js",
@@ -96,12 +96,7 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    host: "localhost",
-    port: 8080, //포트
-    open: true, //개발 서버 실행 시 브라우저 오픈
-    historyApiFallback: true,
-  },
+  
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
