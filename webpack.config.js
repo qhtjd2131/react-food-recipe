@@ -10,8 +10,8 @@ const createStyledComponentsTransformer =
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
 module.exports = {
-  // mode: "development",
-  mode: "production",
+  mode: "development",
+  // mode: "production",
 
   entry: "./src/index.tsx",
   output: {
@@ -111,7 +111,7 @@ module.exports = {
 
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".css"],
-    modules: [path.join(__dirname, "node_modules"), "src"],
+    modules: [path.join(__dirname, "node_modules")],
   },
   resolveLoader: {
     modules: [path.join(__dirname, "node_modules")],

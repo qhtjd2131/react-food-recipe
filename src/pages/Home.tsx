@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
 import LogoSvg from "../images/mainlogo.svg";
 import { Link } from "react-router-dom";

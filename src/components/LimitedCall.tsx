@@ -43,7 +43,6 @@ const LimitedCall = () => {
 
   const buttonClickHandler = () => {
     navigate(0);
-
   };
   return (
     <LimitedCallBox>
