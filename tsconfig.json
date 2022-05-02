@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "jsx": "react",                       
-    "module": "esnext",                   
-    "allowJs": true,       
+    "jsx": "react",
+    "module": "esnext",
+    "allowJs": true,
     "strict": true,
-    "sourceMap": true,                              
-    "esModuleInterop": true,             
-    "noImplicitAny": true,   
-    "moduleResolution": "node",       
-    // "forceConsistentCasingInFileNames": true,                
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node"
+    // "forceConsistentCasingInFileNames": true,
   },
   "include": ["src/**/*"],
+
   "exclude": ["node_modules"]
 }

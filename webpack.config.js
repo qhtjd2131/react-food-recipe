@@ -1,6 +1,6 @@
 const path = require("path");
-const webpack = require('webpack')
-const dotenv = require('dotenv');
+const webpack = require("webpack");
+const dotenv = require("dotenv");
 dotenv.config();
 const { SourceMapDevToolPlugin } = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
@@ -10,14 +10,17 @@ const createStyledComponentsTransformer =
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
 module.exports = {
-  // mode: "production",
+  // mode: "development",
+  mode: "production",
+
   entry: "./src/index.tsx",
   output: {
     filename: "main.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "./dist"),
     publicPath: "/",
-    sourceMapFilename: "main.js.map",
+    // sourceMapFilename: "main.js.map",
   },
+  target: "web",
   plugins: [
     new SourceMapDevToolPlugin({
       filename: "[file].map",
@@ -28,10 +31,19 @@ module.exports = {
       filename: "index.html",
     }),
     new webpack.DefinePlugin({
-      'process.env.REACT_APP_API_KEY': JSON.stringify(process.env.REACT_APP_API_KEY),
-      'process.env.REACT_APP_APP_ID': JSON.stringify(process.env.REACT_APP_APP_ID),
-    })
+      "process.env.REACT_APP_API_KEY": JSON.stringify(
+        process.env.REACT_APP_API_KEY
+      ),
+      "process.env.REACT_APP_APP_ID": JSON.stringify(
+        process.env.REACT_APP_APP_ID
+      ),
+    }),
   ],
+  performance: {
+    hints: false,
+    maxEntrypointSize: 1024000,
+    maxAssetSize: 1024000,
+  },
   module: {
     rules: [
       {
@@ -61,7 +73,7 @@ module.exports = {
       },
       {
         test: /\.svg/,
-        use : ["@svgr/webpack"],
+        use: ["@svgr/webpack"],
       },
       {
         test: /\.tsx?$/,
@@ -96,8 +108,12 @@ module.exports = {
       },
     ],
   },
-  
+
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".css"],
+    modules: [path.join(__dirname, "node_modules"), "src"],
+  },
+  resolveLoader: {
+    modules: [path.join(__dirname, "node_modules")],
   },
 };
