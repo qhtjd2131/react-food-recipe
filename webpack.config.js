@@ -1,7 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({
+  path: `${__dirname}/.env`,
+});
+// dotenv.config();
 const { SourceMapDevToolPlugin } = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -20,14 +23,13 @@ module.exports = {
     publicPath: "/",
     // sourceMapFilename: "main.js.map",
   },
-  target: "web",
   plugins: [
     new SourceMapDevToolPlugin({
       filename: "[file].map",
     }),
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, "public/index.html"),
+      template: path.resolve(__dirname, "./public/index.html"),
       filename: "index.html",
     }),
     new webpack.DefinePlugin({
@@ -110,16 +112,23 @@ module.exports = {
             },
           },
         ],
-        exclude: /node_modules/,
       },
     ],
   },
 
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".css"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
     modules: [path.join(__dirname, "node_modules")],
   },
-  resolveLoader: {
-    modules: [path.join(__dirname, "node_modules")],
+  devServer: {
+    host: "localhost",
+    port: 8080, //포트
+    open: true, //개발 서버 실행 시 브라우저 오픈
+    historyApiFallback: true,
+    // devMiddleware: {
+    //   publicPath: "/dist",
+    // },
+    // get error 
+    static: { directory: path.resolve(__dirname) },
   },
 };

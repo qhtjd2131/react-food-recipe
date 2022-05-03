@@ -5,7 +5,7 @@
   "main": "index.tsx",
   "scripts": {
     "start": "webpack",
-    "dev": "webpack serve --mode development",
+    "dev": "webpack serve",
     "prod": "webpack serve --mode production",
     "build": "webpack"
   },
