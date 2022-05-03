@@ -53,6 +53,9 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        resolve: {
+          fullySpecified: false,
+        },
         exclude: /node_modules/,
         use: [
           {
@@ -78,6 +81,9 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
+        resolve: {
+          fullySpecified: false,
+        },
         use: [
           "source-map-loader",
           {
