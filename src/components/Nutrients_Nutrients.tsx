@@ -6,13 +6,16 @@ import { BlackText } from "./FoodItem";
 const NutrientsItem = styled.div`
   display: flex;
   justify-content: space-between;
-  cursor : pointer;
-
+  cursor: pointer;
+  @media ${({ theme }) => theme.size_5} {
+    font-size: 0.8rem;
+  }
 `;
 const IconWithText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+ 
 `;
 const NIcon = styled.div`
   color: ${(props) => props.color && props.color};

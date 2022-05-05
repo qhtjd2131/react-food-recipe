@@ -21,6 +21,7 @@ padding : 1.4rem 4.4rem;
 padding-top : 0;
 margin-top : 1rem;
 width : 800px;
+
 @media ${({ theme }) => theme.size_9} {
     width: 700px;
   }

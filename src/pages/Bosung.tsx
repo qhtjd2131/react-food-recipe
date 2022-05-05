@@ -27,7 +27,7 @@ const BosungBox = styled.div`
     padding: 1rem 1rem;
   }
   @media ${({ theme }) => theme.size_5} {
-    width: 300px;
+    width: 100vw;
     padding: 1rem 1rem;
   }
 `;

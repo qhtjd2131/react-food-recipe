@@ -8,7 +8,7 @@ const NotFoundBox = styled.div`
   font-size: 2rem;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  height: 100vh;
   width: 100%;
 `;
 

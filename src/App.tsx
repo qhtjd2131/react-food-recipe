@@ -9,7 +9,7 @@ import Bosung from "./pages/Bosung";
 
 const GlobalWrapper = styled.div`
   width: 100%;
-  height :100vh;
+  /* height :100vh; */
   margin: 0 auto;
   box-sizing: border-box;
 

@@ -9,7 +9,8 @@ const HeaderBox = styled.section`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
+  min-width : 300px;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -18,7 +19,6 @@ const HeaderBox = styled.section`
   z-index: 990;
   @media ${({ theme }) => theme.size_5} {
     height: 160px;
-    min-width: 400px;
   }
 `;
 

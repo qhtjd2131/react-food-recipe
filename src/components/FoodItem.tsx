@@ -88,6 +88,9 @@ const DescriptionBox = styled.div`
   @media ${({ theme }) => theme.size_10} {
     height: auto;
   }
+  @media ${({ theme }) => theme.size_5} {
+    display : none;
+  }
 `;
 
 const NameBox = styled.div`
@@ -112,13 +115,16 @@ const NutrientsBox = styled.div`
   justify-content: space-between;
   align-items: center;
   grid-area: nutrients;
-  transition: inherit;
-  cursor : pointer;
+  transition: 0.2 ease-in-out;
+    cursor : pointer;
+
   @media ${({ theme }) => theme.size_10} {
     height: auto;
   }
+    
+  
 
-  transition: 0.2 ease-in-out;
+  
 
   &:hover {
     box-shadow: 0px 0px 3px 2px #ffbd43;
@@ -134,7 +140,6 @@ const MainNutrients = styled.div`
 
 export const BlackText = styled.p`
   font-weight: 600;
-  font-size: 1rem;
   font-weight: 500;
   display: flex;
   justify-content: center;
@@ -143,7 +148,6 @@ export const BlackText = styled.p`
 
 export const GrayText = styled.p`
   color: gray;
-  font-size: 1rem;
   font-weight: 500;
 `;
 

@@ -10,6 +10,7 @@ const FoodListBox = styled.div`
   width: 1200px;
   height: 100%;
 
+  min-width : 350px;
   @media ${({ theme }) => theme.size_13} {
     width: 980px;
   }
@@ -20,7 +21,8 @@ const FoodListBox = styled.div`
     width: 480px;
   }
   @media ${({ theme }) => theme.size_5} {
-    width: 400px;
+    width: 100vw;
+    
   }
 `;
 

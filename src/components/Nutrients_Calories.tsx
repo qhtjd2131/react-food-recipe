@@ -12,6 +12,10 @@ const KcalBox = styled.div`
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 0.4rem;
+
+  @media ${({ theme }) => theme.size_5} {
+    font-size : 1.2rem;
+  }
 `;
 
 interface FICaloriesProps {
