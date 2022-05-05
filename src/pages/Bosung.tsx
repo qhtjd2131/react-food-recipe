@@ -4,7 +4,7 @@ import DefaultPageLayout from "./DefaultPageLayout";
 // import DefaultPageLayout from "./DefaultPageLayout";
 
 const BosungBox = styled.div`
-  width: 800px;
+  width: 700px;
   display: inline-block;
   line-height: 2rem;
 
@@ -14,13 +14,14 @@ const BosungBox = styled.div`
   font-size: 1.2rem;
   padding: 1.4rem 4.4rem;
   @media ${({ theme }) => theme.size_9} {
-    width: 700px;
-  }
-  @media ${({ theme }) => theme.size_8} {
     width: 600px;
   }
+  @media ${({ theme }) => theme.size_8} {
+    width: 550px;
+  }
   @media ${({ theme }) => theme.size_7} {
-    width: 500px;
+    width: 480px;
+    padding: 1rem 1rem;
   }
   @media ${({ theme }) => theme.size_6} {
     width: 400px;
@@ -29,6 +30,7 @@ const BosungBox = styled.div`
   @media ${({ theme }) => theme.size_5} {
     width: 100vw;
     padding: 1rem 1rem;
+    box-shadow : none;
   }
 `;
 
@@ -39,6 +41,8 @@ const ValueText = styled.p``;
 const TechStackBox = styled.div`
   display: flex;
   flex-wrap: wrap;
+  box-sizing : border-box;
+  padding : 0 1rem;
 `;
 const Tech = styled.div`
   margin: 0.6rem 1rem;

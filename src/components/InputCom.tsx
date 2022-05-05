@@ -4,15 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 const InputBox = styled.div`
   width: 500px;
-  min-width : 230px;
+  min-width: 230px;
   height: 2rem;
   display: flex;
 
-  @media ${({ theme }) => theme.size_7} {
-    width : 350px;
+  @media ${({ theme }) => theme.size_8} {
+    width: 350px;
   }
   @media ${({ theme }) => theme.size_5} {
-    width : 300px;
+    width: 300px;
   }
 `;
 const Input = styled.input`
@@ -20,6 +20,7 @@ const Input = styled.input`
   width: 80%;
   height: 100%;
   border: none;
+  border-radius: 0px;
   font-size: 18px;
   color: gray;
   border: 1px solid orange;

@@ -14,11 +14,12 @@ const HeaderBox = styled.section`
   height: 100px;
   display: flex;
   justify-content: center;
-  box-shadow: 0 0 4px orange;
+  box-shadow: 0 4px 2px -2px orange;
   background-color: white;
+  /* border-bottom: 4mm ridge rgba(211, 220, 50, .6); */
   z-index: 990;
   @media ${({ theme }) => theme.size_5} {
-    height: 160px;
+    height: 120px;
   }
 `;
 
@@ -39,7 +40,7 @@ const MiniLogoBox = styled.div`
   justify-content: center;
   align-items: center;
   @media ${({ theme }) => theme.size_5} {
-    height: 80px;
+    height: 50px;
   }
 `;
 
