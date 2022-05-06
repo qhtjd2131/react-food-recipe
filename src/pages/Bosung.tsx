@@ -10,7 +10,7 @@ const BosungBox = styled.div`
 
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  margin-top: 1rem;
+  margin : 10px 0;
   font-size: 1.2rem;
   padding: 1.4rem 4.4rem;
   @media ${({ theme }) => theme.size_9} {
@@ -42,7 +42,7 @@ const TechStackBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   box-sizing : border-box;
-  padding : 0 1rem;
+  padding-right : 1rem;
 `;
 const Tech = styled.div`
   margin: 0.6rem 1rem;

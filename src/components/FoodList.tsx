@@ -29,12 +29,12 @@ const FoodListBox = styled.div`
 export const LoadingBox = styled.div`
   width: 100%;
   box-sizing : border-box;
-  height : calc(var(--vh) * 100 - 100px - 80px - 100px - 40px); // - header_height - pagination_height - footer_height - search_title_height
+  height : calc(var(--vh) * 100 - 100px - 80px - 100px - 40px -10px); // - header_height - pagination_height - footer_height - search_title_height - bosungbox_margin_bottom
   display: flex;
   justify-content: center;
   align-items: center;
   @media ${({ theme }) => theme.size_5} {
-    height : calc(var(--vh) * 100 - 120px - 80px - 100px - 40px);
+    height : calc(var(--vh) * 100 - 120px - 80px - 100px - 40px - 10px);
   }
 `;
 

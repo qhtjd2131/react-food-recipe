@@ -6,7 +6,11 @@ EDAMAM : https://www.edamam.com/ <br>
 My Food Info Site : https://main.d85jjakedwwkt.amplifyapp.com/ <br>
 todo
 
-## preview
+## preview (Chrome)
+
+<image src="https://user-images.githubusercontent.com/34260967/167134760-fdc0c50f-00d8-412e-a633-03341b2a5e61.png" width="600px" height="400px">
+
+
 
 ## 기술스택
 
@@ -22,5 +26,4 @@ todo
 
 
 
-모바일 반응형 체크
-svg 파일 로고 모바일에서 랜더안되는현상 수정
+webpack config 파일 분리

@@ -14,6 +14,7 @@ const ResultBox = styled.div`
   @media ${({ theme }) => theme.size_5} {
     margin-top: 120px;
   }
+  
 `;
 
 interface DefaultPageProps {
