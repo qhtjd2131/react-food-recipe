@@ -12,10 +12,8 @@ const PageBox = styled.section`
 const ResultBox = styled.div`
   margin-top: 100px;
   @media ${({ theme }) => theme.size_5} {
-    margin-top: 160px;
+    margin-top: 120px;
   }
-
-  margin-bottom: 2rem;
 `;
 
 interface DefaultPageProps {

@@ -25,10 +25,11 @@ export const ITEM_LENGTH = 4;
 
 const SearchTitle = styled.p`
   width: 100%;
+  height: 30px;
   display: block;
   font-size: 1.4rem;
   text-align: center;
-  padding: 1rem 0;
+  padding-top : 10px;
 `;
 
 const Search = () => {
@@ -69,31 +70,29 @@ const Search = () => {
   const onSetCurrentPage = (page: number) =>
     dispatch(setCurrentPageNumber(page));
 
-
-  useEffect(()=>{
-    const qs : any = QueryString.parse(location.search, {
+  useEffect(() => {
+    const qs: any = QueryString.parse(location.search, {
       ignoreQueryPrefix: true,
       parameterLimit: 1,
     })?.q;
 
-    if(qs === undefined || qs.length < 1){
+    if (qs === undefined || qs.length < 1) {
       navigate("/");
     }
     setQueryString(qs);
-  })
+  });
 
   const getData = async (): Promise<recipeInterface> => {
     return await getRecipe(queryString); // "chicken => queryString"
   };
 
-
-  useLayoutEffect(()=>{
-    if(foodItems?.length === 0){
+  useLayoutEffect(() => {
+    if (foodItems?.length === 0) {
       setIsZeroData(true);
     } else {
       setIsZeroData(false);
     }
-  },[foodItems])
+  }, [foodItems]);
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPageNumber]);
@@ -134,7 +133,6 @@ const Search = () => {
           if (error.message === "Network Error") {
             onSetIsLimitedCall(true);
           }
-
         });
     }
   }, [queryString, searchText]);
@@ -147,10 +145,8 @@ const Search = () => {
         isZeroData={isZeroData}
         isLoading={isLoading}
         isLimitedCall={isLimitedCall}
-
       />
       <Pagination />
-  
     </DefaultPageLayout>
   );
 };

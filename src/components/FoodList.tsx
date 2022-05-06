@@ -28,10 +28,14 @@ const FoodListBox = styled.div`
 
 export const LoadingBox = styled.div`
   width: 100%;
-  height: 600px;
+  box-sizing : border-box;
+  height : calc(var(--vh) * 100 - 100px - 80px - 100px - 40px); // - header_height - pagination_height - footer_height - search_title_height
   display: flex;
   justify-content: center;
   align-items: center;
+  @media ${({ theme }) => theme.size_5} {
+    height : calc(var(--vh) * 100 - 120px - 80px - 100px - 40px);
+  }
 `;
 
 interface IFoodListProps {
@@ -51,7 +55,7 @@ const FoodList = ({
 
 
 
-  if (isLoading) {
+  if (isLoading) { 
     return (
       <FoodListBox>
         <LoadingBox>

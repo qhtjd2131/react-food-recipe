@@ -6,6 +6,7 @@ const FooterBox = styled.div`
   height: 100px;
   border-top: 1px solid transparent;
   background-color: #fff1d6;
+  box-sizing : border-box;
   width: 100%;
   display: flex;
   justify-content: center;

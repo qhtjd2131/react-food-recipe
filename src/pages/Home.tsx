@@ -14,6 +14,7 @@ const HomeBox = styled.section`
   justify-content: center;
   align-items: center;
   position: relative;
+
 `;
 
 const LogoBox = styled.div`

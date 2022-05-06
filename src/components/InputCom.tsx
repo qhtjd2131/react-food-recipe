@@ -37,6 +37,7 @@ const ButtonBox = styled.div`
 const SearchButton = styled.button<{ on: string }>`
   width: 100%;
   height: 100%;
+  font-size : 0.6rem;
   border: ${(props) =>
     props.on === "true" ? "1px solid orange" : "1px solid #d88d01"};
   display: flex;

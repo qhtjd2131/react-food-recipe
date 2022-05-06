@@ -9,7 +9,7 @@ const HeaderBox = styled.section`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   min-width : 300px;
   height: 100px;
   display: flex;
@@ -35,10 +35,8 @@ const ContentWrapper = styled.div`
 `;
 const MiniLogoBox = styled.div`
   width: 100px;
-  /* height: 100px; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 50px;
+  
   /* @media ${({ theme }) => theme.size_5} {
     height: 50px;
   } */
