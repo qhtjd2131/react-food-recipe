@@ -7,7 +7,8 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 const HomeBox = styled.section`
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
+  height : calc(var(--vh) * 100);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,15 +19,10 @@ const HomeBox = styled.section`
 const LogoBox = styled.div`
   width: 460px;
   height: 240px;
-  margin-bottom: 2rem;
   @media ${({ theme }) => theme.size_7} {
     width : 300px;
     height : 160px;
   }
-`;
-const Logo = styled.img`
-  width: 100%;
-  height: 100%;
 `;
 
 const IconWrapper = styled.div`

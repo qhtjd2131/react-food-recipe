@@ -35,18 +35,15 @@ const ContentWrapper = styled.div`
 `;
 const MiniLogoBox = styled.div`
   width: 100px;
-  height: 100px;
+  /* height: 100px; */
   display: flex;
   justify-content: center;
   align-items: center;
-  @media ${({ theme }) => theme.size_5} {
+  /* @media ${({ theme }) => theme.size_5} {
     height: 50px;
-  }
+  } */
 `;
 
-const MiniLogo = styled.img`
-  width: 100px;
-`;
 
 const IconWrapper = styled.div`
   position: absolute;

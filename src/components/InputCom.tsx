@@ -12,7 +12,7 @@ const InputBox = styled.div`
     width: 350px;
   }
   @media ${({ theme }) => theme.size_5} {
-    width: 300px;
+    width: 280px;
   }
 `;
 const Input = styled.input`

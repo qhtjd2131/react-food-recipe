@@ -13,8 +13,8 @@ const createStyledComponentsTransformer =
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
 module.exports = {
-  // mode: "development",
-  mode: "production",
+  mode: "development",
+  // mode: "production",
 
   entry: "./src/index.tsx",
   output: {

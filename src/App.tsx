@@ -6,16 +6,16 @@ import Search from "./pages/Search";
 import Recipe from "./pages/Recipe";
 import NotFound404 from "./pages/NotFound404";
 import Bosung from "./pages/Bosung";
+import { useCustomHeight } from "./hooks/useCustomHeight";
 
 const GlobalWrapper = styled.div`
   width: 100%;
-  /* height :100vh; */
   margin: 0 auto;
   box-sizing: border-box;
-
 `;
 
 const App = () => {
+  useCustomHeight();
   return (
     <GlobalWrapper>
       <BrowserRouter>
