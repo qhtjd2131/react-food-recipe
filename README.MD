@@ -8,8 +8,17 @@ todo
 
 ## preview (Chrome)
 
-<image src="https://user-images.githubusercontent.com/34260967/167134760-fdc0c50f-00d8-412e-a633-03341b2a5e61.png" width="600px" height="400px">
+**Home**
+<image src="https://user-images.githubusercontent.com/34260967/167134760-fdc0c50f-00d8-412e-a633-03341b2a5e61.png" width="720px" height="480px">
 
+**Bosung(introduce me page)**
+<image src="https://user-images.githubusercontent.com/34260967/167135509-aeff5665-27f9-4a1f-a021-00c6d81a6206.png" width="720px" height="480px">
+
+**Search**
+
+**Recipe**
+
+**Nutrients**
 
 
 ## 기술스택

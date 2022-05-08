@@ -23,7 +23,6 @@ const loadingTextOpacity = keyframes`
   100% {
     opacity: 0;
   };
-
 `;
 
 const LoadingBox = styled.div`
