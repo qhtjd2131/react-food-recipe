@@ -52,11 +52,23 @@ module.exports = {
           fullySpecified: false,
         },
         exclude: /node_modules/,
+        // exclude: /node_modules\/(?!(axios|react-router-dom))/,
         use: [
           {
             loader: "babel-loader",
             options: {
               presets: ["@babel/preset-env", "@babel/preset-react"],
+              plugins: [
+                [
+                  "@babel/plugin-transform-runtime",
+                  {
+                    absoluteRuntime: false,
+                    corejs: 3,
+                    helpers: true,
+                    regenerator: true,
+                  },
+                ],
+              ],
             },
           },
         ],
@@ -76,6 +88,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
+        // exclude: /node_modules\/(?!(axios|react-router-dom))/,
         resolve: {
           fullySpecified: false,
         },
@@ -84,15 +97,17 @@ module.exports = {
           {
             loader: "babel-loader",
             options: {
-              presets: [
+              presets: ["@babel/preset-env", "@babel/preset-react"],
+              plugins: [
                 [
-                  "@babel/preset-env",
+                  "@babel/plugin-transform-runtime",
                   {
-                    useBuiltIns: "usage",
-                    corejs: { version: "3.21", proposals: true },
+                    absoluteRuntime: false,
+                    corejs: 3,
+                    helpers: true,
+                    regenerator: true,
                   },
                 ],
-                "@babel/preset-react",
               ],
             },
           },

@@ -52,7 +52,7 @@ const FoodList = ({
   isLimitedCall,
 }: IFoodListProps) => {
 
-  if (isLoading) { 
+  if (true) { 
     return (
       <FoodListBox>
         <LoadingBox>
