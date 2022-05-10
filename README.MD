@@ -50,8 +50,25 @@ npm run dev
 - FireFox
 - Opera
 - Edge
+<br>
 
- **browserslist 출력**
+**browserslist config**
+```json
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+```
+
+**browserslist 출력**
  ``` 
     and_chr 101
     and_ff 99
@@ -84,6 +101,8 @@ npm run dev
  ```
 
 
+<br><br>
+
 ## 반응형 (모바일 포함)
 
 아래 두 가지를 사용하여 반응형을 구현하였다.
@@ -93,21 +112,38 @@ npm run dev
     - 반응형으로 기능이 달라지는 경우에 사용
 
 
+**window resize event** 의 경우 resize 이벤트가 발생할 때 마다 화면이 리랜더링 되기 때문에, lodash 라이브러리의 debounced 기능을 이용 하였다. 연속된 이벤트를 하나의 이벤트로 묶어서 처리하는 방법이다. 이번 프로젝트를 하면서 처음 알게되었고, 실용적이라고 생각하여 블로그에 포스트로 기재하였다.
+[bosung's blog : Debounced 와 Throttled](https://gatsbybosungblogmain.gatsbyjs.io/DebouncedAndThrottled/)
+
 
 **mobile chrome**
 
-**safari**
+<image src="https://user-images.githubusercontent.com/34260967/167683683-920099a1-95c6-454a-9635-8c0820106c63.png" width="400px" height="850px">
+<br>
+<image src="https://user-images.githubusercontent.com/34260967/167683660-66a4164d-2166-485f-9410-a3419bf0f4ad.png" width="400px" height="850px">
+
+<br>
+<br>
+
+**mobile safari**
+<image src="https://user-images.githubusercontent.com/34260967/167683735-71b4509f-9932-4b64-aab6-095008e95812.png" width="400px" height="850px">
+<br>
+<image src="https://user-images.githubusercontent.com/34260967/167683722-4013ebc4-508e-4cf9-8d0a-767076612528.png" width="400px" height="850px">
 
 
-
-
-
-
+<br>
+<br>
 
 ## webpack
 
+webpack config 는 아래와 같이 세가지 파일로 분리되어 있다.
 
 - webpack.common.js
+- webpack.dev.js
+- webpack.prod.js
+
+
+**webpack.common.js**
 ```javascript
 const path = require("path");
 const webpack = require("webpack");
@@ -239,7 +275,7 @@ module.exports = {
 
 ```
 
-- webpack.dev.js
+**webpack.dev.js**
 ```javascript
 const { merge } = require('webpack-merge');
 const common = require("./webpack.common");
@@ -257,7 +293,7 @@ module.exports = merge(common, {
 });
 ```
 
-- webpack.prod.js
+**webpack.prod.js**
 ```javascript
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
