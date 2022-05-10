@@ -20,16 +20,16 @@ import { getRecipe, recipeInterface } from "../functions/apiCall";
 import { Hit } from "../components/type2";
 import { RootState } from "../redux-modules";
 import DefaultPageLayout from "./DefaultPageLayout";
+import styleVariables from "../global_style/variables";
 
 export const ITEM_LENGTH = 4;
 
 const SearchTitle = styled.p`
   width: 100%;
-  height: 30px;
+  height: ${styleVariables.SEARCH_TITLE_HEIGHT};
   display: block;
   font-size: 1.4rem;
   text-align: center;
-  padding-top : 10px;
 `;
 
 const Search = () => {

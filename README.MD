@@ -30,7 +30,6 @@ My FOODINFO Site : https://main.d85jjakedwwkt.amplifyapp.com/ <br>
 - [ReactJS(without CRA)](https://reactjs.org/) 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Webpack(v5)](https://webpack.js.org/)
-    - webpack-dev-server
 - [Babel](https://babeljs.io/)
 - [Styled-Components](https://styled-components.com/)
 - [Redux](https://redux.js.org/)
@@ -44,14 +43,239 @@ npm run dev
 
 ## Cross Browsing
 
+*IE는 지원하지 않는다. (polyfill 설정은 되어 있음.)
+
+- Chrome
+- Safari
+- FireFox
+- Opera
+- Edge
+
+ **browserslist 출력**
+ ``` 
+    and_chr 101
+    and_ff 99
+    and_uc 12.12
+    android 4.4.3-4.4.4
+    chrome 99
+    chrome 98
+    chrome 97
+    chrome 96
+    chrome 93
+    edge 99
+    edge 98
+    firefox 98
+    firefox 97
+    ie 11
+    ios_saf 15.4
+    ios_saf 15.2-15.3
+    ios_saf 15.0-15.1
+    ios_saf 14.5-14.8
+    ios_saf 14.0-14.4
+    ios_saf 13.4-13.7
+    ios_saf 12.2-12.5
+    opera 83
+    safari 15.2-15.3
+    safari 15.1
+    safari 14.1
+    safari 14
+    safari 13.1
+    samsung 16.0
+ ```
 
 
-## 반응형
+## 반응형 (모바일 포함)
+
+아래 두 가지를 사용하여 반응형을 구현하였다.
+- media query
+    - 반응형으로 디자인만 변경되어야 하는 경우에 사용
+- window resize event
+    - 반응형으로 기능이 달라지는 경우에 사용
+
+
+
+**mobile chrome**
+
+**safari**
+
+
+
+
+
+
 
 ## webpack
 
 
+- webpack.common.js
+```javascript
+const path = require("path");
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+dotenv.config({
+  path: `${__dirname}/.env`,
+});
+const { SourceMapDevToolPlugin } = require("webpack");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const createStyledComponentsTransformer =
+  require("typescript-plugin-styled-components").default;
+const styledComponentsTransformer = createStyledComponentsTransformer();
 
-webpack config 파일 분리 ok
+module.exports = {
+  mode: "development",
+  entry: "./src/index.tsx",
 
-loading 동작 시 최하단 여백 해결해야함
+  output: {
+    filename: "main.js",
+    path: path.resolve(__dirname, "./dist"),
+    clean: true,
+  },
+  plugins: [
+    new SourceMapDevToolPlugin({
+      filename: "[file].map",
+    }),
+    new CleanWebpackPlugin(),
+    new HtmlWebPackPlugin({
+      template: path.resolve(__dirname, "./public/index.html"),
+      filename: "index.html",
+    }),
+    new webpack.DefinePlugin({
+      "process.env.REACT_APP_API_KEY": JSON.stringify(
+        process.env.REACT_APP_API_KEY
+      ),
+      "process.env.REACT_APP_APP_ID": JSON.stringify(
+        process.env.REACT_APP_APP_ID
+      ),
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
+      },
+      {
+        test: /\.js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-react"],
+              plugins: [
+                [
+                  "@babel/plugin-transform-runtime",
+                  {
+                    absoluteRuntime: false,
+                    corejs: 3,
+                    helpers: true,
+                    regenerator: true,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g)$/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.svg/,
+        use: ["@svgr/webpack"],
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        resolve: {
+          fullySpecified: false,
+        },
+        use: [
+          "source-map-loader",
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-react"],
+              plugins: [
+                [
+                  "@babel/plugin-transform-runtime",
+                  {
+                    absoluteRuntime: false,
+                    corejs: 3,
+                    helpers: true,
+                    regenerator: true,
+                  },
+                ],
+              ],
+            },
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              getCustomTransformers: () => ({
+                before: [styledComponentsTransformer],
+              }),
+            },
+          },
+        ],
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    modules: [path.join(__dirname, "node_modules")],
+  },
+};
+
+```
+
+- webpack.dev.js
+```javascript
+const { merge } = require('webpack-merge');
+const common = require("./webpack.common");
+
+module.exports = merge(common, {
+  mode: "development",
+  devtool: "inline-source-map",
+  devServer: {
+    host: "localhost",
+    port: 8080, //포트
+    open: true, //개발 서버 실행 시 브라우저 오픈
+    historyApiFallback: true,
+    static: "./dist",
+  },
+});
+```
+
+- webpack.prod.js
+```javascript
+const { merge } = require("webpack-merge");
+const common = require("./webpack.common.js");
+
+module.exports = merge(common, {
+  mode: "production",
+  devtool: "source-map",
+
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
+});
+
+```
+
+이 프로젝트의 웹팩설정에서는 번들파일의 최적화를 진행하지 않고 있다. 따라서, 번들 크기 관련 warning 이 발생하지만, performance 속성을 이용하여 warning을 무시하고 있다. (근본적인 문제 해결 필요)
+
+
+

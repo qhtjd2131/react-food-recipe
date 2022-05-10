@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import styleVariables from "../global_style/variables";
 
 const PageBox = styled.section`
   display: table;
@@ -10,10 +11,11 @@ const PageBox = styled.section`
   box-sizing: border-box;
 `;
 const ResultBox = styled.div`
-  margin-top: 100px;
+  margin-top: ${styleVariables.HEADER_HEIGHT};
   @media ${({ theme }) => theme.size_5} {
-    margin-top: 120px;
+    margin-top: ${styleVariables.HEADER_HEIGHT_TWO_LINES};
   }
+  padding : ${styleVariables.RESULT_PADDING_TOP} 0;
   
 `;
 

@@ -4,6 +4,7 @@ import LogoSVG from "../images/mainlogo.svg";
 import { Link } from "react-router-dom";
 import InputCom from "./InputCom";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
+import styleVariables from "../global_style/variables";
 
 const HeaderBox = styled.section`
   position: fixed;
@@ -11,7 +12,7 @@ const HeaderBox = styled.section`
   left: 0;
   width: 100%;
   min-width : 300px;
-  height: 100px;
+  height: ${styleVariables.HEADER_HEIGHT};
   display: flex;
   justify-content: center;
   box-shadow: 0 4px 2px -2px orange;
@@ -19,7 +20,7 @@ const HeaderBox = styled.section`
   /* border-bottom: 4mm ridge rgba(211, 220, 50, .6); */
   z-index: 990;
   @media ${({ theme }) => theme.size_5} {
-    height: 120px;
+    height: ${styleVariables.HEADER_HEIGHT_TWO_LINES};
   }
 `;
 

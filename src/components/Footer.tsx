@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Badge from "../images/Edamam_Badge_Transparent.svg";
+import styleVariables from "../global_style/variables";
 
 const FooterBox = styled.div`
-  height: 100px;
+  height: ${styleVariables.FOOTER_HEIGHT};
   border-top: 1px solid transparent;
   background-color: #fff1d6;
   box-sizing : border-box;

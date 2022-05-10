@@ -15,14 +15,17 @@ import useWindowDimensions from "../hooks/useWindowDimensions";
 import { ITEM_LENGTH } from "../pages/Search";
 import { Hit } from "./type2";
 import { getRecipeFromNextLink, recipeInterface } from "../functions/apiCall";
+import styleVariables from "../global_style/variables";
 
 const PAGE_BY_API_CALL = 10; //API CALL 한번에 보여줄 수 있는 페이지 (40개 , 1페이지당 4개, 총 10페이지)
 
 const PaginationBox = styled.div`
   display: flex;
-  padding: 1rem 2rem;
+  padding: ${styleVariables.PAGINATION_PADDING_TOP}
+    ${styleVariables.PAGINATION_PADDING_LEFT};
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 `;
 
 const IconWrapper = styled.div<{ isSelected?: boolean }>`
@@ -30,8 +33,8 @@ const IconWrapper = styled.div<{ isSelected?: boolean }>`
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  width: 3rem;
-  height: 3rem;
+  width: ${styleVariables.PAGINATION_HEIGHT};
+  height: ${styleVariables.PAGINATION_HEIGHT};
   border-radius: 50%;
   cursor: pointer;
   background-color: ${(props) => (props.isSelected ? "#e5e5e5" : "white")};
@@ -39,7 +42,6 @@ const IconWrapper = styled.div<{ isSelected?: boolean }>`
     background-color: #e5e5e5;
   }
 `;
-
 
 const Pagination = () => {
   const { height, width } = useWindowDimensions();
